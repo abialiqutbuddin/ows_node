@@ -1,0 +1,41 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Logs
+logs
+*.log
+logs/
+npm-debug.log
+yarn-debug.log
+debug.log
+pm2-log.log
+
+# Build files
+dist/
+build/
+.cache/
+out/
+.next/
+.vscode/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE settings (Optional)
+.idea/
+*.swp
+*.swo
+
+# Ignore deployment files
+*.zip
