@@ -5,6 +5,8 @@ const cors = require('cors');
 const app = express();
 const axios = require('axios');
 const fs = require('fs'); 
+const { sendMail } = require("./mail");
+require("dotenv").config(); // Load environment variables
 
 app.use(cors()); 
 app.use(bodyParser.json());
@@ -115,8 +117,8 @@ app.post("/add-request", (req, res) => {
                     const reqFormValues = [
                         nextReqFormId, 
                         data.memberITS,
-                        data.appliedby,
-                        data.appliedby, 
+                        data.appliedbyIts,
+                        data.appliedbyName, 
                         data.city,
                         data.institution,
                         data.classDegree,
@@ -164,21 +166,20 @@ app.post("/add-request", (req, res) => {
     });
 });
 
-app.get('/get-requests', (req, res) => {
+app.get("/get-requests", (req, res) => {
     const id = req.query.id;
+    let query = "SELECT * FROM owsReqForm";
 
-    let query = 'SELECT * FROM RequestForm';
     if (id) {
-        query += ' WHERE id = ?';
+        query += " WHERE id = ?";
     }
 
-    db.query(query, [id], (err, results) => {
+    db.query(query, id ? [id] : [], (err, results) => {
         if (err) {
             console.error(err);
-            res.status(500).send(err);
-        } else {
-            res.json(results);
+            return res.status(500).send(err);
         }
+        res.json(results);
     });
 });
 
@@ -281,6 +282,23 @@ app.get('/fetch-pdf:its', async (req, res) => {
     } catch (error) {
         console.error('Error fetching the PDF file:', error.message);
         res.status(500).json({ error: 'Failed to fetch PDF file' });
+    }
+});
+
+// API Route to Send Email
+app.post("/send-email", async (req, res) => {
+    const { to, subject, text, html } = req.body;
+
+    if (!to || !subject || (!text && !html)) {
+        return res.status(400).json({ success: false, message: "Missing required fields" });
+    }
+
+    const response = await sendMail(to, subject, text, html);
+
+    if (response.success) {
+        res.status(200).json(response);
+    } else {
+        res.status(500).json(response);
     }
 });
 
