@@ -4,13 +4,13 @@ const db = require("./db");
 const cors = require('cors');
 const app = express();
 const axios = require('axios');
-const fs = require('fs'); // Import the fs module
+const fs = require('fs'); 
 
-app.use(cors()); // Enable CORS for all routes
+app.use(cors()); 
 app.use(bodyParser.json());
 
 app.get("/get-last-req", (req, res) => {
-    const dbConnection = db; // Your MySQL connection instance
+    const dbConnection = db; 
 
     // Fetch the last reqMasId from the table
     const fetchLastReqFormIdQuery = `SELECT MAX(reqId) AS lastReqFormId FROM owsReqForm`;
@@ -38,19 +38,9 @@ app.post("/add-request", (req, res) => {
     const data = req.body;
 
     const owsReqMasQuery = `
-        INSERT INTO owsReqMas (
-            reqMasId, reqDt, ITS, name, fullName, mohalla, address, dob, email, mobile, whatsapp
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ON DUPLICATE KEY UPDATE
-            reqDt = VALUES(reqDt),
-            name = VALUES(name),
-            fullName = VALUES(fullName),
-            mohalla = VALUES(mohalla),
-            address = VALUES(address),
-            dob = VALUES(dob),
-            email = VALUES(email),
-            mobile = VALUES(mobile),
-            whatsapp = VALUES(whatsapp)
+        INSERT IGNORE INTO owsReqMas (
+    reqMasId, reqDt, ITS, name, fullName, mohalla, address, dob, email, mobile, whatsapp
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     `;
 
     const owsReqFormQuery = `
@@ -62,7 +52,7 @@ app.post("/add-request", (req, res) => {
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
-    const dbConnection = db; // Your MySQL connection instance
+    const dbConnection = db; 
 
     dbConnection.beginTransaction((err) => {
         if (err) {
@@ -118,43 +108,42 @@ app.post("/add-request", (req, res) => {
                             details: fetchErr,
                         });
                     }
-            
+
                     const lastReqFormId = fetchResult[0].lastReqFormId || 0; // Default to 0 if no rows exist
                     const nextReqFormId = lastReqFormId + 1; // Increment by 1
 
-                // Insert into owsReqForm
-                const reqFormValues = [
-                    nextReqFormId, // Use the generated reqMasId
-                    data.memberITS,
-                    data.appliedby,
-                    data.appliedby, // Assuming reqByName is the same as appliedby
-                    data.city,
-                    data.institution,
-                    data.classDegree,
-                    data.study,
-                    data.subject,
-                    data.year,
-                    null, // grade, if not provided
-                    data.email,
-                    data.phoneNumber,
-                    data.whatsappNumber,
-                    "Education Assistance", // Default purpose
-                    data.fundAmount,
-                    "Education", // Default classification
-                    null, // organization, if not provided
-                    data.fundDescription,
-                    "Pending", // Default current status
-                    data.appliedby, // created_by
-                ];
+                    const reqFormValues = [
+                        nextReqFormId, 
+                        data.memberITS,
+                        data.appliedby,
+                        data.appliedby, 
+                        data.city,
+                        data.institution,
+                        data.classDegree,
+                        data.study,
+                        data.subject,
+                        data.year,
+                        null, 
+                        data.email,
+                        data.phoneNumber,
+                        data.whatsappNumber,
+                        "Education Assistance", 
+                        data.fundAmount,
+                        "Education", 
+                        null, 
+                        data.fundDescription,
+                        "Pending", 
+                        data.appliedby, 
+                    ];
 
-                dbConnection.query(owsReqFormQuery, reqFormValues, (formErr, formResult) => {
-                    if (formErr) {
-                        console.error("Failed to insert data into owsReqForm:", formErr);
-                        return dbConnection.rollback(() => {
-                            res.status(500).send({ error: "Failed to insert data into owsReqForm", details: formErr });
-                        });
-                    }
-                });
+                    dbConnection.query(owsReqFormQuery, reqFormValues, (formErr, formResult) => {
+                        if (formErr) {
+                            console.error("Failed to insert data into owsReqForm:", formErr);
+                            return dbConnection.rollback(() => {
+                                res.status(500).send({ error: "Failed to insert data into owsReqForm", details: formErr });
+                            });
+                        }
+                    });
 
                     // Commit the transaction
                     dbConnection.commit((commitErr) => {
@@ -256,46 +245,44 @@ app.get("/get-family-profile/:itsId", async (req, res) => {
 
 app.get('/fetch-pdf1', (req, res) => {
     try {
-      // Path to the static PDF file
-      const pdfPath = '/Users/abiali/Desktop/ows_node/profile.pdf';
+        // Path to the static PDF file
+        const pdfPath = '/Users/abiali/Desktop/ows_node/profile.pdf';
 
-      console.log("HERE");
-      console.log(pdfPath);
-  
-      // Read the PDF file as a buffer
-      const pdfData = fs.readFileSync(pdfPath);
-  
-      // Set headers to indicate the content type is a PDF
-      res.setHeader('Content-Type', 'application/pdf');
-      res.setHeader('Content-Disposition', 'inline; filename="profile.pdf"');
-  
-      // Send the PDF byte data directly
-      res.send(pdfData);
+        console.log("HERE");
+        console.log(pdfPath);
+
+        const pdfData = fs.readFileSync(pdfPath);
+
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'inline; filename="profile.pdf"');
+
+        // Send the PDF byte data directly
+        res.send(pdfData);
     } catch (error) {
-      console.error('Error reading the PDF file:', error.message);
-      res.status(500).json({ error: 'Failed to send PDF file' });
+        console.error('Error reading the PDF file:', error.message);
+        res.status(500).json({ error: 'Failed to send PDF file' });
     }
-  });
+});
 
-  app.get('/fetch-pdf:its', async (req, res) => {
+app.get('/fetch-pdf:its', async (req, res) => {
 
     const its = req.params.its
     try {
-      const pdfUrl = `https://paktalim.com/admin/ws_app/GetProfilePDF/${its}?access_key=2f1d0195f15f9e527665b4a87e958586a4da8de1&username=40459629`;
-  
-      console.log("Fetching PDF from URL:", pdfUrl);
-  
-      const response = await axios.get(pdfUrl, { responseType: 'arraybuffer' });
-  
-      res.setHeader('Content-Type', 'application/pdf');
-      res.setHeader('Content-Disposition', 'inline; filename="profile.pdf"');
-  
-      res.send(response.data);
+        const pdfUrl = `https://paktalim.com/admin/ws_app/GetProfilePDF/${its}?access_key=2f1d0195f15f9e527665b4a87e958586a4da8de1&username=40459629`;
+
+        console.log("Fetching PDF from URL:", pdfUrl);
+
+        const response = await axios.get(pdfUrl, { responseType: 'arraybuffer' });
+
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'inline; filename="profile.pdf"');
+
+        res.send(response.data);
     } catch (error) {
-      console.error('Error fetching the PDF file:', error.message);
-      res.status(500).json({ error: 'Failed to fetch PDF file' });
+        console.error('Error fetching the PDF file:', error.message);
+        res.status(500).json({ error: 'Failed to fetch PDF file' });
     }
-  });
+});
 
 // Start Server
 const PORT = 3002;
