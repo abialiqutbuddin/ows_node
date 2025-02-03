@@ -5,6 +5,7 @@ const cors = require('cors');
 const app = express();
 const axios = require('axios');
 const fs = require('fs'); 
+const https = require("https");
 const { sendMail } = require("./mail");
 require("dotenv").config(); // Load environment variables
 
@@ -301,6 +302,17 @@ app.post("/send-email", async (req, res) => {
         res.status(500).json(response);
     }
 });
+
+// Load SSL Certificates
+const options = {
+    key: fs.readFileSync("/etc/letsencrypt/live/mode.imadiinnovations.com/privkey.pem"),
+    cert: fs.readFileSync("/etc/letsencrypt/live/mode.imadiinnovations.com/fullchain.pem"),
+  };
+
+  // Start HTTPS Server
+// https.createServer(options, app).listen(443, () => {
+//     console.log("🚀 Secure Node.js server running at https://mode.imadiinnovations.com/");
+// });
 
 // Start Server
 const PORT = 3002;

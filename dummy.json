@@ -1,0 +1,4881 @@
+[
+    {
+        "id": 15,
+        "name": "Pre-medical",
+        "marhala_id": 5,
+        "study_id": 17,
+        "study": "A-Level\/ Pearson Edexcel\/ GED\/ International Baccalaureate Diploma"
+    },
+    {
+        "id": 17,
+        "name": "Pre-Engineering",
+        "marhala_id": 5,
+        "study_id": 17,
+        "study": "A-Level\/ Pearson Edexcel\/ GED\/ International Baccalaureate Diploma"
+    },
+    {
+        "id": 19,
+        "name": "Arts\/Humanities",
+        "marhala_id": 5,
+        "study_id": 17,
+        "study": "A-Level\/ Pearson Edexcel\/ GED\/ International Baccalaureate Diploma"
+    },
+    {
+        "id": 148,
+        "name": "Home Sciences- 4yrs",
+        "marhala_id": 6,
+        "study_id": 114,
+        "study": "Home Sciences"
+    },
+    {
+        "id": 149,
+        "name": "BDS- 4yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 150,
+        "name": "BS Optometry- 4yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 152,
+        "name": "DPT Physiotherapy- 5yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 154,
+        "name": "Pharm D -5yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 155,
+        "name": "BS Medical Laboratory Technology- 4yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 157,
+        "name": "BS Audiology & Speech Language Therapy- 4yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 158,
+        "name": "BS Cardiovascular Sciences-4yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 159,
+        "name": "BS Clinical Laboratory Sciences- 4yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 160,
+        "name": "BS Clinical Micro Biology- 4yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 161,
+        "name": "AD Dental Hygienist BS- 4 yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 163,
+        "name": "AD Dental Hygienist - 2yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 164,
+        "name": "BS Dental Technology- 4yrs ",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 166,
+        "name": "BS Epidemiology & Public Health- 4yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 167,
+        "name": "BS Human Diet & Nutrient- 4yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 168,
+        "name": "BS Medical Technology- 3yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 170,
+        "name": "BS Nutrition- 4yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 171,
+        "name": "BS Occupational Therapy BSc Hons- 4yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 174,
+        "name": "BS Operational Theatre Sciences- 4yr",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 175,
+        "name": "BS Physiology- 4yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 176,
+        "name": "BS Prosthetics & Olthotics - 4yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 179,
+        "name": "BS Surgery Technology- 4yrs ",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 184,
+        "name": "M.pharm Pharmacology- 2yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 185,
+        "name": "M.Phil Physiology- 2yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 186,
+        "name": "BS\/ BSc Hons- Biochemistry- 4yrs",
+        "marhala_id": 6,
+        "study_id": 116,
+        "study": "Biological & Life Sciences"
+    },
+    {
+        "id": 188,
+        "name": "BS\/BSc Hons Botany- 4yrs",
+        "marhala_id": 6,
+        "study_id": 116,
+        "study": "Biological & Life Sciences"
+    },
+    {
+        "id": 190,
+        "name": "BS\/ BSc Hons Zoology- 4yrs",
+        "marhala_id": 6,
+        "study_id": 116,
+        "study": "Biological & Life Sciences"
+    },
+    {
+        "id": 191,
+        "name": "BS Bioscience- 4yrs",
+        "marhala_id": 6,
+        "study_id": 116,
+        "study": "Biological & Life Sciences"
+    },
+    {
+        "id": 192,
+        "name": "BS Biomedical Sciences- 4yrs",
+        "marhala_id": 6,
+        "study_id": 116,
+        "study": "Biological & Life Sciences"
+    },
+    {
+        "id": 194,
+        "name": "MSc Biochemistry- 2yrs",
+        "marhala_id": 6,
+        "study_id": 116,
+        "study": "Biological & Life Sciences"
+    },
+    {
+        "id": 202,
+        "name": "BS Industrial Chemistry- 4yrs",
+        "marhala_id": 6,
+        "study_id": 117,
+        "study": "Chemical & Material Sciences"
+    },
+    {
+        "id": 204,
+        "name": "MSc Chemistry- 2yrs",
+        "marhala_id": 6,
+        "study_id": 117,
+        "study": "Chemical & Material Sciences"
+    },
+    {
+        "id": 207,
+        "name": "BS Environmental Sciences- 4yrs",
+        "marhala_id": 6,
+        "study_id": 118,
+        "study": "Earth & Environmental Sciences"
+    },
+    {
+        "id": 213,
+        "name": "BS\/ BSc Hons Physics- 4yrs",
+        "marhala_id": 6,
+        "study_id": 119,
+        "study": "Physics & Numerical Sciences"
+    },
+    {
+        "id": 216,
+        "name": "BS\/ BSc Hons Applied Physics- 4yrs",
+        "marhala_id": 6,
+        "study_id": 119,
+        "study": "Physics & Numerical Sciences"
+    },
+    {
+        "id": 217,
+        "name": "MSc Mathematics- 2yrs",
+        "marhala_id": 6,
+        "study_id": 119,
+        "study": "Physics & Numerical Sciences"
+    },
+    {
+        "id": 218,
+        "name": "MSc Physics- 2yrs",
+        "marhala_id": 6,
+        "study_id": 119,
+        "study": "Physics & Numerical Sciences"
+    },
+    {
+        "id": 221,
+        "name": "MSc Applied Mathematics- 2yrs",
+        "marhala_id": 6,
+        "study_id": 119,
+        "study": "Physics & Numerical Sciences"
+    },
+    {
+        "id": 222,
+        "name": "MSc Applied Physics- 2yrs",
+        "marhala_id": 6,
+        "study_id": 119,
+        "study": "Physics & Numerical Sciences"
+    },
+    {
+        "id": 225,
+        "name": "BS Food Science & Technology- 4yrs",
+        "marhala_id": 6,
+        "study_id": 120,
+        "study": "Agricultural Sciences"
+    },
+    {
+        "id": 227,
+        "name": "BS Hons Agriculture & Agribusiness Management- 4yrs",
+        "marhala_id": 6,
+        "study_id": 120,
+        "study": "Agricultural Sciences"
+    },
+    {
+        "id": 231,
+        "name": "BE Chemical Engineering- 4yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 233,
+        "name": "BE Petroleum Engineering - 4yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 234,
+        "name": "BE Avionics Engineering -",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 238,
+        "name": "BE Civil Engineering - 4yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 240,
+        "name": "BE Electronics- 4yrs ",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 241,
+        "name": "BE Mechatronics- 4yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 242,
+        "name": "BE Materials Engineering- 4yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 244,
+        "name": "BE Automotive Engineering- 4yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 245,
+        "name": "BE Computer System- 4yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 247,
+        "name": "BSc Building & Architectural Engineering- 4yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 248,
+        "name": "BS Computer Engineering- 4yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 250,
+        "name": "BE Electrical Power- 4yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 251,
+        "name": "BE Energy & Environment- 4yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 253,
+        "name": "BSc Engineering Science- 4yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 254,
+        "name": "BE Industrial & Manufacturing- 4yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 256,
+        "name": "BS Industrial Design - 4 yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 258,
+        "name": "BSc Polymer- 4yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 260,
+        "name": "BE Polymer & Petrochemical- 4yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 261,
+        "name": "BE\/BS\/BSc Industrial Engineering- 4yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 264,
+        "name": "BE\/BSc\/B.TECH Textile Engineering- 4yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 265,
+        "name": "BE Urban & Regional Planning- 4yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 269,
+        "name": "BSc Mechatronics & Control- 4 yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 273,
+        "name": "BE\/BS Aerospace Engineering- 4yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 274,
+        "name": "BSc Bioinformatics- 4 yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 278,
+        "name": "BS Information Technology- 4yrs",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 279,
+        "name": "BE\/BS Software Engineering-4yrs",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 280,
+        "name": "BS Artificial Intelligence- 4yrs",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 281,
+        "name": "BS Computer Science & Information Technology- 4yrs",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 282,
+        "name": "BSc (Hons) Computing- 4yrs",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 283,
+        "name": "BS Data Science- 4yrs",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 285,
+        "name": "BS Information & Communication Technologies- 4yrs",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 287,
+        "name": "BS Animation- 4yrs",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 288,
+        "name": "MSC Computer Science- 2yrs",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 290,
+        "name": "MCS Computer Arts- 2yrs",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 291,
+        "name": "MS Data Sciences - 2\/ 2.5 yrs",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 327,
+        "name": "BS\/BED\/ADE\/BED(Hons) Education-1.5\/2.5yrs",
+        "marhala_id": 6,
+        "study_id": 124,
+        "study": "Education"
+    },
+    {
+        "id": 332,
+        "name": "B.ED Hons Education (Elementary)- 4yrs",
+        "marhala_id": 6,
+        "study_id": 124,
+        "study": "Education"
+    },
+    {
+        "id": 333,
+        "name": "BS Physical Education",
+        "marhala_id": 6,
+        "study_id": 124,
+        "study": "Education"
+    },
+    {
+        "id": 335,
+        "name": "BS\/BED\/ADE\/BED(Hons) Education- 4yrs",
+        "marhala_id": 6,
+        "study_id": 124,
+        "study": "Education"
+    },
+    {
+        "id": 337,
+        "name": "BS\/ B.ED English Language Teaching - 4yrs",
+        "marhala_id": 6,
+        "study_id": 124,
+        "study": "Education"
+    },
+    {
+        "id": 342,
+        "name": "MBA Education Management- 2yrs",
+        "marhala_id": 6,
+        "study_id": 124,
+        "study": "Education"
+    },
+    {
+        "id": 343,
+        "name": "MA English Language Teaching - 2yrs",
+        "marhala_id": 6,
+        "study_id": 124,
+        "study": "Education"
+    },
+    {
+        "id": 346,
+        "name": "M.Ed Education (Teacher) 1yrs",
+        "marhala_id": 6,
+        "study_id": 124,
+        "study": "Education"
+    },
+    {
+        "id": 347,
+        "name": "MS Educational Leadership & Management- 2yrs",
+        "marhala_id": 6,
+        "study_id": 124,
+        "study": "Education"
+    },
+    {
+        "id": 356,
+        "name": "B.A HONS BS History- 4yrs",
+        "marhala_id": 6,
+        "study_id": 164,
+        "study": "Social Sciences"
+    },
+    {
+        "id": 357,
+        "name": "BS\/ BA HONS -International Relations- 4yrs",
+        "marhala_id": 6,
+        "study_id": 164,
+        "study": "Social Sciences"
+    },
+    {
+        "id": 358,
+        "name": "LLB HONS- 5yrs",
+        "marhala_id": 6,
+        "study_id": 164,
+        "study": "Social Sciences"
+    },
+    {
+        "id": 361,
+        "name": "BS\/BA Hons- Political Science- 4yrs",
+        "marhala_id": 6,
+        "study_id": 164,
+        "study": "Social Sciences"
+    },
+    {
+        "id": 363,
+        "name": "BS\/CERT Sociology- 4yrs",
+        "marhala_id": 6,
+        "study_id": 164,
+        "study": "Social Sciences"
+    },
+    {
+        "id": 366,
+        "name": "BSc Hons Philosophy- 4yrs",
+        "marhala_id": 6,
+        "study_id": 164,
+        "study": "Social Sciences"
+    },
+    {
+        "id": 367,
+        "name": "BS Development Studies- 4yrs",
+        "marhala_id": 6,
+        "study_id": 164,
+        "study": "Social Sciences"
+    },
+    {
+        "id": 370,
+        "name": "BS Humanities- 4yrs",
+        "marhala_id": 6,
+        "study_id": 164,
+        "study": "Social Sciences"
+    },
+    {
+        "id": 372,
+        "name": "BSc Hons Social Development & Policy- 4yrs",
+        "marhala_id": 6,
+        "study_id": 164,
+        "study": "Social Sciences"
+    },
+    {
+        "id": 373,
+        "name": "BS Social Entrepreneurship- 4yrs",
+        "marhala_id": 6,
+        "study_id": 164,
+        "study": "Social Sciences"
+    },
+    {
+        "id": 374,
+        "name": "BS Social Sciences- 4yrs",
+        "marhala_id": 6,
+        "study_id": 164,
+        "study": "Social Sciences"
+    },
+    {
+        "id": 375,
+        "name": "BS Social Sciences & Liberal Arts- 4yrs",
+        "marhala_id": 6,
+        "study_id": 164,
+        "study": "Social Sciences"
+    },
+    {
+        "id": 376,
+        "name": "BA Hons- Social Work- 4yrs",
+        "marhala_id": 6,
+        "study_id": 164,
+        "study": "Social Sciences"
+    },
+    {
+        "id": 388,
+        "name": "MSc Psychology- 2yrs",
+        "marhala_id": 6,
+        "study_id": 164,
+        "study": "Social Sciences"
+    },
+    {
+        "id": 390,
+        "name": "MA General History- 2yrs",
+        "marhala_id": 6,
+        "study_id": 164,
+        "study": "Social Sciences"
+    },
+    {
+        "id": 395,
+        "name": "BS Journalism- 4yrs",
+        "marhala_id": 6,
+        "study_id": 125,
+        "study": "Media Sciences"
+    },
+    {
+        "id": 396,
+        "name": "BS\/BA (Hons) Mass Communication-4yrs",
+        "marhala_id": 6,
+        "study_id": 125,
+        "study": "Media Sciences"
+    },
+    {
+        "id": 397,
+        "name": "BS Film\/TV- 4yrs",
+        "marhala_id": 6,
+        "study_id": 125,
+        "study": "Media Sciences"
+    },
+    {
+        "id": 399,
+        "name": "MS Visual Studies-4yrs",
+        "marhala_id": 6,
+        "study_id": 125,
+        "study": "Media Sciences"
+    },
+    {
+        "id": 400,
+        "name": "BS Advertising- 4yrs",
+        "marhala_id": 6,
+        "study_id": 125,
+        "study": "Media Sciences"
+    },
+    {
+        "id": 401,
+        "name": "BS Communication & Media Studies- 4yrs",
+        "marhala_id": 6,
+        "study_id": 125,
+        "study": "Media Sciences"
+    },
+    {
+        "id": 402,
+        "name": "BS Visual Effects & Animation- 4yrs",
+        "marhala_id": 6,
+        "study_id": 125,
+        "study": "Media Sciences"
+    },
+    {
+        "id": 403,
+        "name": "BS\/BEMS Media Studies -",
+        "marhala_id": 6,
+        "study_id": 125,
+        "study": "Media Sciences"
+    },
+    {
+        "id": 406,
+        "name": "MSc Media Sciences- 2 yrs",
+        "marhala_id": 6,
+        "study_id": 125,
+        "study": "Media Sciences"
+    },
+    {
+        "id": 412,
+        "name": "B.Arch\/ BS Architecture - 5yrs",
+        "marhala_id": 6,
+        "study_id": 126,
+        "study": "Art & Design"
+    },
+    {
+        "id": 414,
+        "name": "BE\/B.ARCH Architecture & Planning- 4yrs",
+        "marhala_id": 6,
+        "study_id": 126,
+        "study": "Art & Design"
+    },
+    {
+        "id": 415,
+        "name": "BE\/B ARCH Architecture & Planning- 5yrs",
+        "marhala_id": 6,
+        "study_id": 126,
+        "study": "Art & Design"
+    },
+    {
+        "id": 417,
+        "name": "B.DES Design- 4yrs",
+        "marhala_id": 6,
+        "study_id": 126,
+        "study": "Art & Design"
+    },
+    {
+        "id": 418,
+        "name": "BS\/BSc Hons\/BFD\/B.DES\/BBA Fashion Design- 4yrs",
+        "marhala_id": 6,
+        "study_id": 126,
+        "study": "Art & Design"
+    },
+    {
+        "id": 419,
+        "name": "BS Fashion Marketing & Merchandizing - 4yrs",
+        "marhala_id": 6,
+        "study_id": 126,
+        "study": "Art & Design"
+    },
+    {
+        "id": 423,
+        "name": "ME Design 2.5yrs",
+        "marhala_id": 6,
+        "study_id": 126,
+        "study": "Art & Design"
+    },
+    {
+        "id": 424,
+        "name": "MS Design Marketing & Merchandizing - 2yrs ",
+        "marhala_id": 6,
+        "study_id": 126,
+        "study": "Art & Design"
+    },
+    {
+        "id": 425,
+        "name": "DIP Automobile",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 426,
+        "name": "DIP General Electric",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 427,
+        "name": "DIP Mechanical",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 429,
+        "name": "Fabrication, Welding & Pipe work",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 438,
+        "name": "Auto Mechanic",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 439,
+        "name": "Computer Hardware\/ Operator",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 440,
+        "name": "Electrician",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 441,
+        "name": "Industrial Electronics",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 442,
+        "name": "Interior Designing",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 443,
+        "name": "Mechanical Drafting",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 445,
+        "name": "Electronics",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 446,
+        "name": "Leather Garments",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 447,
+        "name": "CERT\/ DIP in IT",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 448,
+        "name": "CERT\/ DIP Civil",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 449,
+        "name": "CERT\/ DIP Electrical",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 452,
+        "name": "Mechanical Fitting & Plant Maintenance- 1 yr",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 457,
+        "name": "Steel Fabrication",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 469,
+        "name": "Computer Application- 12 months",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 470,
+        "name": "Information Technology- 12 months",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 471,
+        "name": "3D Animation- 6 months",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 472,
+        "name": "Graphic Designing-6 months",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 474,
+        "name": "Web Technology- 12 months",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 476,
+        "name": "Multimedia",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 479,
+        "name": "C\/C++\/C#\/Java- 2 months",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 481,
+        "name": "Web Designing- 2 months",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 482,
+        "name": "Web Programming- 2 months",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 483,
+        "name": "Mobile Applications- 2 months",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 484,
+        "name": "ACCP PRO",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 485,
+        "name": "Engineering Diplomas- 3yrs",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 488,
+        "name": "Electrical Technology- 3yrs",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 489,
+        "name": "Civil Technology- 3yrs",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 493,
+        "name": "Computer Science",
+        "marhala_id": 4,
+        "study_id": 129,
+        "study": "SSC-(AKU-EB)"
+    },
+    {
+        "id": 494,
+        "name": "Commerce",
+        "marhala_id": 4,
+        "study_id": 129,
+        "study": "SSC-(AKU-EB)"
+    },
+    {
+        "id": 495,
+        "name": "Arts\/Humanities",
+        "marhala_id": 4,
+        "study_id": 129,
+        "study": "SSC-(AKU-EB)"
+    },
+    {
+        "id": 498,
+        "name": "Commerce",
+        "marhala_id": 4,
+        "study_id": 130,
+        "study": "SSC-(Provincial Board)"
+    },
+    {
+        "id": 499,
+        "name": "Arts\/Humanities",
+        "marhala_id": 4,
+        "study_id": 130,
+        "study": "SSC-(Provincial Board)"
+    },
+    {
+        "id": 501,
+        "name": "Computer Science",
+        "marhala_id": 4,
+        "study_id": 131,
+        "study": "GCSE (O Levels)"
+    },
+    {
+        "id": 503,
+        "name": "Arts\/Humanities",
+        "marhala_id": 4,
+        "study_id": 131,
+        "study": "GCSE (O Levels)"
+    },
+    {
+        "id": 504,
+        "name": "Biology",
+        "marhala_id": 4,
+        "study_id": 132,
+        "study": "IGCSE"
+    },
+    {
+        "id": 505,
+        "name": "Computer Science",
+        "marhala_id": 4,
+        "study_id": 132,
+        "study": "IGCSE"
+    },
+    {
+        "id": 506,
+        "name": "Commerce",
+        "marhala_id": 4,
+        "study_id": 132,
+        "study": "IGCSE"
+    },
+    {
+        "id": 507,
+        "name": "Arts\/Humanities",
+        "marhala_id": 4,
+        "study_id": 132,
+        "study": "IGCSE"
+    },
+    {
+        "id": 508,
+        "name": "Pre Medical",
+        "marhala_id": 5,
+        "study_id": 133,
+        "study": "HSSC-(AKU-EB)"
+    },
+    {
+        "id": 509,
+        "name": "General Science",
+        "marhala_id": 5,
+        "study_id": 133,
+        "study": "HSSC-(AKU-EB)"
+    },
+    {
+        "id": 510,
+        "name": "Pre-Engineering",
+        "marhala_id": 5,
+        "study_id": 133,
+        "study": "HSSC-(AKU-EB)"
+    },
+    {
+        "id": 511,
+        "name": "Commerce",
+        "marhala_id": 5,
+        "study_id": 133,
+        "study": "HSSC-(AKU-EB)"
+    },
+    {
+        "id": 512,
+        "name": "Arts\/Humanities",
+        "marhala_id": 5,
+        "study_id": 133,
+        "study": "HSSC-(AKU-EB)"
+    },
+    {
+        "id": 513,
+        "name": "Home Economics",
+        "marhala_id": 5,
+        "study_id": 133,
+        "study": "HSSC-(AKU-EB)"
+    },
+    {
+        "id": 514,
+        "name": "Pre-medical",
+        "marhala_id": 5,
+        "study_id": 134,
+        "study": "HSSC-(Ziauddin Board)"
+    },
+    {
+        "id": 515,
+        "name": "General Science",
+        "marhala_id": 5,
+        "study_id": 134,
+        "study": "HSSC-(Ziauddin Board)"
+    },
+    {
+        "id": 517,
+        "name": "Commerce",
+        "marhala_id": 5,
+        "study_id": 134,
+        "study": "HSSC-(Ziauddin Board)"
+    },
+    {
+        "id": 518,
+        "name": "Arts\/Humanities",
+        "marhala_id": 5,
+        "study_id": 134,
+        "study": "HSSC-(Ziauddin Board)"
+    },
+    {
+        "id": 519,
+        "name": "Home Economics",
+        "marhala_id": 5,
+        "study_id": 134,
+        "study": "HSSC-(Ziauddin Board)"
+    },
+    {
+        "id": 520,
+        "name": "Pre Medical",
+        "marhala_id": 5,
+        "study_id": 135,
+        "study": "HSSC-(Provincial Board)"
+    },
+    {
+        "id": 525,
+        "name": "Home Economics",
+        "marhala_id": 5,
+        "study_id": 135,
+        "study": "HSSC-(Provincial Board)"
+    },
+    {
+        "id": 526,
+        "name": "Auto & Diesel",
+        "marhala_id": 5,
+        "study_id": 137,
+        "study": "Diploma of Associate Engineer"
+    },
+    {
+        "id": 528,
+        "name": "Architecture Technology",
+        "marhala_id": 5,
+        "study_id": 137,
+        "study": "Diploma of Associate Engineer"
+    },
+    {
+        "id": 529,
+        "name": "Bio-Medical",
+        "marhala_id": 5,
+        "study_id": 137,
+        "study": "Diploma of Associate Engineer"
+    },
+    {
+        "id": 531,
+        "name": "Chemical Engineering",
+        "marhala_id": 5,
+        "study_id": 137,
+        "study": "Diploma of Associate Engineer"
+    },
+    {
+        "id": 533,
+        "name": "Computer Information Technology- 3yrs",
+        "marhala_id": 5,
+        "study_id": 137,
+        "study": "Diploma of Associate Engineer"
+    },
+    {
+        "id": 548,
+        "name": "Refrigeration & Air Conditioning",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 550,
+        "name": "Software Engineering",
+        "marhala_id": 5,
+        "study_id": 137,
+        "study": "Diploma of Associate Engineer"
+    },
+    {
+        "id": 555,
+        "name": "Textile Dyeing & Printing",
+        "marhala_id": 5,
+        "study_id": 137,
+        "study": "Diploma of Associate Engineer"
+    },
+    {
+        "id": 685,
+        "name": "Bio-Physiology",
+        "marhala_id": 7,
+        "study_id": 139,
+        "study": "Doctor of Medicine - M.D."
+    },
+    {
+        "id": 687,
+        "name": "Anesthesia & Pain Management",
+        "marhala_id": 7,
+        "study_id": 139,
+        "study": "Doctor of Medicine - M.D."
+    },
+    {
+        "id": 695,
+        "name": "Obstetrics & Gynecology",
+        "marhala_id": 7,
+        "study_id": 139,
+        "study": "Doctor of Medicine - M.D."
+    },
+    {
+        "id": 696,
+        "name": "Ophthalmology",
+        "marhala_id": 7,
+        "study_id": 156,
+        "study": "Master of Surgery - M.S."
+    },
+    {
+        "id": 702,
+        "name": "Radiology",
+        "marhala_id": 7,
+        "study_id": 139,
+        "study": "Doctor of Medicine - M.D."
+    },
+    {
+        "id": 703,
+        "name": "Respiratory Medicine",
+        "marhala_id": 7,
+        "study_id": 139,
+        "study": "Doctor of Medicine - M.D."
+    },
+    {
+        "id": 710,
+        "name": "Advertising and Design",
+        "marhala_id": 7,
+        "study_id": 140,
+        "study": "Masters of Arts"
+    },
+    {
+        "id": 713,
+        "name": "Visual Effects & Animation",
+        "marhala_id": 7,
+        "study_id": 140,
+        "study": "Masters of Arts"
+    },
+    {
+        "id": 723,
+        "name": "Arabic Language and Literature",
+        "marhala_id": 7,
+        "study_id": 140,
+        "study": "Masters of Arts"
+    },
+    {
+        "id": 731,
+        "name": "Business Economics",
+        "marhala_id": 7,
+        "study_id": 140,
+        "study": "Masters of Arts"
+    },
+    {
+        "id": 745,
+        "name": "Comparative Literature",
+        "marhala_id": 7,
+        "study_id": 140,
+        "study": "Masters of Arts"
+    },
+    {
+        "id": 749,
+        "name": "Convergent Journalism",
+        "marhala_id": 7,
+        "study_id": 140,
+        "study": "Masters of Arts"
+    },
+    {
+        "id": 777,
+        "name": "English Language and Literature",
+        "marhala_id": 7,
+        "study_id": 140,
+        "study": "Masters of Arts"
+    },
+    {
+        "id": 782,
+        "name": "Environmental Management",
+        "marhala_id": 7,
+        "study_id": 140,
+        "study": "Masters of Arts"
+    },
+    {
+        "id": 788,
+        "name": "Fashion Design",
+        "marhala_id": 7,
+        "study_id": 140,
+        "study": "Masters of Arts"
+    },
+    {
+        "id": 827,
+        "name": "International Media Cultural Work (IMC)",
+        "marhala_id": 7,
+        "study_id": 140,
+        "study": "Masters of Arts"
+    },
+    {
+        "id": 828,
+        "name": "International Relations and Political Science",
+        "marhala_id": 7,
+        "study_id": 140,
+        "study": "Masters of Arts"
+    },
+    {
+        "id": 829,
+        "name": "International Relations and South Asian Studies",
+        "marhala_id": 7,
+        "study_id": 140,
+        "study": "Masters of Arts"
+    },
+    {
+        "id": 832,
+        "name": "Islamic Studies",
+        "marhala_id": 7,
+        "study_id": 140,
+        "study": "Masters of Arts"
+    },
+    {
+        "id": 846,
+        "name": "Linguistics",
+        "marhala_id": 7,
+        "study_id": 140,
+        "study": "Masters of Arts"
+    },
+    {
+        "id": 855,
+        "name": "Mass Communication & Journalism",
+        "marhala_id": 7,
+        "study_id": 140,
+        "study": "Masters of Arts"
+    },
+    {
+        "id": 891,
+        "name": "Political Science",
+        "marhala_id": 7,
+        "study_id": 140,
+        "study": "Masters of Arts"
+    },
+    {
+        "id": 928,
+        "name": "MA Social Work- 2yrs",
+        "marhala_id": 7,
+        "study_id": 140,
+        "study": "Masters of Arts"
+    },
+    {
+        "id": 929,
+        "name": "MA Sociology- 2yrs",
+        "marhala_id": 6,
+        "study_id": 164,
+        "study": "Social Sciences"
+    },
+    {
+        "id": 942,
+        "name": "Urdu",
+        "marhala_id": 7,
+        "study_id": 146,
+        "study": "Master of Education - M.Ed"
+    },
+    {
+        "id": 947,
+        "name": "Visual Islamic and Traditional Arts",
+        "marhala_id": 7,
+        "study_id": 140,
+        "study": "Masters of Arts"
+    },
+    {
+        "id": 956,
+        "name": "MA International Relation- 2yr",
+        "marhala_id": 6,
+        "study_id": 164,
+        "study": "Social Sciences"
+    },
+    {
+        "id": 960,
+        "name": "Pharmaceuticals & Healthcare Management",
+        "marhala_id": 7,
+        "study_id": 141,
+        "study": "Master of Business Admininstration"
+    },
+    {
+        "id": 964,
+        "name": "Finance and Marketing",
+        "marhala_id": 7,
+        "study_id": 141,
+        "study": "Master of Business Admininstration"
+    },
+    {
+        "id": 965,
+        "name": "Insurance and Risk Management",
+        "marhala_id": 7,
+        "study_id": 141,
+        "study": "Master of Business Admininstration"
+    },
+    {
+        "id": 991,
+        "name": "Business Analytics",
+        "marhala_id": 7,
+        "study_id": 141,
+        "study": "Master of Business Admininstration"
+    },
+    {
+        "id": 996,
+        "name": "MBA- 2 yrs",
+        "marhala_id": 7,
+        "study_id": 141,
+        "study": "Master of Business Admininstration"
+    },
+    {
+        "id": 1020,
+        "name": "Economic Legislation",
+        "marhala_id": 7,
+        "study_id": 141,
+        "study": "Master of Business Admininstration"
+    },
+    {
+        "id": 1023,
+        "name": "Energy & Environment",
+        "marhala_id": 7,
+        "study_id": 141,
+        "study": "Master of Business Admininstration"
+    },
+    {
+        "id": 1024,
+        "name": "Energy Management",
+        "marhala_id": 7,
+        "study_id": 141,
+        "study": "Master of Business Admininstration"
+    },
+    {
+        "id": 1026,
+        "name": "Entrepreneurship",
+        "marhala_id": 7,
+        "study_id": 141,
+        "study": "Master of Business Admininstration"
+    },
+    {
+        "id": 1065,
+        "name": "Information Technology",
+        "marhala_id": 7,
+        "study_id": 141,
+        "study": "Master of Business Admininstration"
+    },
+    {
+        "id": 1074,
+        "name": "International Business",
+        "marhala_id": 7,
+        "study_id": 141,
+        "study": "Master of Business Admininstration"
+    },
+    {
+        "id": 1079,
+        "name": "Logistics & Shipping Management",
+        "marhala_id": 7,
+        "study_id": 141,
+        "study": "Master of Business Admininstration"
+    },
+    {
+        "id": 1082,
+        "name": "Macroeconomic Theory and Policy",
+        "marhala_id": 7,
+        "study_id": 141,
+        "study": "Master of Business Admininstration"
+    },
+    {
+        "id": 1090,
+        "name": "Master of Business Administration in Marketing",
+        "marhala_id": 7,
+        "study_id": 141,
+        "study": "Master of Business Admininstration"
+    },
+    {
+        "id": 1093,
+        "name": "Media and Event Management",
+        "marhala_id": 7,
+        "study_id": 141,
+        "study": "Master of Business Admininstration"
+    },
+    {
+        "id": 1100,
+        "name": "Operations Management",
+        "marhala_id": 7,
+        "study_id": 142,
+        "study": "Master of Commerce"
+    },
+    {
+        "id": 1125,
+        "name": "Sales & Marketing",
+        "marhala_id": 7,
+        "study_id": 141,
+        "study": "Master of Business Admininstration"
+    },
+    {
+        "id": 1137,
+        "name": "Textile Design",
+        "marhala_id": 7,
+        "study_id": 140,
+        "study": "Masters of Arts"
+    },
+    {
+        "id": 1150,
+        "name": "Business Management",
+        "marhala_id": 7,
+        "study_id": 142,
+        "study": "Master of Commerce"
+    },
+    {
+        "id": 1151,
+        "name": "Accountancy",
+        "marhala_id": 7,
+        "study_id": 142,
+        "study": "Master of Commerce"
+    },
+    {
+        "id": 1153,
+        "name": "Accounting and Auditing",
+        "marhala_id": 7,
+        "study_id": 142,
+        "study": "Master of Commerce"
+    },
+    {
+        "id": 1188,
+        "name": "International Business",
+        "marhala_id": 7,
+        "study_id": 142,
+        "study": "Master of Commerce"
+    },
+    {
+        "id": 1191,
+        "name": "Marketing",
+        "marhala_id": 7,
+        "study_id": 142,
+        "study": "Master of Commerce"
+    },
+    {
+        "id": 1199,
+        "name": "Artificial Intelligence and Machine Learning",
+        "marhala_id": 7,
+        "study_id": 143,
+        "study": "Masters in Computer applications- M.C.A"
+    },
+    {
+        "id": 1206,
+        "name": "Interior Design",
+        "marhala_id": 7,
+        "study_id": 144,
+        "study": "Master of Architecture - M.Arch."
+    },
+    {
+        "id": 1209,
+        "name": "Urban Design",
+        "marhala_id": 7,
+        "study_id": 144,
+        "study": "Master of Architecture - M.Arch."
+    },
+    {
+        "id": 1211,
+        "name": "Conservative Dentistry & Endodontics",
+        "marhala_id": 7,
+        "study_id": 145,
+        "study": "Master of Dental Surgery - M.D.S."
+    },
+    {
+        "id": 1232,
+        "name": "Preliminary Administrative Services Credential",
+        "marhala_id": 7,
+        "study_id": 146,
+        "study": "Master of Education - M.Ed"
+    },
+    {
+        "id": 1241,
+        "name": "Natural Science",
+        "marhala_id": 7,
+        "study_id": 146,
+        "study": "Master of Education - M.Ed"
+    },
+    {
+        "id": 1244,
+        "name": "Special Education",
+        "marhala_id": 7,
+        "study_id": 146,
+        "study": "Master of Education - M.Ed"
+    },
+    {
+        "id": 1248,
+        "name": "Electrical and Computer Engineering",
+        "marhala_id": 7,
+        "study_id": 147,
+        "study": "Master of Engineering - M.E"
+    },
+    {
+        "id": 1257,
+        "name": "Automation & Robotics",
+        "marhala_id": 7,
+        "study_id": 147,
+        "study": "Master of Engineering - M.E"
+    },
+    {
+        "id": 1264,
+        "name": "Biomedical",
+        "marhala_id": 7,
+        "study_id": 147,
+        "study": "Master of Engineering - M.E"
+    },
+    {
+        "id": 1269,
+        "name": "Chemical Engineering",
+        "marhala_id": 7,
+        "study_id": 147,
+        "study": "Master of Engineering - M.E"
+    },
+    {
+        "id": 1270,
+        "name": "Civil Engineering",
+        "marhala_id": 7,
+        "study_id": 147,
+        "study": "Master of Engineering - M.E"
+    },
+    {
+        "id": 1323,
+        "name": "Infrastructure Engineering",
+        "marhala_id": 7,
+        "study_id": 147,
+        "study": "Master of Engineering - M.E"
+    },
+    {
+        "id": 1334,
+        "name": "Materials Science & Technology",
+        "marhala_id": 7,
+        "study_id": 147,
+        "study": "Master of Engineering - M.E"
+    },
+    {
+        "id": 1337,
+        "name": "Mechatronics",
+        "marhala_id": 7,
+        "study_id": 147,
+        "study": "Master of Engineering - M.E"
+    },
+    {
+        "id": 1344,
+        "name": "Naval Architecture & Marine Engineering",
+        "marhala_id": 7,
+        "study_id": 147,
+        "study": "Master of Engineering - M.E"
+    },
+    {
+        "id": 1357,
+        "name": "Power System Engineering",
+        "marhala_id": 7,
+        "study_id": 147,
+        "study": "Master of Engineering - M.E"
+    },
+    {
+        "id": 1371,
+        "name": "Robotic Engineering",
+        "marhala_id": 7,
+        "study_id": 147,
+        "study": "Master of Engineering - M.E"
+    },
+    {
+        "id": 1382,
+        "name": "Telecommunications",
+        "marhala_id": 7,
+        "study_id": 147,
+        "study": "Master of Engineering - M.E"
+    },
+    {
+        "id": 1383,
+        "name": "Textile Engineering",
+        "marhala_id": 7,
+        "study_id": 147,
+        "study": "Master of Engineering - M.E"
+    },
+    {
+        "id": 1401,
+        "name": "Applied Arts",
+        "marhala_id": 7,
+        "study_id": 148,
+        "study": "Master of Fine Arts (M.F.A.)"
+    },
+    {
+        "id": 1415,
+        "name": "Fisheries Science",
+        "marhala_id": 7,
+        "study_id": 149,
+        "study": "Master of Fisheries Science - M.F.Sc."
+    },
+    {
+        "id": 1427,
+        "name": "Constitutional and Administrative Law",
+        "marhala_id": 7,
+        "study_id": 150,
+        "study": "Master of Law- L.L.M"
+    },
+    {
+        "id": 1428,
+        "name": "Corporate and Financial Law",
+        "marhala_id": 7,
+        "study_id": 150,
+        "study": "Master of Law- L.L.M"
+    },
+    {
+        "id": 1441,
+        "name": "LLM",
+        "marhala_id": 7,
+        "study_id": 150,
+        "study": "Master of Law- L.L.M"
+    },
+    {
+        "id": 1444,
+        "name": "Business Law",
+        "marhala_id": 7,
+        "study_id": 150,
+        "study": "Master of Law- L.L.M"
+    },
+    {
+        "id": 1495,
+        "name": "Arabic",
+        "marhala_id": 7,
+        "study_id": 152,
+        "study": "Master of Philosophy - M.Phil."
+    },
+    {
+        "id": 1678,
+        "name": "Rehabilitation Psychology",
+        "marhala_id": 7,
+        "study_id": 152,
+        "study": "Master of Philosophy - M.Phil."
+    },
+    {
+        "id": 1721,
+        "name": "Biomechanics",
+        "marhala_id": 7,
+        "study_id": 153,
+        "study": "Master of Physiotherapy - M.P.T."
+    },
+    {
+        "id": 1733,
+        "name": "Pediatrics",
+        "marhala_id": 7,
+        "study_id": 153,
+        "study": "Master of Physiotherapy - M.P.T."
+    },
+    {
+        "id": 1735,
+        "name": "None",
+        "marhala_id": null,
+        "study_id": null,
+        "study": null
+    },
+    {
+        "id": 1746,
+        "name": "Physics",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 1753,
+        "name": "Biotechnology",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 1754,
+        "name": "Botany",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 1759,
+        "name": "Genetics",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 1766,
+        "name": "MSc Biotechnology- 2yrs",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 1769,
+        "name": "Computer and Information Science",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 1771,
+        "name": "Electronics and Communication Engineering",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 1829,
+        "name": "Anthropology",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 1831,
+        "name": "M.Sc Apparel Technology and Management",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 1925,
+        "name": "Clinical Psychology",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 1940,
+        "name": "Data Analytics",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 1993,
+        "name": "Electrical Engineering",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 1997,
+        "name": "Electronic Media",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 2028,
+        "name": "Extension Education & Rural Sociology",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 2056,
+        "name": "Food Science and Technology",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 2099,
+        "name": "Home Science",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 2110,
+        "name": "Tourism and Hospitality Management (THM)",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 2123,
+        "name": "Human Resource Management",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 2136,
+        "name": "Information Security and Cyber Forensics",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 2180,
+        "name": "Mass Communication",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 2193,
+        "name": "Mechatronics Engineering",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 2200,
+        "name": "Medical Physics",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 2240,
+        "name": "Human Nutrition and Dietetics",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 2245,
+        "name": "Occupational Therapy",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 2258,
+        "name": "Pharmaceutical Chemistry",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 2267,
+        "name": "Physiology",
+        "marhala_id": 7,
+        "study_id": 152,
+        "study": "Master of Philosophy - M.Phil."
+    },
+    {
+        "id": 2282,
+        "name": "Polymer Chemistry",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 2286,
+        "name": "Power Engineering",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 2298,
+        "name": "Psychology",
+        "marhala_id": 7,
+        "study_id": 152,
+        "study": "Master of Philosophy - M.Phil."
+    },
+    {
+        "id": 2324,
+        "name": "Software Engineering",
+        "marhala_id": 7,
+        "study_id": 147,
+        "study": "Master of Engineering - M.E"
+    },
+    {
+        "id": 2401,
+        "name": "BE BioMedical Engineering - 4 years",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 2406,
+        "name": "General Surgery",
+        "marhala_id": 7,
+        "study_id": 156,
+        "study": "Master of Surgery - M.S."
+    },
+    {
+        "id": 2411,
+        "name": "Orthopedics",
+        "marhala_id": 7,
+        "study_id": 156,
+        "study": "Master of Surgery - M.S."
+    },
+    {
+        "id": 2415,
+        "name": "Physical Medicine & Rehabilitation",
+        "marhala_id": 7,
+        "study_id": 156,
+        "study": "Master of Surgery - M.S."
+    },
+    {
+        "id": 2421,
+        "name": "Urology",
+        "marhala_id": 7,
+        "study_id": 156,
+        "study": "Master of Surgery - M.S."
+    },
+    {
+        "id": 2422,
+        "name": "Vascular Surgery",
+        "marhala_id": 7,
+        "study_id": 156,
+        "study": "Master of Surgery - M.S."
+    },
+    {
+        "id": 2458,
+        "name": "Automation and Computer Vision.",
+        "marhala_id": 7,
+        "study_id": 157,
+        "study": "Master of Technology"
+    },
+    {
+        "id": 2532,
+        "name": "Digital Communication",
+        "marhala_id": 7,
+        "study_id": 157,
+        "study": "Master of Technology"
+    },
+    {
+        "id": 2627,
+        "name": "MCS Software Engineering- 2yrs",
+        "marhala_id": 7,
+        "study_id": 157,
+        "study": "Master of Technology"
+    },
+    {
+        "id": 2630,
+        "name": "Information Technology",
+        "marhala_id": 7,
+        "study_id": 157,
+        "study": "Master of Technology"
+    },
+    {
+        "id": 2774,
+        "name": "Textile Technology",
+        "marhala_id": 7,
+        "study_id": 157,
+        "study": "Master of Technology"
+    },
+    {
+        "id": 2835,
+        "name": "Human Development Doctorate",
+        "marhala_id": 7,
+        "study_id": 159,
+        "study": "Ph.d"
+    },
+    {
+        "id": 2837,
+        "name": "Science Education",
+        "marhala_id": 7,
+        "study_id": 159,
+        "study": "Ph.d"
+    },
+    {
+        "id": 2838,
+        "name": "Management",
+        "marhala_id": 7,
+        "study_id": 159,
+        "study": "Ph.d"
+    },
+    {
+        "id": 2839,
+        "name": "Applied Manufacturing Management Automation",
+        "marhala_id": 7,
+        "study_id": 159,
+        "study": "Ph.d"
+    },
+    {
+        "id": 2846,
+        "name": "Quality Engineering & Management",
+        "marhala_id": 7,
+        "study_id": 159,
+        "study": "Ph.d"
+    },
+    {
+        "id": 2850,
+        "name": "Business Analysis and Process Management",
+        "marhala_id": 7,
+        "study_id": 159,
+        "study": "Ph.d"
+    },
+    {
+        "id": 2856,
+        "name": "Post Graduate Certificate in Oral Implantology (PGCOI)",
+        "marhala_id": 7,
+        "study_id": 159,
+        "study": "Ph.d"
+    },
+    {
+        "id": 4792,
+        "name": "Computer Science",
+        "marhala_id": 5,
+        "study_id": 133,
+        "study": "HSSC-(AKU-EB)"
+    },
+    {
+        "id": 4798,
+        "name": "BS of Business & Information Technology (BBIT)",
+        "marhala_id": 6,
+        "study_id": 124,
+        "study": "Education"
+    },
+    {
+        "id": 4800,
+        "name": "CA- 5.5 yrs",
+        "marhala_id": 7,
+        "study_id": 162,
+        "study": "CA (Chartered Accountant)"
+    },
+    {
+        "id": 4801,
+        "name": "Commerce ",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 4803,
+        "name": "Computer Science",
+        "marhala_id": 5,
+        "study_id": 161,
+        "study": "Other"
+    },
+    {
+        "id": 4810,
+        "name": "Commerce",
+        "marhala_id": 5,
+        "study_id": 161,
+        "study": "Other"
+    },
+    {
+        "id": 4815,
+        "name": "Network and Telecommunication",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 4817,
+        "name": "Diploma in Family Medicine",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 4820,
+        "name": "MSc Zoology- 2yrs",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 4824,
+        "name": "BS\/BA Hons- Political Science- 4yrs",
+        "marhala_id": 6,
+        "study_id": 124,
+        "study": "Education"
+    },
+    {
+        "id": 4834,
+        "name": "Commerce",
+        "marhala_id": 4,
+        "study_id": 131,
+        "study": "GCSE (O Levels)"
+    },
+    {
+        "id": 4837,
+        "name": "BS-Marketing(specialized) - 4  yrs",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 4838,
+        "name": "BS Public Administration (BPA)- 4yrs",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 4839,
+        "name": "BS Social Entrepreneurship-",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 4840,
+        "name": "BS Business Informatics- 4  yrs",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 4842,
+        "name": "BBS - 4yrs",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 4843,
+        "name": "BS Actuarial Sciences and Risk Management - 4 yrs",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 4845,
+        "name": "BS Economics- 4 yrs",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 4846,
+        "name": "BSc Management Sciences- 4yrs",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 4847,
+        "name": "BS Aviation Management- 4yrs",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 4848,
+        "name": "BS Finance & Accounting- 4yrs",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 4849,
+        "name": "BS Computational Finance- 4yrs",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 4856,
+        "name": "MBA (Executive)- 2 yrs",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 4857,
+        "name": "Human Resource Management",
+        "marhala_id": 7,
+        "study_id": 141,
+        "study": "Master of Business Admininstration"
+    },
+    {
+        "id": 4861,
+        "name": "MA Transport Management- 2 yrs",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 4864,
+        "name": "MSc Professional Accounting- 2 yrs",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 4868,
+        "name": "Cost & Management Accountancy",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 4870,
+        "name": "Educational Psychology",
+        "marhala_id": 7,
+        "study_id": 146,
+        "study": "Master of Education - M.Ed"
+    },
+    {
+        "id": 4873,
+        "name": "BS Biotechnology- 4yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 4874,
+        "name": "BFA Fine Arts- 4yrs",
+        "marhala_id": 6,
+        "study_id": 126,
+        "study": "Art & Design"
+    },
+    {
+        "id": 4875,
+        "name": "Biology ",
+        "marhala_id": 4,
+        "study_id": 129,
+        "study": "SSC-(AKU-EB)"
+    },
+    {
+        "id": 4876,
+        "name": "Medical ",
+        "marhala_id": 4,
+        "study_id": 129,
+        "study": "SSC-(AKU-EB)"
+    },
+    {
+        "id": 4880,
+        "name": "Accelerated Doctor of Occupational Therapy",
+        "marhala_id": 7,
+        "study_id": 160,
+        "study": "Post Doctorate"
+    },
+    {
+        "id": 4881,
+        "name": "Medical ",
+        "marhala_id": 4,
+        "study_id": 130,
+        "study": "SSC-(Provincial Board)"
+    },
+    {
+        "id": 4883,
+        "name": "MSc Microbiology- 2yrs",
+        "marhala_id": 6,
+        "study_id": 116,
+        "study": "Biological & Life Sciences"
+    },
+    {
+        "id": 4885,
+        "name": "General Science ",
+        "marhala_id": 4,
+        "study_id": 130,
+        "study": "SSC-(Provincial Board)"
+    },
+    {
+        "id": 4888,
+        "name": "Home Science ",
+        "marhala_id": 5,
+        "study_id": 161,
+        "study": "Other"
+    },
+    {
+        "id": 4894,
+        "name": "BS Hons Agriculture & Agribusiness Management-",
+        "marhala_id": 6,
+        "study_id": 120,
+        "study": "Agricultural Sciences"
+    },
+    {
+        "id": 4897,
+        "name": "Pre Engineering",
+        "marhala_id": 4,
+        "study_id": 130,
+        "study": "SSC-(Provincial Board)"
+    },
+    {
+        "id": 4899,
+        "name": "Supply Chain Management",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 4900,
+        "name": "Physical Education",
+        "marhala_id": 7,
+        "study_id": 140,
+        "study": "Masters of Arts"
+    },
+    {
+        "id": 4902,
+        "name": "Computer Science",
+        "marhala_id": 5,
+        "study_id": 135,
+        "study": "HSSC-(Provincial Board)"
+    },
+    {
+        "id": 4903,
+        "name": "General Science",
+        "marhala_id": 4,
+        "study_id": 165,
+        "study": "Other"
+    },
+    {
+        "id": 4905,
+        "name": "BS Computer Science- 3yrs",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 4911,
+        "name": "Textile design",
+        "marhala_id": 6,
+        "study_id": 138,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 4915,
+        "name": "BBA (Specialized)- 4 yrs Textile Management and Marketing",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 4929,
+        "name": "BS\/ BSc Geology- 4yrs",
+        "marhala_id": 6,
+        "study_id": 118,
+        "study": "Earth & Environmental Sciences"
+    },
+    {
+        "id": 4931,
+        "name": "Geology ",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 4932,
+        "name": "Pre Engineering",
+        "marhala_id": 5,
+        "study_id": 161,
+        "study": "Other"
+    },
+    {
+        "id": 4934,
+        "name": "Industrial Engineering",
+        "marhala_id": 7,
+        "study_id": 147,
+        "study": "Master of Engineering - M.E"
+    },
+    {
+        "id": 4936,
+        "name": "BS In Homeopathic Medical Science",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 4943,
+        "name": "BBA - 3yrs",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 4946,
+        "name": "BS in Pharmacy",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 4948,
+        "name": "BS\/BSc Mathematics- 4yrs",
+        "marhala_id": 6,
+        "study_id": 119,
+        "study": "Physics & Numerical Sciences"
+    },
+    {
+        "id": 4950,
+        "name": "Arts\/Humanities",
+        "marhala_id": 5,
+        "study_id": 135,
+        "study": "HSSC-(Provincial Board)"
+    },
+    {
+        "id": 4958,
+        "name": "Fight Officer",
+        "marhala_id": 6,
+        "study_id": 138,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 4959,
+        "name": "B.Com- 2yrs",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 4960,
+        "name": "BS\/BED\/ADE\/BED(Hons) Education- 2 yrs",
+        "marhala_id": 6,
+        "study_id": 124,
+        "study": "Education"
+    },
+    {
+        "id": 4963,
+        "name": "General Group",
+        "marhala_id": 4,
+        "study_id": 130,
+        "study": "SSC-(Provincial Board)"
+    },
+    {
+        "id": 4967,
+        "name": "Electrical Engineering & Information Technology",
+        "marhala_id": 7,
+        "study_id": 147,
+        "study": "Master of Engineering - M.E"
+    },
+    {
+        "id": 4968,
+        "name": "MSc in Advanced Electronic & Electrical Engineering",
+        "marhala_id": 7,
+        "study_id": 147,
+        "study": "Master of Engineering - M.E"
+    },
+    {
+        "id": 4969,
+        "name": "MSc Computer Networks & Security- 2yrs",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 4970,
+        "name": "ME Automotive Engineering",
+        "marhala_id": 7,
+        "study_id": 147,
+        "study": "Master of Engineering - M.E"
+    },
+    {
+        "id": 4971,
+        "name": "Accounting and Finance",
+        "marhala_id": 7,
+        "study_id": 142,
+        "study": "Master of Commerce"
+    },
+    {
+        "id": 4975,
+        "name": "International Software Systems Science",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 4977,
+        "name": "Molecular Biology",
+        "marhala_id": 7,
+        "study_id": 147,
+        "study": "Master of Engineering - M.E"
+    },
+    {
+        "id": 4978,
+        "name": "Petroleum Engineering",
+        "marhala_id": 7,
+        "study_id": 147,
+        "study": "Master of Engineering - M.E"
+    },
+    {
+        "id": 4979,
+        "name": "MSc Scientific Instrumentation",
+        "marhala_id": 6,
+        "study_id": 119,
+        "study": "Physics & Numerical Sciences"
+    },
+    {
+        "id": 4983,
+        "name": "BS Culinary arts management",
+        "marhala_id": 6,
+        "study_id": 126,
+        "study": "Art & Design"
+    },
+    {
+        "id": 4984,
+        "name": "Pre-Engineering",
+        "marhala_id": 5,
+        "study_id": 135,
+        "study": "HSSC-(Provincial Board)"
+    },
+    {
+        "id": 4988,
+        "name": "Oracle Application Express (APEX) ",
+        "marhala_id": 6,
+        "study_id": 111,
+        "study": "Diploma"
+    },
+    {
+        "id": 4989,
+        "name": "Oracle APEX Cloud Developer Certified Professional",
+        "marhala_id": 6,
+        "study_id": 111,
+        "study": "Diploma"
+    },
+    {
+        "id": 4994,
+        "name": "English Literature",
+        "marhala_id": 7,
+        "study_id": 152,
+        "study": "Master of Philosophy - M.Phil."
+    },
+    {
+        "id": 4998,
+        "name": "BA English Language- 3 yrs",
+        "marhala_id": 6,
+        "study_id": 124,
+        "study": "Education"
+    },
+    {
+        "id": 5000,
+        "name": "BHMS- 5yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 5002,
+        "name": "Digital Marketing",
+        "marhala_id": 6,
+        "study_id": 110,
+        "study": "Bachelors"
+    },
+    {
+        "id": 5007,
+        "name": "BSc (Hons) Business and Management",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 5010,
+        "name": "Physiotherapy",
+        "marhala_id": 7,
+        "study_id": 153,
+        "study": "Master of Physiotherapy - M.P.T."
+    },
+    {
+        "id": 5015,
+        "name": "CIMA- 5.5 yrs",
+        "marhala_id": 6,
+        "study_id": 110,
+        "study": "Bachelors"
+    },
+    {
+        "id": 5022,
+        "name": "Digital Design",
+        "marhala_id": 7,
+        "study_id": 140,
+        "study": "Masters of Arts"
+    },
+    {
+        "id": 5023,
+        "name": "Entrepreneurship",
+        "marhala_id": 7,
+        "study_id": 140,
+        "study": "Masters of Arts"
+    },
+    {
+        "id": 5024,
+        "name": "BS in Logistics & Supply Chain Management",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 5025,
+        "name": "MBA Health Management",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 5026,
+        "name": "BS digital media marketing",
+        "marhala_id": 6,
+        "study_id": 125,
+        "study": "Media Sciences"
+    },
+    {
+        "id": 5030,
+        "name": "BS Accountancy & Management Law",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 5038,
+        "name": "Culinary Arts and Baking",
+        "marhala_id": 6,
+        "study_id": 138,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 5039,
+        "name": "MSc in Engineering Management",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 5046,
+        "name": "Public Health",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 5047,
+        "name": "Mechanical Engineering",
+        "marhala_id": 7,
+        "study_id": 147,
+        "study": "Master of Engineering - M.E"
+    },
+    {
+        "id": 5051,
+        "name": "Doctor of Medicine",
+        "marhala_id": 7,
+        "study_id": 139,
+        "study": "Doctor of Medicine - M.D."
+    },
+    {
+        "id": 5053,
+        "name": "NEWTESTING",
+        "marhala_id": 6,
+        "study_id": 117,
+        "study": "Chemical & Material Sciences"
+    },
+    {
+        "id": 5054,
+        "name": "ADP Software Development",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 5055,
+        "name": "BA (Hons) English Literature",
+        "marhala_id": 6,
+        "study_id": 124,
+        "study": "Education"
+    },
+    {
+        "id": 5056,
+        "name": "MCPS General Medicine",
+        "marhala_id": 7,
+        "study_id": 139,
+        "study": "Doctor of Medicine - M.D."
+    },
+    {
+        "id": 5057,
+        "name": "FCPS General Medicine",
+        "marhala_id": 7,
+        "study_id": 139,
+        "study": "Doctor of Medicine - M.D."
+    },
+    {
+        "id": 5058,
+        "name": "FCPS Gastroenterology",
+        "marhala_id": 7,
+        "study_id": 139,
+        "study": "Doctor of Medicine - M.D."
+    },
+    {
+        "id": 5059,
+        "name": "communication design",
+        "marhala_id": 6,
+        "study_id": 126,
+        "study": "Art & Design"
+    },
+    {
+        "id": 5065,
+        "name": "CERT\/ DIP Montessori Teacher Training",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 5068,
+        "name": "Business",
+        "marhala_id": 5,
+        "study_id": 17,
+        "study": "A-Level\/ Pearson Edexcel\/ GED\/ International Baccalaureate Diploma"
+    },
+    {
+        "id": 5070,
+        "name": "BS Pre Medical 2- yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 5071,
+        "name": "S\/ BSc Hons Physics- 4yrs",
+        "marhala_id": 6,
+        "study_id": 119,
+        "study": "Physics & Numerical Sciences"
+    },
+    {
+        "id": 5074,
+        "name": "Project Management",
+        "marhala_id": 7,
+        "study_id": 154,
+        "study": "Master of Planning"
+    },
+    {
+        "id": 5078,
+        "name": "Home Science ",
+        "marhala_id": 5,
+        "study_id": 135,
+        "study": "HSSC-(Provincial Board)"
+    },
+    {
+        "id": 5080,
+        "name": "ACCA- 5.5 yrs",
+        "marhala_id": 7,
+        "study_id": 162,
+        "study": "CA (Chartered Accountant)"
+    },
+    {
+        "id": 5081,
+        "name": "Public Health",
+        "marhala_id": 7,
+        "study_id": 152,
+        "study": "Master of Philosophy - M.Phil."
+    },
+    {
+        "id": 5082,
+        "name": "Science ",
+        "marhala_id": 5,
+        "study_id": 135,
+        "study": "HSSC-(Provincial Board)"
+    },
+    {
+        "id": 5085,
+        "name": "BS Computer Science- 4yrs",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 5088,
+        "name": "Arts",
+        "marhala_id": 5,
+        "study_id": 135,
+        "study": "HSSC-(Provincial Board)"
+    },
+    {
+        "id": 5089,
+        "name": "Bachelor of Arts (BA)",
+        "marhala_id": 6,
+        "study_id": 126,
+        "study": "Art & Design"
+    },
+    {
+        "id": 5090,
+        "name": "Certified Public Accountant (CPA)",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 5094,
+        "name": "BBA- 4 yrs",
+        "marhala_id": 6,
+        "study_id": 126,
+        "study": "Art & Design"
+    },
+    {
+        "id": 5096,
+        "name": "Home Economics",
+        "marhala_id": 4,
+        "study_id": 130,
+        "study": "SSC-(Provincial Board)"
+    },
+    {
+        "id": 5113,
+        "name": "Industrial Management",
+        "marhala_id": 7,
+        "study_id": 141,
+        "study": "Master of Business Admininstration"
+    },
+    {
+        "id": 5115,
+        "name": "Satellite Engineering",
+        "marhala_id": 7,
+        "study_id": 147,
+        "study": "Master of Engineering - M.E"
+    },
+    {
+        "id": 5121,
+        "name": "Computer Science ",
+        "marhala_id": 4,
+        "study_id": 130,
+        "study": "SSC-(Provincial Board)"
+    },
+    {
+        "id": 5132,
+        "name": "Computer Science ",
+        "marhala_id": 4,
+        "study_id": 165,
+        "study": "Other"
+    },
+    {
+        "id": 5136,
+        "name": "BS Economics & Finance",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 5139,
+        "name": "BS\/ BSc Hons Textile Science- 4yrs",
+        "marhala_id": 6,
+        "study_id": 117,
+        "study": "Chemical & Material Sciences"
+    },
+    {
+        "id": 5144,
+        "name": "MBBS- 5yrs",
+        "marhala_id": 6,
+        "study_id": 116,
+        "study": "Biological & Life Sciences"
+    },
+    {
+        "id": 5146,
+        "name": "BS Food & Nutrition Sciences",
+        "marhala_id": 6,
+        "study_id": 120,
+        "study": "Agricultural Sciences"
+    },
+    {
+        "id": 5147,
+        "name": "Computer Science",
+        "marhala_id": 5,
+        "study_id": 134,
+        "study": "HSSC-(Ziauddin Board)"
+    },
+    {
+        "id": 5148,
+        "name": "BS Biomedical Sciences- 4yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 5150,
+        "name": "BS Food Science & Technology- 4yrs",
+        "marhala_id": 6,
+        "study_id": 120,
+        "study": "Agricultural Sciences"
+    },
+    {
+        "id": 5153,
+        "name": "BS Psychology- 4yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 5154,
+        "name": "Statistics and Economics",
+        "marhala_id": 7,
+        "study_id": 142,
+        "study": "Master of Commerce"
+    },
+    {
+        "id": 5157,
+        "name": "Advanced Diploma in Accounting",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 5162,
+        "name": "B.COM- 4yrs",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 5163,
+        "name": "MA International Relation- 2yrs",
+        "marhala_id": 6,
+        "study_id": 164,
+        "study": "Social Sciences"
+    },
+    {
+        "id": 5164,
+        "name": "International Relations ",
+        "marhala_id": 7,
+        "study_id": 140,
+        "study": "Masters of Arts"
+    },
+    {
+        "id": 5172,
+        "name": "BA Hospitality Management 4- yrs",
+        "marhala_id": 6,
+        "study_id": 110,
+        "study": "Bachelors"
+    },
+    {
+        "id": 5173,
+        "name": "Engineering",
+        "marhala_id": 5,
+        "study_id": 17,
+        "study": "A-Level\/ Pearson Edexcel\/ GED\/ International Baccalaureate Diploma"
+    },
+    {
+        "id": 5177,
+        "name": "Cost and management accountancy",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 5180,
+        "name": "BSc\/BTD\/B.Des\/ Textile Design- 4yrs",
+        "marhala_id": 6,
+        "study_id": 126,
+        "study": "Art & Design"
+    },
+    {
+        "id": 5193,
+        "name": "Electronics",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 5197,
+        "name": "BS Technical Laboratory ",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 5203,
+        "name": "BS genetics- 4 yrs",
+        "marhala_id": 6,
+        "study_id": 116,
+        "study": "Biological & Life Sciences"
+    },
+    {
+        "id": 5204,
+        "name": "BS\/ BSc Hons Chemistry- 4yrs",
+        "marhala_id": 6,
+        "study_id": 117,
+        "study": "Chemical & Material Sciences"
+    },
+    {
+        "id": 5206,
+        "name": "BE\/BS Software Engineering-",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 5220,
+        "name": "Pre Engineering",
+        "marhala_id": 5,
+        "study_id": 133,
+        "study": "HSSC-(AKU-EB)"
+    },
+    {
+        "id": 5221,
+        "name": "BBA- 2 yrs",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 5224,
+        "name": "Mechanical Engineering ",
+        "marhala_id": 7,
+        "study_id": 147,
+        "study": "Master of Engineering - M.E"
+    },
+    {
+        "id": 5225,
+        "name": "BS Cyber Security- 4yrs",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 5228,
+        "name": "FCPS - ENT",
+        "marhala_id": 7,
+        "study_id": 139,
+        "study": "Doctor of Medicine - M.D."
+    },
+    {
+        "id": 5229,
+        "name": "BS Media Sciences- 4yrs",
+        "marhala_id": 6,
+        "study_id": 125,
+        "study": "Media Sciences"
+    },
+    {
+        "id": 5230,
+        "name": "B.A Islamic Studies",
+        "marhala_id": 6,
+        "study_id": 124,
+        "study": "Education"
+    },
+    {
+        "id": 5234,
+        "name": "Software Project Management",
+        "marhala_id": 7,
+        "study_id": 143,
+        "study": "Masters in Computer applications- M.C.A"
+    },
+    {
+        "id": 5235,
+        "name": "Home Economics",
+        "marhala_id": 4,
+        "study_id": 129,
+        "study": "SSC-(AKU-EB)"
+    },
+    {
+        "id": 5247,
+        "name": "BS Information Technology-",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 5249,
+        "name": "General",
+        "marhala_id": 5,
+        "study_id": 17,
+        "study": "A-Level\/ Pearson Edexcel\/ GED\/ International Baccalaureate Diploma"
+    },
+    {
+        "id": 5250,
+        "name": "General",
+        "marhala_id": 4,
+        "study_id": 131,
+        "study": "GCSE (O Levels)"
+    },
+    {
+        "id": 5256,
+        "name": "Commerce",
+        "marhala_id": 5,
+        "study_id": 135,
+        "study": "HSSC-(Provincial Board)"
+    },
+    {
+        "id": 5258,
+        "name": "General Science",
+        "marhala_id": 5,
+        "study_id": 135,
+        "study": "HSSC-(Provincial Board)"
+    },
+    {
+        "id": 5262,
+        "name": "B.S. in Industrial and Manufacturing Engineering",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 5265,
+        "name": "Computer Operator",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 5269,
+        "name": "Biology",
+        "marhala_id": 4,
+        "study_id": 130,
+        "study": "SSC-(Provincial Board)"
+    },
+    {
+        "id": 5274,
+        "name": "BS in Health Informatics",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 5278,
+        "name": "Arts",
+        "marhala_id": 4,
+        "study_id": 130,
+        "study": "SSC-(Provincial Board)"
+    },
+    {
+        "id": 5285,
+        "name": "BS Human Anatomy",
+        "marhala_id": 6,
+        "study_id": 116,
+        "study": "Biological & Life Sciences"
+    },
+    {
+        "id": 5287,
+        "name": "Hospital Management ",
+        "marhala_id": 7,
+        "study_id": 139,
+        "study": "Doctor of Medicine - M.D."
+    },
+    {
+        "id": 5291,
+        "name": "Philosophy",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 5298,
+        "name": "Construction and Infrastructure Management",
+        "marhala_id": 7,
+        "study_id": 147,
+        "study": "Master of Engineering - M.E"
+    },
+    {
+        "id": 5309,
+        "name": "Computer Networking",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 5313,
+        "name": "Diploma in Textile Processing Technology",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 5318,
+        "name": "Biology",
+        "marhala_id": 4,
+        "study_id": 165,
+        "study": "Other"
+    },
+    {
+        "id": 5319,
+        "name": "General Science",
+        "marhala_id": 4,
+        "study_id": 129,
+        "study": "SSC-(AKU-EB)"
+    },
+    {
+        "id": 5321,
+        "name": "BA (Hons) International Tourism Management",
+        "marhala_id": 6,
+        "study_id": 164,
+        "study": "Social Sciences"
+    },
+    {
+        "id": 5325,
+        "name": "English",
+        "marhala_id": 4,
+        "study_id": 165,
+        "study": "Other"
+    },
+    {
+        "id": 5326,
+        "name": "Communication & Public Relations",
+        "marhala_id": 7,
+        "study_id": 141,
+        "study": "Master of Business Admininstration"
+    },
+    {
+        "id": 5332,
+        "name": "Bachelor of Technology",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 5337,
+        "name": "BSc (Hons) International Business and Management",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 5339,
+        "name": "Social Sciences",
+        "marhala_id": 5,
+        "study_id": 133,
+        "study": "HSSC-(AKU-EB)"
+    },
+    {
+        "id": 5343,
+        "name": "MBA (Executive)- 3 yrs",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 5345,
+        "name": "CERT Electronics- 6months",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 5363,
+        "name": "Commerce",
+        "marhala_id": 5,
+        "study_id": 17,
+        "study": "A-Level\/ Pearson Edexcel\/ GED\/ International Baccalaureate Diploma"
+    },
+    {
+        "id": 5366,
+        "name": "Doctor Of Medicine",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 5372,
+        "name": "Diploma in Sonography ",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 5373,
+        "name": "Social Sciences",
+        "marhala_id": 5,
+        "study_id": 135,
+        "study": "HSSC-(Provincial Board)"
+    },
+    {
+        "id": 5380,
+        "name": "Biology",
+        "marhala_id": 5,
+        "study_id": 135,
+        "study": "HSSC-(Provincial Board)"
+    },
+    {
+        "id": 5381,
+        "name": "BE Electrical Engineering - 4yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 5389,
+        "name": "Higher National Diploma (HND)",
+        "marhala_id": 6,
+        "study_id": 138,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 5393,
+        "name": "BS Business Law",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 5394,
+        "name": "Pre-Engineering",
+        "marhala_id": 4,
+        "study_id": 129,
+        "study": "SSC-(AKU-EB)"
+    },
+    {
+        "id": 5403,
+        "name": "Pre Medical ",
+        "marhala_id": 5,
+        "study_id": 161,
+        "study": "Other"
+    },
+    {
+        "id": 5406,
+        "name": "BS Marine Sciences- 4yrs",
+        "marhala_id": 6,
+        "study_id": 116,
+        "study": "Biological & Life Sciences"
+    },
+    {
+        "id": 5409,
+        "name": "Diploma in Homeopathic Medicine & Surgery (DHMS)",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 5410,
+        "name": "BS Computer Network & Security- 4yrs",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 5413,
+        "name": "Cost and Management Accountants",
+        "marhala_id": 7,
+        "study_id": 142,
+        "study": "Master of Commerce"
+    },
+    {
+        "id": 5420,
+        "name": "BS of Science",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 5421,
+        "name": "HOME SCIENCE",
+        "marhala_id": 5,
+        "study_id": 17,
+        "study": "A-Level\/ Pearson Edexcel\/ GED\/ International Baccalaureate Diploma"
+    },
+    {
+        "id": 5422,
+        "name": "Arts ",
+        "marhala_id": 5,
+        "study_id": 161,
+        "study": "Other"
+    },
+    {
+        "id": 5429,
+        "name": "Biology",
+        "marhala_id": 4,
+        "study_id": 131,
+        "study": "GCSE (O Levels)"
+    },
+    {
+        "id": 5433,
+        "name": "Baking & Patisserie",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 5441,
+        "name": "Marketing Studies Advertising",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 5462,
+        "name": "Ticketing Course",
+        "marhala_id": 6,
+        "study_id": 138,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 5471,
+        "name": "Diploma in Business Administration (D.B.A)",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 5477,
+        "name": "BS Urdu",
+        "marhala_id": 6,
+        "study_id": 124,
+        "study": "Education"
+    },
+    {
+        "id": 5478,
+        "name": "BS\/BEMS Media Studies - 4yrs",
+        "marhala_id": 6,
+        "study_id": 125,
+        "study": "Media Sciences"
+    },
+    {
+        "id": 5479,
+        "name": "Big Data Analytics ",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 5481,
+        "name": "BS Liberal Arts",
+        "marhala_id": 6,
+        "study_id": 126,
+        "study": "Art & Design"
+    },
+    {
+        "id": 5484,
+        "name": "BE Mechatronics- 3yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 5490,
+        "name": "L.L.B HONS- 3yrs",
+        "marhala_id": 6,
+        "study_id": 164,
+        "study": "Social Sciences"
+    },
+    {
+        "id": 5491,
+        "name": "BS Geo-Informatics Engineering",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 5505,
+        "name": "Library and Information Science",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 5506,
+        "name": "Social Sciences",
+        "marhala_id": 5,
+        "study_id": 17,
+        "study": "A-Level\/ Pearson Edexcel\/ GED\/ International Baccalaureate Diploma"
+    },
+    {
+        "id": 5508,
+        "name": "Orton-Gillingham Practitioner",
+        "marhala_id": 6,
+        "study_id": 138,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 5510,
+        "name": "BA Industrial Science",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 5519,
+        "name": "Finance",
+        "marhala_id": 7,
+        "study_id": 141,
+        "study": "Master of Business Admininstration"
+    },
+    {
+        "id": 5524,
+        "name": "Advanced Diploma In Software Engineering (ADSE)",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 5532,
+        "name": "ADMS - Advanced Diploma in Media Studies",
+        "marhala_id": 6,
+        "study_id": 138,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 5534,
+        "name": "Home Economics ",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 5536,
+        "name": "BS Cardiology",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 5553,
+        "name": "BA Child Development & Family Relationships",
+        "marhala_id": 6,
+        "study_id": 124,
+        "study": "Education"
+    },
+    {
+        "id": 5569,
+        "name": "Entrepreneurial Education",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 5572,
+        "name": "Communication & Design",
+        "marhala_id": 5,
+        "study_id": 17,
+        "study": "A-Level\/ Pearson Edexcel\/ GED\/ International Baccalaureate Diploma"
+    },
+    {
+        "id": 5574,
+        "name": "Home Science ",
+        "marhala_id": 4,
+        "study_id": 130,
+        "study": "SSC-(Provincial Board)"
+    },
+    {
+        "id": 5578,
+        "name": "Social Sciences",
+        "marhala_id": 4,
+        "study_id": 129,
+        "study": "SSC-(AKU-EB)"
+    },
+    {
+        "id": 5585,
+        "name": "BS Obstetrics & Gynaecology",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 5598,
+        "name": "Diploma of Associate Engineer",
+        "marhala_id": 5,
+        "study_id": 137,
+        "study": "Diploma of Associate Engineer"
+    },
+    {
+        "id": 5599,
+        "name": "Computer Science",
+        "marhala_id": 5,
+        "study_id": 17,
+        "study": "A-Level\/ Pearson Edexcel\/ GED\/ International Baccalaureate Diploma"
+    },
+    {
+        "id": 5611,
+        "name": "Polymer Science and Rubber Technology",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 5613,
+        "name": "Anesthesia",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 5622,
+        "name": "Engineering ",
+        "marhala_id": 5,
+        "study_id": 161,
+        "study": "Other"
+    },
+    {
+        "id": 5626,
+        "name": "BS Fashion Marketing & Merchandizing - 4yrs",
+        "marhala_id": 6,
+        "study_id": 126,
+        "study": "Art & Design"
+    },
+    {
+        "id": 5634,
+        "name": "Engineering ",
+        "marhala_id": 5,
+        "study_id": 134,
+        "study": "HSSC-(Ziauddin Board)"
+    },
+    {
+        "id": 5641,
+        "name": "Computer Science, Biology",
+        "marhala_id": 4,
+        "study_id": 131,
+        "study": "GCSE (O Levels)"
+    },
+    {
+        "id": 5642,
+        "name": "Other",
+        "marhala_id": 4,
+        "study_id": 130,
+        "study": "SSC-(Provincial Board)"
+    },
+    {
+        "id": 5645,
+        "name": "Forex Trading",
+        "marhala_id": 7,
+        "study_id": 141,
+        "study": "Master of Business Admininstration"
+    },
+    {
+        "id": 5649,
+        "name": "Psychology",
+        "marhala_id": 5,
+        "study_id": 17,
+        "study": "A-Level\/ Pearson Edexcel\/ GED\/ International Baccalaureate Diploma"
+    },
+    {
+        "id": 5651,
+        "name": "Arts\/Humanities",
+        "marhala_id": 5,
+        "study_id": 161,
+        "study": "Other"
+    },
+    {
+        "id": 5652,
+        "name": "BS educational psychology",
+        "marhala_id": 6,
+        "study_id": 164,
+        "study": "Social Sciences"
+    },
+    {
+        "id": 5653,
+        "name": "Technical Diploma in Physiotherapy (TDPT)",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 5654,
+        "name": "M.Ed Education (Teacher)  1yrs",
+        "marhala_id": 6,
+        "study_id": 124,
+        "study": "Education"
+    },
+    {
+        "id": 5657,
+        "name": "Science",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 5689,
+        "name": "Social Sciences",
+        "marhala_id": 4,
+        "study_id": 131,
+        "study": "GCSE (O Levels)"
+    },
+    {
+        "id": 5702,
+        "name": "Master of Public Policy and Global Affairs - MPPGA",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 5704,
+        "name": "Civil Litigation and Advocacy",
+        "marhala_id": 7,
+        "study_id": 150,
+        "study": "Master of Law- L.L.M"
+    },
+    {
+        "id": 5709,
+        "name": "BS Nutrition- 4yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 5714,
+        "name": "Post Graduate Diploma in Education (PGDE)",
+        "marhala_id": 7,
+        "study_id": 146,
+        "study": "Master of Education - M.Ed"
+    },
+    {
+        "id": 5716,
+        "name": "BE Telecommunication Engineering - 4yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 5725,
+        "name": "Bio Medicine",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 5726,
+        "name": "BS Podiatric Medicine",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 5748,
+        "name": "BA in Public Relations and Advertising",
+        "marhala_id": 6,
+        "study_id": 124,
+        "study": "Education"
+    },
+    {
+        "id": 5756,
+        "name": "Oral Pathology ",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 5774,
+        "name": "Supply Chain Management",
+        "marhala_id": 7,
+        "study_id": 141,
+        "study": "Master of Business Admininstration"
+    },
+    {
+        "id": 5776,
+        "name": "Social Sciences ",
+        "marhala_id": 4,
+        "study_id": 130,
+        "study": "SSC-(Provincial Board)"
+    },
+    {
+        "id": 5791,
+        "name": "BE Mechanical Engineering - 4yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 5794,
+        "name": "MSc Genetics- 2yrs",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 5795,
+        "name": "BS\/BSc Hons Microbiology-",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 5798,
+        "name": "Home Economics",
+        "marhala_id": 4,
+        "study_id": 165,
+        "study": "Other"
+    },
+    {
+        "id": 5803,
+        "name": "General",
+        "marhala_id": 5,
+        "study_id": 135,
+        "study": "HSSC-(Provincial Board)"
+    },
+    {
+        "id": 5806,
+        "name": "Social Sciences",
+        "marhala_id": 5,
+        "study_id": 161,
+        "study": "Other"
+    },
+    {
+        "id": 5810,
+        "name": "International Development and Management",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 5843,
+        "name": "Culinary Arts Management MA",
+        "marhala_id": 7,
+        "study_id": 140,
+        "study": "Masters of Arts"
+    },
+    {
+        "id": 5847,
+        "name": "BS\/BA Hons\/B.DES Communication Design- 4yrs",
+        "marhala_id": 6,
+        "study_id": 126,
+        "study": "Art & Design"
+    },
+    {
+        "id": 5853,
+        "name": "Diploma in Culinary Arts",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 5856,
+        "name": "BS Biotechnology- 4yrs a",
+        "marhala_id": 4,
+        "study_id": 130,
+        "study": "SSC-(Provincial Board)"
+    },
+    {
+        "id": 5861,
+        "name": "Engineering",
+        "marhala_id": 4,
+        "study_id": 131,
+        "study": "GCSE (O Levels)"
+    },
+    {
+        "id": 5867,
+        "name": "MRCGP International",
+        "marhala_id": 7,
+        "study_id": 139,
+        "study": "Doctor of Medicine - M.D."
+    },
+    {
+        "id": 5869,
+        "name": "Fellowship of the Royal College of Surgeons (FRCS)",
+        "marhala_id": 7,
+        "study_id": 156,
+        "study": "Master of Surgery - M.S."
+    },
+    {
+        "id": 5872,
+        "name": "BS Renal Dialysis",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 5873,
+        "name": "M.Com- 2yrs",
+        "marhala_id": 7,
+        "study_id": 142,
+        "study": "Master of Commerce"
+    },
+    {
+        "id": 5874,
+        "name": "Home Science",
+        "marhala_id": 4,
+        "study_id": 129,
+        "study": "SSC-(AKU-EB)"
+    },
+    {
+        "id": 5876,
+        "name": "BBA- 4 yrs",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 5878,
+        "name": "Other",
+        "marhala_id": 5,
+        "study_id": 135,
+        "study": "HSSC-(Provincial Board)"
+    },
+    {
+        "id": 5879,
+        "name": "BS\/ BA Hons Mass Communication- 4yrs",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 5880,
+        "name": "Diploma in Travel & Tourism Consultant",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 5888,
+        "name": "MA Islamic Culture & Comparative Religions",
+        "marhala_id": 7,
+        "study_id": 150,
+        "study": "Master of Law- L.L.M"
+    },
+    {
+        "id": 5891,
+        "name": "Pre Engineering ",
+        "marhala_id": 5,
+        "study_id": 135,
+        "study": "HSSC-(Provincial Board)"
+    },
+    {
+        "id": 5901,
+        "name": "B.Tech Computer Science",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 5904,
+        "name": "BS International Economics & Management ",
+        "marhala_id": 6,
+        "study_id": 164,
+        "study": "Social Sciences"
+    },
+    {
+        "id": 5905,
+        "name": "Bachelors of Dental Surgery (BDS)",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 5923,
+        "name": "BS Interior Designing- 4yrs",
+        "marhala_id": 6,
+        "study_id": 126,
+        "study": "Art & Design"
+    },
+    {
+        "id": 5929,
+        "name": "Internal Medicine",
+        "marhala_id": 7,
+        "study_id": 139,
+        "study": "Doctor of Medicine - M.D."
+    },
+    {
+        "id": 5942,
+        "name": "BS-Marketing",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 5943,
+        "name": "MS Office",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 5944,
+        "name": "Advanced Excel",
+        "marhala_id": 6,
+        "study_id": 138,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 5945,
+        "name": "Watch Repairing",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 5946,
+        "name": "BS\/BA Hons- Psychology- 4yrs",
+        "marhala_id": 6,
+        "study_id": 164,
+        "study": "Social Sciences"
+    },
+    {
+        "id": 5948,
+        "name": "Art & Design",
+        "marhala_id": 6,
+        "study_id": 126,
+        "study": "Art & Design"
+    },
+    {
+        "id": 5949,
+        "name": "Marine Sciences",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 5957,
+        "name": "BSc Petroleum Engineering- 3yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 5959,
+        "name": "Diploma in Web Development",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 5960,
+        "name": "BS Medical Tecnology - 4yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 5969,
+        "name": "BS-Media Studies-4yrs",
+        "marhala_id": 6,
+        "study_id": 125,
+        "study": "Media Sciences"
+    },
+    {
+        "id": 5975,
+        "name": "CHPE",
+        "marhala_id": 7,
+        "study_id": 139,
+        "study": "Doctor of Medicine - M.D."
+    },
+    {
+        "id": 5977,
+        "name": "BS-Computer Arts-4 yrs",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 5981,
+        "name": "CIMA- 5.5 yrs",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 5982,
+        "name": "Applied Manufacturing Management Automation",
+        "marhala_id": 7,
+        "study_id": 147,
+        "study": "Master of Engineering - M.E"
+    },
+    {
+        "id": 5983,
+        "name": "Home Science- 2yrs",
+        "marhala_id": 6,
+        "study_id": 114,
+        "study": "Home Sciences"
+    },
+    {
+        "id": 5985,
+        "name": "AME Avionics",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 5986,
+        "name": "AME Mechanical",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 5987,
+        "name": "Acturial Science & Risk Management",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 5988,
+        "name": "Advanced Diploma in Food Preparation and Culinary Arts",
+        "marhala_id": 6,
+        "study_id": 120,
+        "study": "Agricultural Sciences"
+    },
+    {
+        "id": 5989,
+        "name": "Advanced Diploma Course in Forensic Photography",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 5990,
+        "name": "BS Aeronautical Engineering - 4yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 5992,
+        "name": "Associate of Science in Computer Science",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 5994,
+        "name": "ATPL (Airline Transport Pilot License)",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 5995,
+        "name": "BSc Sports Science- 4yrs",
+        "marhala_id": 6,
+        "study_id": 116,
+        "study": "Biological & Life Sciences"
+    },
+    {
+        "id": 5996,
+        "name": "Bachelor in Computer Education - B.C.Ed.",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 5997,
+        "name": "Bachelor in Rehabilitation Therapy",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 5998,
+        "name": "B.A. (Hons.) (Applied Psychology)",
+        "marhala_id": 6,
+        "study_id": 164,
+        "study": "Social Sciences"
+    },
+    {
+        "id": 5999,
+        "name": "B.A. (Hons.) (Business Economics)",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 6000,
+        "name": "B.A. (Hons.) (Education)",
+        "marhala_id": 6,
+        "study_id": 124,
+        "study": "Education"
+    },
+    {
+        "id": 6001,
+        "name": "BA (Hons.) Geography",
+        "marhala_id": 6,
+        "study_id": 164,
+        "study": "Social Sciences"
+    },
+    {
+        "id": 6002,
+        "name": "B.A. (Hons.) (Linguistics)",
+        "marhala_id": 6,
+        "study_id": 164,
+        "study": "Social Sciences"
+    },
+    {
+        "id": 6003,
+        "name": "Bachelor of Arts in Psychology and English - B.A. (Psychology and English)",
+        "marhala_id": 6,
+        "study_id": 126,
+        "study": "Art & Design"
+    },
+    {
+        "id": 6004,
+        "name": "Bachelor of Arts in Small & Medium Enterprises - B.A. (Small & Medium Enterprises)",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 6005,
+        "name": "Bachelor of Arts in Sociology - B.A. (Sociology)",
+        "marhala_id": 6,
+        "study_id": 164,
+        "study": "Social Sciences"
+    },
+    {
+        "id": 6006,
+        "name": "B.B.M. (HR)",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 6007,
+        "name": "B.B.M. (International Business)",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 6008,
+        "name": "B.C.A. Bachelor of Computer Application",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 6009,
+        "name": "BE Aeronautical Engineering- 4yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 6010,
+        "name": "BE Automobile Engineering- 4yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 6011,
+        "name": "BE Biological Engineering- 4yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 6012,
+        "name": "B.E. Electrical & Electronics Engineering- 4yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 6013,
+        "name": "B.E. Electro-Mechanical Engineering Technology- 4yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 6016,
+        "name": "BE Metallurgical Engineering- 4yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 6017,
+        "name": "BE Robotics- 4yrs",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 6019,
+        "name": "Bachelor of Science (B.Sc.) in Aviation Technology with Pilot Studies",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 6021,
+        "name": "BS Medical Science- 4yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 6022,
+        "name": "BSc Science- 4yrs",
+        "marhala_id": 6,
+        "study_id": 119,
+        "study": "Physics & Numerical Sciences"
+    },
+    {
+        "id": 6023,
+        "name": "BS Acturial Science- 4yrs",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 6024,
+        "name": "BS Clinical Nutrition- 4yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 6025,
+        "name": "BS Clinical Psychology- 4yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 6026,
+        "name": "BS Critical Care Technology- 4yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 6027,
+        "name": "BS Education Science- 4yrs",
+        "marhala_id": 6,
+        "study_id": 124,
+        "study": "Education"
+    },
+    {
+        "id": 6028,
+        "name": "BS Entrepreneurship- 4yrs",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 6029,
+        "name": "BS International Economics & Management",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 6030,
+        "name": "BS Molecular Biology- 4yrs",
+        "marhala_id": 6,
+        "study_id": 116,
+        "study": "Biological & Life Sciences"
+    },
+    {
+        "id": 6031,
+        "name": "BS Multimedia- 4yrs",
+        "marhala_id": 6,
+        "study_id": 125,
+        "study": "Media Sciences"
+    },
+    {
+        "id": 6032,
+        "name": "BS Polymer Chemistry- 4yrs",
+        "marhala_id": 6,
+        "study_id": 117,
+        "study": "Chemical & Material Sciences"
+    },
+    {
+        "id": 6033,
+        "name": "BS Radiology- 4yrs",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 6034,
+        "name": "BS Visual Media- 4yrs",
+        "marhala_id": 6,
+        "study_id": 125,
+        "study": "Media Sciences"
+    },
+    {
+        "id": 6035,
+        "name": "Certificate Course in Financial Accounting & Taxation (CCFAT)",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 6036,
+        "name": "Dentistry Courses",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 6037,
+        "name": "Doctor of Laws - LL.D.",
+        "marhala_id": 7,
+        "study_id": 150,
+        "study": "Master of Law- L.L.M"
+    },
+    {
+        "id": 6038,
+        "name": "MD Cardiology",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 6040,
+        "name": "PHD. Agriculture Engineering",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 6042,
+        "name": "PHD. Management",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 6043,
+        "name": "PHD. Mechanical Engineering",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 6044,
+        "name": "BE Electronics & Telecommunication Engineering - 4yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 6045,
+        "name": "Graduate Diploma of Data Science",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 6046,
+        "name": "Graduate Diploma Program in Design",
+        "marhala_id": 6,
+        "study_id": 126,
+        "study": "Art & Design"
+    },
+    {
+        "id": 6047,
+        "name": "Graphics Designing",
+        "marhala_id": 6,
+        "study_id": 138,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 6048,
+        "name": "M.A. (Art of South East Asia)",
+        "marhala_id": 6,
+        "study_id": 126,
+        "study": "Art & Design"
+    },
+    {
+        "id": 6049,
+        "name": "Master in Education Administration",
+        "marhala_id": 6,
+        "study_id": 124,
+        "study": "Education"
+    },
+    {
+        "id": 6050,
+        "name": "Master in Social Sciences",
+        "marhala_id": 6,
+        "study_id": 164,
+        "study": "Social Sciences"
+    },
+    {
+        "id": 6051,
+        "name": "Master of Arts (Film + Media) - M.A. (Film + Media)",
+        "marhala_id": 6,
+        "study_id": 125,
+        "study": "Media Sciences"
+    },
+    {
+        "id": 6052,
+        "name": "Master of Arts in Applied Education - M.A. (Applied Education)",
+        "marhala_id": 6,
+        "study_id": 124,
+        "study": "Education"
+    },
+    {
+        "id": 6053,
+        "name": "MA Educational Communication- 2yrs",
+        "marhala_id": 6,
+        "study_id": 124,
+        "study": "Education"
+    },
+    {
+        "id": 6054,
+        "name": "MSc Computer Management- 2yrs",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 6055,
+        "name": "M.Ed. Social Science",
+        "marhala_id": 6,
+        "study_id": 164,
+        "study": "Social Sciences"
+    },
+    {
+        "id": 6056,
+        "name": "ME Aeronautical Engineering- 2yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 6057,
+        "name": "ME Computer & Communication- 2yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 6058,
+        "name": "ME Embedded Systems- 2yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 6059,
+        "name": "ME Manufacturing System Management- 2yrs",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 6060,
+        "name": "M.Pharm. (Phytopharmacology & Natural Products)",
+        "marhala_id": 6,
+        "study_id": 116,
+        "study": "Biological & Life Sciences"
+    },
+    {
+        "id": 6061,
+        "name": "Master of Philosophy - M.Phil.",
+        "marhala_id": 7,
+        "study_id": 152,
+        "study": "Master of Philosophy - M.Phil."
+    },
+    {
+        "id": 6062,
+        "name": "Master of Philosophy in Economics - M.Phil. (Economics)",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    },
+    {
+        "id": 6063,
+        "name": "M.Phil. (Education)",
+        "marhala_id": 6,
+        "study_id": 124,
+        "study": "Education"
+    },
+    {
+        "id": 6064,
+        "name": "Master of Science - M.Sc.",
+        "marhala_id": 7,
+        "study_id": 155,
+        "study": "Master of Science - M.Sc."
+    },
+    {
+        "id": 6065,
+        "name": "MSc Astrophysics- 2yrs",
+        "marhala_id": 6,
+        "study_id": 119,
+        "study": "Physics & Numerical Sciences"
+    },
+    {
+        "id": 6066,
+        "name": "MSc Biological Sciences- 2yrs",
+        "marhala_id": 6,
+        "study_id": 116,
+        "study": "Biological & Life Sciences"
+    },
+    {
+        "id": 6067,
+        "name": "MSc Green Technology- 2yrs",
+        "marhala_id": 6,
+        "study_id": 118,
+        "study": "Earth & Environmental Sciences"
+    },
+    {
+        "id": 6068,
+        "name": "MSc Materials Science- 2yrs",
+        "marhala_id": 6,
+        "study_id": 119,
+        "study": "Physics & Numerical Sciences"
+    },
+    {
+        "id": 6069,
+        "name": "MSc Production Engineering- 2yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 6070,
+        "name": "Master of Teaching",
+        "marhala_id": 6,
+        "study_id": 124,
+        "study": "Education"
+    },
+    {
+        "id": 6071,
+        "name": "BE Nuclear Engineering - 4yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 6072,
+        "name": "ME Engineering Management- 2yrs",
+        "marhala_id": 6,
+        "study_id": 121,
+        "study": "Engineering"
+    },
+    {
+        "id": 6073,
+        "name": "Medicine Courses",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 6074,
+        "name": "Nutrition and Dietics Courses",
+        "marhala_id": 6,
+        "study_id": 138,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 6075,
+        "name": "PGDCP - Post Graduate Diploma in Computer Programming",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 6076,
+        "name": "Post Graduate Diploma in Computer Science",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 6077,
+        "name": "Practical Teaching and Teacher Training Certificate Courses",
+        "marhala_id": 6,
+        "study_id": 124,
+        "study": "Education"
+    },
+    {
+        "id": 6078,
+        "name": "Professional and Linguistics Assessments Board (PLAB)",
+        "marhala_id": 6,
+        "study_id": 115,
+        "study": "Medical & Related"
+    },
+    {
+        "id": 6079,
+        "name": "SEAL Course \u2013 Systematically Enhanced Ability to Lead",
+        "marhala_id": 5,
+        "study_id": 136,
+        "study": "Vocational Training\/Diploma"
+    },
+    {
+        "id": 6112,
+        "name": "Biology",
+        "marhala_id": 5,
+        "study_id": 161,
+        "study": "Other"
+    },
+    {
+        "id": 6113,
+        "name": "General Science",
+        "marhala_id": 5,
+        "study_id": 161,
+        "study": "Other"
+    },
+    {
+        "id": 6114,
+        "name": "Higher Diploma in Software Engineering",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 6115,
+        "name": "BS\/BA Hons\/B.DES Communication Design- 4yrs",
+        "marhala_id": 6,
+        "study_id": 126,
+        "study": "Art & Design"
+    },
+    {
+        "id": 6116,
+        "name": "BA Comparative Humanities",
+        "marhala_id": 6,
+        "study_id": 126,
+        "study": "Art & Design"
+    },
+    {
+        "id": 6117,
+        "name": "BS Computer Engineering- 4yrs",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 6118,
+        "name": "Diploma In Fine Arts",
+        "marhala_id": 6,
+        "study_id": 126,
+        "study": "Art & Design"
+    },
+    {
+        "id": 6119,
+        "name": "BS of Business & Information Technology (BBIT)",
+        "marhala_id": 6,
+        "study_id": 122,
+        "study": "Computer Science"
+    },
+    {
+        "id": 6120,
+        "name": "BS Financial Technology- 4yrs",
+        "marhala_id": 6,
+        "study_id": 123,
+        "study": "Commerce & Management Sciences"
+    }
+]
