@@ -1,0 +1,166 @@
+{
+    "info": {
+      "_postman_id": "12345-67890-abcdef",
+      "name": "OWS Node API Collection",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Auth",
+        "item": [
+          {
+            "name": "Register User",
+            "request": {
+              "method": "POST",
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "url": { "raw": "{{base_url}}/auth/register", "host": ["{{base_url}}"], "path": ["auth", "register"] },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"username\": \"testuser\",\n    \"password\": \"securePassword123\"\n}"
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Login User",
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "var jsonData = pm.response.json();",
+                    "pm.globals.set(\"token\", jsonData.token);"
+                  ],
+                  "type": "text/javascript"
+                }
+              }
+            ],
+            "request": {
+              "method": "POST",
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "url": { "raw": "{{base_url}}/auth/login", "host": ["{{base_url}}"], "path": ["auth", "login"] },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"username\": \"testuser\",\n    \"password\": \"securePassword123\"\n}"
+              }
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "name": "Protected Routes",
+        "item": [
+          {
+            "name": "Get Last Request",
+            "request": {
+              "method": "GET",
+              "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+              "url": { "raw": "{{base_url}}/get-last-req", "host": ["{{base_url}}"], "path": ["get-last-req"] }
+            },
+            "response": []
+          },
+          {
+            "name": "Add Request",
+            "request": {
+              "method": "POST",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{token}}" },
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "url": { "raw": "{{base_url}}/add-request", "host": ["{{base_url}}"], "path": ["add-request"] },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"memberITS\": \"12345\",\n    \"firstName\": \"John\",\n    \"fullName\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"phoneNumber\": \"9876543210\",\n    \"whatsappNumber\": \"9876543210\",\n    \"dob\": \"1990-01-01\",\n    \"address\": \"123 Main St\"\n}"
+              }
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "name": "Public Routes",
+        "item": [
+          {
+            "name": "Get Requests",
+            "request": {
+              "method": "GET",
+              "url": { "raw": "{{base_url}}/get-requests", "host": ["{{base_url}}"], "path": ["get-requests"] }
+            },
+            "response": []
+          },
+          {
+            "name": "Fetch Image",
+            "request": {
+              "method": "GET",
+              "url": {
+                "raw": "{{base_url}}/fetch-image?url=https://example.com/image.jpg",
+                "host": ["{{base_url}}"],
+                "path": ["fetch-image"],
+                "query": [{ "key": "url", "value": "https://example.com/image.jpg" }]
+              }
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "name": "Profile APIs",
+        "item": [
+          {
+            "name": "Get Profile",
+            "request": {
+              "method": "GET",
+              "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+              "url": { "raw": "{{base_url}}/get-profile/12345", "host": ["{{base_url}}"], "path": ["get-profile", "12345"] }
+            },
+            "response": []
+          },
+          {
+            "name": "Get Family Profile",
+            "request": {
+              "method": "GET",
+              "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+              "url": { "raw": "{{base_url}}/get-family-profile/12345", "host": ["{{base_url}}"], "path": ["get-family-profile", "12345"] }
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "name": "PDF & Email",
+        "item": [
+          {
+            "name": "Fetch PDF",
+            "request": {
+              "method": "GET",
+              "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+              "url": { "raw": "{{base_url}}/fetch-pdf/12345", "host": ["{{base_url}}"], "path": ["fetch-pdf", "12345"] }
+            },
+            "response": []
+          },
+          {
+            "name": "Send Email",
+            "request": {
+              "method": "POST",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{token}}" },
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "url": { "raw": "{{base_url}}/send-email", "host": ["{{base_url}}"], "path": ["send-email"] },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"to\": \"user@example.com\",\n    \"subject\": \"Test Email\",\n    \"text\": \"This is a test email.\",\n    \"html\": \"<b>This is a test email.</b>\"\n}"
+              }
+            },
+            "response": []
+          }
+        ]
+      }
+    ],
+    "event": [],
+    "variable": [
+      { "key": "base_url", "value": "http://localhost:3002", "type": "string" },
+      { "key": "token", "value": "", "type": "string" }
+    ]
+  }
