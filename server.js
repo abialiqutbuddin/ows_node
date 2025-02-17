@@ -6,12 +6,14 @@ const fs = require('fs');
 const https = require("https");
 const db = require("./config/db"); // Database connection
 const authRoutes = require("./routes/authRoutes"); // Authentication routes
-const apiEndPointsRoutes = require("./routes/apiEndPointsRoutes"); // Authentication routes
+const userRoutes = require("./routes/userRoutes"); // Authentication routes
 const moduleRoutes = require("./routes/moduleRoutes"); // Authentication routes
 const permissionRoutes = require("./routes/permissionRoutes"); // Authentication routes
 const authMiddleware = require("./middleware/authMiddleWare"); // Middleware to protect routes
-const { sendMail } = require("./config/mail"); // Mail service
+const sendMail = require("./config/mail"); // Mail service
+const apiEndPointsRoutes = require("./routes/apiEndPointsRoutes"); // Middleware to protect routes
 require("dotenv").config(); // Load environment variables
+const OwsReqForm = require("./models/owsReqForm.model"); 
 
 const app = express();
 
@@ -21,31 +23,31 @@ app.use(bodyParser.json());
 
 // Authentication Routes
 app.use("/auth", authRoutes);
-app.use("/api", apiEndPointsRoutes,moduleRoutes,permissionRoutes);
+app.use("/",moduleRoutes,permissionRoutes,userRoutes,apiEndPointsRoutes);
 
-app.get("/get-last-req",authMiddleware, (req, res) => {
-    const dbConnection = db; 
+app.get("/get-last-req", authMiddleware, async (req, res) => {
+    try {
+        // Fetch the last reqId using Sequelize ORM
+        const lastReq = await OwsReqForm.findOne({
+            attributes: ["reqId"],
+            order: [["reqId", "DESC"]], // Order by descending reqId
+        });
 
-    // Fetch the last reqMasId from the table
-    const fetchLastReqFormIdQuery = `SELECT MAX(reqId) AS lastReqFormId FROM owsReqForm`;
-
-    dbConnection.query(fetchLastReqFormIdQuery, (fetchErr, fetchResult) => {
-        if (fetchErr) {
-            console.error("Failed to fetch the last reqMasId:", fetchErr);
-            return res.status(500).send({
-                error: "Failed to fetch the last reqMasId",
-                details: fetchErr,
-            });
-        }
-
-        const lastReqFormId = fetchResult[0].lastReqFormId || 0; // Default to 0 if no rows exist
+        // If no records exist, start from 1
+        const lastReqFormId = lastReq ? lastReq.reqId : 0;
         const nextReqFormId = lastReqFormId + 1; // Increment by 1
 
-        console.log("Next reqMasId:", nextReqFormId);
+        console.log("Next reqId:", nextReqFormId);
 
-        // Send the nextReqMasId back to the client
-        res.status(200).send({ nextReqFormId });
-    });
+        return res.status(200).json({ nextReqFormId });
+
+    } catch (error) {
+        console.error("Failed to fetch last reqId:", error);
+        return res.status(500).json({
+            error: "Failed to fetch last reqId",
+            details: error.message,
+        });
+    }
 });
 
 app.post("/add-request",authMiddleware, (req, res) => {
@@ -220,23 +222,23 @@ app.get('/fetch-image', async (req, res) => {
 });
 
 // Endpoint to fetch profile data
-app.get("/get-profile/:itsId", async (req, res) => {
-    const itsId = req.params.itsId;
+// app.get("/get-profile/:itsId",authMiddleware, async (req, res) => {
+//     const itsId = req.params.itsId;
+//     console.log("HERE");
+//     // URL with dynamic `itsId`
+//     const url = `https://paktalim.com/admin/ws_app/GetProfileEducation/${itsId}?access_key=8803c22b50548c9d5b1401e3ab5854812c4dcacb&username=40459629&password=1107865253`;
 
-    // URL with dynamic `itsId`
-    const url = `https://paktalim.com/admin/ws_app/GetProfileEducation/${itsId}?access_key=8803c22b50548c9d5b1401e3ab5854812c4dcacb&username=40459629&password=1107865253`;
-
-    try {
-        const response = await axios.get(url);
-        res.status(200).json(response.data);
-    } catch (error) {
-        console.error("Error fetching profile data:", error.message);
-        res.status(500).json({ error: "Failed to fetch profile data" });
-    }
-});
+//     try {
+//         const response = await axios.get(url);
+//         res.status(200).json(response.data);
+//     } catch (error) {
+//         console.error("Error fetching profile data:", error.message);
+//         res.status(500).json({ error: "Failed to fetch profile data" });
+//     }
+// });
 
 // Endpoint to fetch family profile data
-app.get("/get-family-profile/:itsId", async (req, res) => {
+app.get("/get-family-profile/:itsId",authMiddleware, async (req, res) => {
     const itsId = req.params.itsId;
 
     // URL with dynamic `itsId`
@@ -256,28 +258,7 @@ app.get("/get-family-profile/:itsId", async (req, res) => {
     }
 });
 
-app.get('/fetch-pdf1',authMiddleware, (req, res) => {
-    try {
-        // Path to the static PDF file
-        const pdfPath = '/Users/abiali/Desktop/ows_node/profile.pdf';
-
-        console.log("HERE");
-        console.log(pdfPath);
-
-        const pdfData = fs.readFileSync(pdfPath);
-
-        res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', 'inline; filename="profile.pdf"');
-
-        // Send the PDF byte data directly
-        res.send(pdfData);
-    } catch (error) {
-        console.error('Error reading the PDF file:', error.message);
-        res.status(500).json({ error: 'Failed to send PDF file' });
-    }
-});
-
-app.get('/fetch-pdf:its', async (req, res) => {
+app.get('/fetch-pdf:its',authMiddleware, async (req, res) => {
 
     const its = req.params.its
     try {
@@ -368,10 +349,10 @@ app.get("/user-permissions", authMiddleware, async (req, res) => {
     }
 });
 
-app.get("/proxy",authMiddleware, async (req, res) => {
+app.get("/get-url",authMiddleware, async (req, res) => {
+    //console.log("HERE");
     try {
-        const { url } = req.query;
-        
+        const { url, username, password } = req.query;        
         if (!url) {
             return res.status(400).json({ error: "URL parameter is required" });
         }
@@ -380,44 +361,23 @@ app.get("/proxy",authMiddleware, async (req, res) => {
         if (!/^https?:\/\//i.test(url)) {
             return res.status(400).json({ error: "Invalid URL format" });
         }
-
         const response = await axios.get(url);
         res.json(response.data);
     } catch (error) {
+        console.log("error");
         res.status(500).json({ error: error.message });
     }
 });
 
-// API Endpoint to execute SQL commands
-app.post("/execute",authMiddleware, async (req, res) => {
-    const { query } = req.body;
-  
-    if (!query || typeof query !== "string") {
-      return res.status(400).json({ error: "Invalid or missing SQL query." });
-    }
-  
-    try {
-      db.query(query, (error, results) => {
-        if (error) {
-          console.error("SQL Error:", error.message);
-          return res.status(400).json({ error: error.sqlMessage || "Query execution failed" });
-        }
-        res.json({ success: true, results });
-      });
-    } catch (err) {
-      res.status(500).json({ error: "Internal Server Error", details: err.message });
-    }
-  });
-
 // Load SSL Certificates
-const options = {
-    key: fs.readFileSync("/etc/letsencrypt/live/mode.imadiinnovations.com/privkey.pem"),
-    cert: fs.readFileSync("/etc/letsencrypt/live/mode.imadiinnovations.com/fullchain.pem"),
-};
+// const options = {
+//     key: fs.readFileSync("/etc/letsencrypt/live/mode.imadiinnovations.com/privkey.pem"),
+//     cert: fs.readFileSync("/etc/letsencrypt/live/mode.imadiinnovations.com/fullchain.pem"),
+// };
 
 // Start HTTPS Server
 const PORT = 3002;
-https.createServer(options, app).listen(PORT, () => {
-    console.log(`HTTPS Server running on https://mode.imadiinnovations.com:${PORT}`);
-});
-//app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// https.createServer(options, app).listen(PORT, () => {
+//     console.log(`HTTPS Server running on https://mode.imadiinnovations.com:${PORT}`);
+// });
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

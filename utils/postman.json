@@ -1,0 +1,86 @@
+{
+    "info": {
+      "_postman_id": "auth-api-collection",
+      "name": "Authentication API",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Register User",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "type": "text"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"its_id\": \"12345678\",\n    \"role\": \"admin\",\n    \"name\": \"Ali Qutbuddin\",\n    \"email\": \"ali@example.com\",\n    \"password\": \"securepassword\"\n}"
+          },
+          "url": {
+            "raw": "{{base_url}}/register",
+            "host": ["{{base_url}}"],
+            "path": ["register"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Login",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "type": "text"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"its_id\": \"12345678\",\n    \"password\": \"securepassword\"\n}"
+          },
+          "url": {
+            "raw": "{{base_url}}/login",
+            "host": ["{{base_url}}"],
+            "path": ["login"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Protected Route (Requires JWT)",
+        "request": {
+          "method": "GET",
+          "header": [
+            {
+              "key": "Authorization",
+              "value": "Bearer {{token}}",
+              "type": "text"
+            }
+          ],
+          "url": {
+            "raw": "{{base_url}}/protected",
+            "host": ["{{base_url}}"],
+            "path": ["protected"]
+          }
+        },
+        "response": []
+      }
+    ],
+    "variable": [
+      {
+        "key": "base_url",
+        "value": "http://localhost:3002",
+        "type": "string"
+      },
+      {
+        "key": "token",
+        "value": "",
+        "type": "string"
+      }
+    ]
+  }
