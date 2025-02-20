@@ -170,9 +170,17 @@ router.get("/feature-endpoints",authMiddleware, async (req, res) => {
 });
 
 // ✅ Get Feature Endpoint by ID
-router.get("/feature-endpoint/:id",authMiddleware, async (req, res) => {
+router.post("/feature-endpoint/get", authMiddleware, async (req, res) => {
     try {
-        const featureEndpoint = await FeatureEndpoint.findByPk(req.params.id, {
+        const { id } = req.body;
+
+        // ✅ Validate input
+        if (!id || isNaN(id)) {
+            return res.status(400).json({ error: "Invalid or missing 'id' in request body" });
+        }
+
+        // ✅ Fetch feature endpoint
+        const featureEndpoint = await FeatureEndpoint.findByPk(id, {
             include: {
                 model: Feature,
                 attributes: ["feature_name"],
@@ -186,51 +194,72 @@ router.get("/feature-endpoint/:id",authMiddleware, async (req, res) => {
         return res.status(200).json(featureEndpoint);
     } catch (error) {
         console.error("Failed to fetch feature endpoint:", error);
-        return res.status(500).json({ error: "Failed to fetch feature endpoint", details: error.message });
+        return res.status(500).json({ error: "Server error", details: error.message });
     }
 });
 
 // ✅ Update Feature Endpoint
-router.put("/feature-endpoint/:id",authMiddleware, async (req, res) => {
+router.put("/feature-endpoint/update", authMiddleware, async (req, res) => {
     try {
-        const { url_endpoint } = req.body;
-        const featureEndpoint = await FeatureEndpoint.findByPk(req.params.id);
-        
+        const { id, url_endpoint } = req.body;
+
+        // ✅ Validate input
+        if (!id || isNaN(id)) {
+            return res.status(400).json({ error: "Invalid or missing 'id' in request body" });
+        }
+        if (!url_endpoint || typeof url_endpoint !== "string" || url_endpoint.trim().length === 0) {
+            return res.status(400).json({ error: "Invalid or missing 'url_endpoint' in request body" });
+        }
+
+        // ✅ Fetch feature endpoint
+        const featureEndpoint = await FeatureEndpoint.findByPk(id);
         if (!featureEndpoint) {
             return res.status(404).json({ error: "Feature Endpoint not found" });
         }
 
-        // Check if the new URL already exists (except for the current one)
+        // ✅ Check if the new URL already exists (except for the current one)
         const existingEndpoint = await FeatureEndpoint.findOne({
-            where: { url_endpoint, id: { $not: req.params.id } }
+            where: { url_endpoint, id: { [Op.ne]: id } } // Exclude the current endpoint from check
         });
 
         if (existingEndpoint) {
             return res.status(400).json({ error: "Endpoint URL already exists" });
         }
 
+        // ✅ Update feature endpoint
         await featureEndpoint.update({ url_endpoint });
 
         return res.status(200).json({ message: "Feature Endpoint updated successfully", featureEndpoint });
+
     } catch (error) {
         console.error("Failed to update feature endpoint:", error);
-        return res.status(500).json({ error: "Failed to update feature endpoint", details: error.message });
+        return res.status(500).json({ error: "Server error", details: error.message });
     }
 });
 
 // ✅ Delete Feature Endpoint
-router.delete("/feature-endpoint/:id",authMiddleware, async (req, res) => {
+router.delete("/feature-endpoint/delete", authMiddleware, async (req, res) => {
     try {
-        const featureEndpoint = await FeatureEndpoint.findByPk(req.params.id);
+        const { id } = req.body;
+
+        // ✅ Validate input
+        if (!id || isNaN(id)) {
+            return res.status(400).json({ error: "Invalid or missing 'id' in request body" });
+        }
+
+        // ✅ Fetch feature endpoint
+        const featureEndpoint = await FeatureEndpoint.findByPk(id);
         if (!featureEndpoint) {
             return res.status(404).json({ error: "Feature Endpoint not found" });
         }
 
+        // ✅ Delete feature endpoint
         await featureEndpoint.destroy();
         return res.status(200).json({ message: "Feature Endpoint deleted successfully" });
+
     } catch (error) {
         console.error("Failed to delete feature endpoint:", error);
-        return res.status(500).json({ error: "Failed to delete feature endpoint", details: error.message });
+        return res.status(500).json({ error: "Server error", details: error.message });
     }
 });
 

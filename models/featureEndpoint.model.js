@@ -3,11 +3,14 @@ const sequelize = require("../config/db"); // Import DB connection
 const Feature = require("./feature.model"); // Import Feature model
 
 const FeatureEndpoint = sequelize.define("FeatureEndpoint", {
+    endPointId: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+    },
     feature_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
         references: {
             model: Feature,
             key: "id"
@@ -17,7 +20,7 @@ const FeatureEndpoint = sequelize.define("FeatureEndpoint", {
     url_endpoint: {
         type: DataTypes.STRING(255),
         allowNull: false,
-        unique: true // Ensures each URL is unique
+        unique: true 
     }
 }, {
     tableName: "feature_endpoints",

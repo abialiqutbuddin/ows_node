@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db"); // Import database connection
 const OwsReqMas = require("./owsReqMas.model"); // Import related table
 
-const OwsReqForm = sequelize.define("OwsReqForm", {
+const OwsReqForm = sequelize.define("owsReqForm", {
   reqId: {
     type: DataTypes.INTEGER,
     unique: true,

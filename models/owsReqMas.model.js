@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db"); 
 
-const OwsReqMas = sequelize.define("OwsReqMas", {
+const OwsReqMas = sequelize.define("owsReqMas", {
   reqMasId: {
     type: DataTypes.INTEGER,
     unique: true,

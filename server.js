@@ -4,16 +4,16 @@ const cors = require('cors');
 const axios = require('axios');
 const fs = require('fs'); 
 const https = require("https");
-const db = require("./config/db"); // Database connection
-const authRoutes = require("./routes/authRoutes"); // Authentication routes
-const userRoutes = require("./routes/userRoutes"); // Authentication routes
-const moduleRoutes = require("./routes/moduleRoutes"); // Authentication routes
-const permissionRoutes = require("./routes/permissionRoutes"); // Authentication routes
-const authMiddleware = require("./middleware/authMiddleWare"); // Middleware to protect routes
-const sendMail = require("./config/mail"); // Mail service
-const apiEndPointsRoutes = require("./routes/apiEndPointsRoutes"); // Middleware to protect routes
-require("dotenv").config(); // Load environment variables
+const db = require("./config/db"); 
+const authRoutes = require("./routes/authRoutes"); 
+const userRoutes = require("./routes/userRoutes"); 
+const moduleRoutes = require("./routes/moduleRoutes"); 
+const permissionRoutes = require("./routes/permissionRoutes"); 
+const authMiddleware = require("./middleware/authMiddleWare"); 
+const sendMail = require("./config/mail"); 
+require("dotenv").config(); 
 const OwsReqForm = require("./models/owsReqForm.model"); 
+//const fetchViaProxy = require("./proxy"); 
 
 const app = express();
 
@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 
 // Authentication Routes
 app.use("/auth", authRoutes);
-app.use("/",moduleRoutes,permissionRoutes,userRoutes,apiEndPointsRoutes);
+app.use("/",moduleRoutes,permissionRoutes,userRoutes);
 
 app.get("/get-last-req", authMiddleware, async (req, res) => {
     try {
@@ -221,33 +221,81 @@ app.get('/fetch-image', async (req, res) => {
     }
 });
 
-// Endpoint to fetch profile data
-// app.get("/get-profile/:itsId",authMiddleware, async (req, res) => {
-//     const itsId = req.params.itsId;
-//     console.log("HERE");
-//     // URL with dynamic `itsId`
-//     const url = `https://paktalim.com/admin/ws_app/GetProfileEducation/${itsId}?access_key=8803c22b50548c9d5b1401e3ab5854812c4dcacb&username=40459629&password=1107865253`;
+app.post("/get-profile", authMiddleware, async (req, res) => {
+    try {
+        const { its_id } = req.body;
 
-//     try {
-//         const response = await axios.get(url);
-//         res.status(200).json(response.data);
-//     } catch (error) {
-//         console.error("Error fetching profile data:", error.message);
-//         res.status(500).json({ error: "Failed to fetch profile data" });
-//     }
-// });
+        // ✅ Validate input
+        if (!its_id) {
+            return res.status(400).json({ error: "Missing 'its_id' in request body" });
+        }
+        if (typeof its_id !== "string" || its_id.trim().length === 0) {
+            return res.status(400).json({ error: "'its_id' must be a non-empty string" });
+        }
+
+        console.log("Fetching profile for ITS ID:", its_id);
+
+        // URL with dynamic `its_id`
+        const url = `https://paktalim.com/admin/ws_app/GetProfileEducation/${its_id}?access_key=8803c22b50548c9d5b1401e3ab5854812c4dcacb&username=40459629&password=1107865253`;
+        // Fetch profile data
+        //const response = await fetchViaProxy(url);
+        const response = await axios.get(url);
+
+        return res.status(200).json(response.data);
+
+    } catch (error) {
+        console.error("Error fetching profile data:", error.message);
+
+        if (error.response) {
+            return res.status(error.response.status).json({ error: "Failed to fetch profile data", details: error.response.data });
+        }
+
+        return res.status(500).json({ error: "Server error", details: error.message });
+    }
+});
+
+
+// NEW FAMILY API
+app.post("/get-family-profile", authMiddleware, async (req, res) => {
+    try {
+        const { its_id } = req.body;
+
+        // ✅ Validate input
+        if (!its_id) {
+            return res.status(400).json({ error: "Missing 'its_id' in request body" });
+        }
+        if (typeof its_id !== "string" || its_id.trim().length === 0) {
+            return res.status(400).json({ error: "'its_id' must be a non-empty string" });
+        }
+
+        console.log("Fetching family profile for ITS ID:", its_id);
+        const url = `http://182.188.38.224:8083/crc_live/backend/dist/mumineen/getFamilyDetails.php?user_name=umoor_talimiyah&password=UTalim2025&token=0a1d240f3f39c454e22b2402303aa2959d00b770d9802ed359d75cf07d2e2b65&its_id=${its_id}`;
+        //const url1 = "http://182.188.38.224:8083/crc_live/backend/dist/mumineen/getFamilyDetails.php?user_name=umoor_talimiyah&password=UTalim2025&token=0a1d240f3f39c454e22b2402303aa2959d00b770d9802ed359d75cf07d2e2b65&its_id=30475507";
+        // Fetch family data
+        //const response = await fetchViaProxy(url1);
+        const response = await axios.get(url);
+        return res.status(200).json(response);
+
+    } catch (error) {
+        console.error("Error fetching family data:", error.message);
+
+        if (error.response) {
+            return res.status(error.response.status).json({ error: "Failed to fetch family data", details: error.response.data });
+        }
+
+        return res.status(500).json({ error: "Server error", details: error.message });
+    }
+});
 
 // Endpoint to fetch family profile data
-app.get("/get-family-profile/:itsId",authMiddleware, async (req, res) => {
-    const itsId = req.params.itsId;
+app.post("/get-family-profile-old",authMiddleware, async (req, res) => {
+    const { itsId } = req.body;
 
-    // URL with dynamic `itsId`
     const url = `https://paktalim.com/admin/ws_app/GetProfileFamily/${itsId}?access_key=c197364bbcef92456a31b1773941964a728e2c33&username=40459629&password=1107865253`;
 
     try {
         const response = await axios.get(url);
         if (response.data) {
-            console.log(response.data);
             res.status(200).json(response.data);
         } else {
             res.status(404).json({ message: "Family profile not found." });
@@ -258,23 +306,43 @@ app.get("/get-family-profile/:itsId",authMiddleware, async (req, res) => {
     }
 });
 
-app.get('/fetch-pdf:its',authMiddleware, async (req, res) => {
-
-    const its = req.params.its
+app.post("/fetch-pdf", authMiddleware, async (req, res) => {
     try {
+        const { its } = req.body;
+
+        // ✅ Validate input
+        if (!its) {
+            return res.status(400).json({ error: "Missing 'its' in request body" });
+        }
+        if (typeof its !== "string" || its.trim().length === 0) {
+            return res.status(400).json({ error: "'its' must be a non-empty string" });
+        }
+
+        // ✅ Construct the PDF URL
         const pdfUrl = `https://paktalim.com/admin/ws_app/GetProfilePDF/${its}?access_key=2f1d0195f15f9e527665b4a87e958586a4da8de1&username=40459629`;
 
         console.log("Fetching PDF from URL:", pdfUrl);
 
-        const response = await axios.get(pdfUrl, { responseType: 'arraybuffer' });
+        // ✅ Fetch the PDF as a binary array
+        const response = await axios.get(pdfUrl, { responseType: "arraybuffer" });
 
-        res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', 'inline; filename="profile.pdf"');
+        // ✅ Set headers for PDF response
+        res.setHeader("Content-Type", "application/pdf");
+        res.setHeader("Content-Disposition", 'inline; filename="profile.pdf"');
 
+        // ✅ Send the PDF file
         res.send(response.data);
     } catch (error) {
-        console.error('Error fetching the PDF file:', error.message);
-        res.status(500).json({ error: 'Failed to fetch PDF file' });
+        console.error("Error fetching the PDF file:", error.message);
+
+        if (error.response) {
+            return res.status(error.response.status).json({
+                error: "Failed to fetch PDF file",
+                details: error.response.data,
+            });
+        }
+
+        res.status(500).json({ error: "Server error", details: error.message });
     }
 });
 
@@ -352,7 +420,7 @@ app.get("/user-permissions", authMiddleware, async (req, res) => {
 app.get("/get-url",authMiddleware, async (req, res) => {
     //console.log("HERE");
     try {
-        const { url, username, password } = req.query;        
+        const { url } = req.query;        
         if (!url) {
             return res.status(400).json({ error: "URL parameter is required" });
         }

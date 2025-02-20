@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db"); // Import database connection
 
-const OwsCodeFile = sequelize.define("OwsCodeFile", {
+const OwsCodeFile = sequelize.define("owsCodeFile", {
   codId: {
     type: DataTypes.INTEGER,
     unique: true,

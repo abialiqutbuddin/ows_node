@@ -62,11 +62,21 @@ router.get("/users",authMiddleware, async (req, res) => {
 });
 
 // Get user by ITS
-router.get("/user/:itsId",authMiddleware, async (req, res) => {
+router.post("/user/get", authMiddleware, async (req, res) => {
     try {
-        const itsId = req.params.itsId;
+        const { its_id } = req.body;
 
-        const user = await User.findByPk(itsId, {
+        // Validate input
+        if (!its_id) {
+            return res.status(400).json({ error: "Missing 'its_id' in request body" });
+        }
+
+        if (typeof its_id !== "string" || its_id.trim().length === 0) {
+            return res.status(400).json({ error: "'its_id' must be a non-empty string" });
+        }
+
+        // Fetch user
+        const user = await User.findByPk(its_id, {
             attributes: ["its_id", "role", "name", "email"]
         });
 
@@ -75,50 +85,77 @@ router.get("/user/:itsId",authMiddleware, async (req, res) => {
         }
 
         return res.status(200).json(user);
-
     } catch (error) {
         console.error("Failed to fetch user:", error);
-        return res.status(500).json({ error: "Failed to fetch user", details: error.message });
+        return res.status(500).json({ error: "Server error", details: error.message });
     }
 });
 
 // Update users
-router.put("/user/:itsId",authMiddleware, async (req, res) => {
+router.put("/user/update", authMiddleware, async (req, res) => {
     try {
-        const itsId = req.params.itsId;
-        const { name, role, email } = req.body;
+        const { its_id, name, role, email } = req.body;
 
-        const user = await User.findByPk(itsId);
+        // ✅ Validate input
+        if (!its_id) {
+            return res.status(400).json({ error: "Missing 'its_id' in request body" });
+        }
+        if (typeof its_id !== "string" || its_id.trim().length === 0) {
+            return res.status(400).json({ error: "'its_id' must be a non-empty string" });
+        }
+        if (name && typeof name !== "string") {
+            return res.status(400).json({ error: "'name' must be a string" });
+        }
+        if (role && !["admin", "mini-admin", "user"].includes(role)) {
+            return res.status(400).json({ error: "Invalid 'role'. Allowed values: 'admin', 'mini-admin', 'user'" });
+        }
+        if (email && !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+            return res.status(400).json({ error: "Invalid email format" });
+        }
+
+        // ✅ Fetch user
+        const user = await User.findByPk(its_id);
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }
 
+        // ✅ Update user details
         await user.update({ name, role, email });
 
         return res.status(200).json({ message: "User updated successfully", user });
 
     } catch (error) {
         console.error("Failed to update user:", error);
-        return res.status(500).json({ error: "Failed to update user", details: error.message });
+        return res.status(500).json({ error: "Server error", details: error.message });
     }
 });
 
 // Delete users
-router.delete("/user/:itsId",authMiddleware, async (req, res) => {
+router.delete("/user/delete", authMiddleware, async (req, res) => {
     try {
-        const itsId = req.params.itsId;
+        const { its_id } = req.body;
 
-        const user = await User.findByPk(itsId);
+        // ✅ Validate input
+        if (!its_id) {
+            return res.status(400).json({ error: "Missing 'its_id' in request body" });
+        }
+        if (typeof its_id !== "string" || its_id.trim().length === 0) {
+            return res.status(400).json({ error: "'its_id' must be a non-empty string" });
+        }
+
+        // ✅ Fetch user
+        const user = await User.findByPk(its_id);
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }
 
+        // ✅ Delete user
         await user.destroy();
         return res.status(200).json({ message: "User deleted successfully" });
 
     } catch (error) {
         console.error("Failed to delete user:", error);
-        return res.status(500).json({ error: "Failed to delete user", details: error.message });
+        return res.status(500).json({ error: "Server error", details: error.message });
     }
 });
 

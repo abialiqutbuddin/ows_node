@@ -62,7 +62,9 @@ const checkPermissions = async (its_id, originalUrl, next, res) => {
             include: [{ model: Feature }]
         });
 
-        if (!featureEndpoint) return res.status(404).json({ error: "Feature not found for this URL." });
+        console.log(featureEndpoint);
+
+        if (!featureEndpoint) return res.status(404).json({ error: "Forbidden Access!" });
 
         // ✅ Check if User Has Permission for this Feature
         const permission = await Permission.findOne({

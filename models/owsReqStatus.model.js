@@ -1,14 +1,14 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db"); 
 
-const OwsReqStatus = sequelize.define("OwsReqStatus", {
+const OwsReqStatus = sequelize.define("owsReqStatus", {
   reqId: {
     type: DataTypes.INTEGER,
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,
     references: {
-      model: "OwsReqForm", // Table Name
+      model: "owsReqForm", // Table Name
       key: "reqId"
     },
     onDelete: "CASCADE"
@@ -17,7 +17,7 @@ const OwsReqStatus = sequelize.define("OwsReqStatus", {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: "OwsCodeFile",
+      model: "owsCodeFile",
       key: "codId"
     },
     onDelete: "CASCADE"

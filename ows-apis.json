@@ -1,166 +1,818 @@
 {
-    "info": {
-      "_postman_id": "12345-67890-abcdef",
-      "name": "OWS Node API Collection",
-      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-    },
-    "item": [
-      {
-        "name": "Auth",
-        "item": [
-          {
-            "name": "Register User",
-            "request": {
-              "method": "POST",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
-              "url": { "raw": "{{base_url}}/auth/register", "host": ["{{base_url}}"], "path": ["auth", "register"] },
-              "body": {
-                "mode": "raw",
-                "raw": "{\n    \"username\": \"testuser\",\n    \"password\": \"securePassword123\"\n}"
-              }
-            },
-            "response": []
-          },
-          {
-            "name": "Login User",
-            "event": [
+  "info": {
+    "_postman_id": "12345-67890-abcdef",
+    "name": "OWS Node API Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
               {
-                "listen": "test",
-                "script": {
-                  "exec": [
-                    "var jsonData = pm.response.json();",
-                    "pm.globals.set(\"token\", jsonData.token);"
-                  ],
-                  "type": "text/javascript"
-                }
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
-            "request": {
-              "method": "POST",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
-              "url": { "raw": "{{base_url}}/auth/login", "host": ["{{base_url}}"], "path": ["auth", "login"] },
-              "body": {
-                "mode": "raw",
-                "raw": "{\n    \"username\": \"testuser\",\n    \"password\": \"securePassword123\"\n}"
-              }
-            },
-            "response": []
-          }
-        ]
-      },
-      {
-        "name": "Protected Routes",
-        "item": [
-          {
-            "name": "Get Last Request",
-            "request": {
-              "method": "GET",
-              "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
-              "url": { "raw": "{{base_url}}/get-last-req", "host": ["{{base_url}}"], "path": ["get-last-req"] }
-            },
-            "response": []
-          },
-          {
-            "name": "Add Request",
-            "request": {
-              "method": "POST",
-              "header": [
-                { "key": "Authorization", "value": "Bearer {{token}}" },
-                { "key": "Content-Type", "value": "application/json" }
+            "url": {
+              "raw": "{{base_url}}/auth/register",
+              "host": [
+                "{{base_url}}"
               ],
-              "url": { "raw": "{{base_url}}/add-request", "host": ["{{base_url}}"], "path": ["add-request"] },
-              "body": {
-                "mode": "raw",
-                "raw": "{\n    \"memberITS\": \"12345\",\n    \"firstName\": \"John\",\n    \"fullName\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"phoneNumber\": \"9876543210\",\n    \"whatsappNumber\": \"9876543210\",\n    \"dob\": \"1990-01-01\",\n    \"address\": \"123 Main St\"\n}"
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"testuser\",\n    \"password\": \"securePassword123\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.globals.set(\"token\", jsonData.token);"
+                ],
+                "type": "text/javascript"
               }
-            },
-            "response": []
-          }
-        ]
-      },
-      {
-        "name": "Public Routes",
-        "item": [
-          {
-            "name": "Get Requests",
-            "request": {
-              "method": "GET",
-              "url": { "raw": "{{base_url}}/get-requests", "host": ["{{base_url}}"], "path": ["get-requests"] }
-            },
-            "response": []
-          },
-          {
-            "name": "Fetch Image",
-            "request": {
-              "method": "GET",
-              "url": {
-                "raw": "{{base_url}}/fetch-image?url=https://example.com/image.jpg",
-                "host": ["{{base_url}}"],
-                "path": ["fetch-image"],
-                "query": [{ "key": "url", "value": "https://example.com/image.jpg" }]
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
               }
-            },
-            "response": []
-          }
-        ]
-      },
-      {
-        "name": "Profile APIs",
-        "item": [
-          {
-            "name": "Get Profile",
-            "request": {
-              "method": "GET",
-              "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
-              "url": { "raw": "{{base_url}}/get-profile/12345", "host": ["{{base_url}}"], "path": ["get-profile", "12345"] }
-            },
-            "response": []
-          },
-          {
-            "name": "Get Family Profile",
-            "request": {
-              "method": "GET",
-              "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
-              "url": { "raw": "{{base_url}}/get-family-profile/12345", "host": ["{{base_url}}"], "path": ["get-family-profile", "12345"] }
-            },
-            "response": []
-          }
-        ]
-      },
-      {
-        "name": "PDF & Email",
-        "item": [
-          {
-            "name": "Fetch PDF",
-            "request": {
-              "method": "GET",
-              "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
-              "url": { "raw": "{{base_url}}/fetch-pdf/12345", "host": ["{{base_url}}"], "path": ["fetch-pdf", "12345"] }
-            },
-            "response": []
-          },
-          {
-            "name": "Send Email",
-            "request": {
-              "method": "POST",
-              "header": [
-                { "key": "Authorization", "value": "Bearer {{token}}" },
-                { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
               ],
-              "url": { "raw": "{{base_url}}/send-email", "host": ["{{base_url}}"], "path": ["send-email"] },
-              "body": {
-                "mode": "raw",
-                "raw": "{\n    \"to\": \"user@example.com\",\n    \"subject\": \"Test Email\",\n    \"text\": \"This is a test email.\",\n    \"html\": \"<b>This is a test email.</b>\"\n}"
-              }
+              "path": [
+                "auth",
+                "login"
+              ]
             },
-            "response": []
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"testuser\",\n    \"password\": \"securePassword123\"\n}"
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Protected Routes",
+      "item": [
+        {
+          "name": "Get Last Request",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/get-last-req",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "get-last-req"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add Request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/add-request",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "add-request"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"memberITS\": \"12345\",\n    \"firstName\": \"John\",\n    \"fullName\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"phoneNumber\": \"9876543210\",\n    \"whatsappNumber\": \"9876543210\",\n    \"dob\": \"1990-01-01\",\n    \"address\": \"123 Main St\"\n}"
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Public Routes",
+      "item": [
+        {
+          "name": "Get Requests",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/get-requests",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "get-requests"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Fetch Image",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/fetch-image?url=https://example.com/image.jpg",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "fetch-image"
+              ],
+              "query": [
+                {
+                  "key": "url",
+                  "value": "https://example.com/image.jpg"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Feature Management",
+      "item": [
+        {
+          "name": "Create Feature",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"module_id\": \"{{module_id}}\",\n    \"feature_name\": \"{{feature_name}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/feature",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "feature"
+              ]
+            }
           }
-        ]
-      }
-    ],
-    "event": [],
-    "variable": [
-      { "key": "base_url", "value": "http://localhost:3002", "type": "string" },
-      { "key": "token", "value": "", "type": "string" }
-    ]
-  }
+        },
+        {
+          "name": "Get All Features",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/features",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "features"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Feature by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/feature/{{feature_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "feature",
+                "{{feature_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Feature",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"feature_name\": \"{{feature_name}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/feature/{{feature_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "feature",
+                "{{feature_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Feature",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/feature/{{feature_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "feature",
+                "{{feature_id}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Module Management",
+      "item": [
+        {
+          "name": "Create Module",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"module_name\": \"{{module_name}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/module",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "module"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get All Modules",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/modules",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "modules"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Module by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/module/{{module_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "module",
+                "{{module_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Module",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"module_name\": \"{{module_name}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/module/{{module_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "module",
+                "{{module_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Module",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/module/{{module_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "module",
+                "{{module_id}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Profile APIs",
+      "item": [
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/get-profile/12345",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "get-profile",
+                "12345"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Family Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/get-family-profile/12345",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "get-family-profile",
+                "12345"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Permission Management",
+      "item": [
+          {
+              "name": "Create Permission",
+              "request": {
+                  "method": "POST",
+                  "header": [
+                      {
+                          "key": "Authorization",
+                          "value": "Bearer {{auth_token}}",
+                          "type": "text"
+                      },
+                      {
+                          "key": "Content-Type",
+                          "value": "application/json",
+                          "type": "text"
+                      }
+                  ],
+                  "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"its_id\": \"{{its_id}}\",\n    \"module_id\": \"{{module_id}}\",\n    \"feature_id\": \"{{feature_id}}\"\n}"
+                  },
+                  "url": {
+                      "raw": "{{baseUrl}}/permission",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["permission"]
+                  }
+              }
+          },
+          {
+              "name": "Get All Permissions",
+              "request": {
+                  "method": "GET",
+                  "header": [
+                      {
+                          "key": "Authorization",
+                          "value": "Bearer {{auth_token}}",
+                          "type": "text"
+                      }
+                  ],
+                  "url": {
+                      "raw": "{{baseUrl}}/permissions",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["permissions"]
+                  }
+              }
+          },
+          {
+              "name": "Get Permissions by ITS ID",
+              "request": {
+                  "method": "GET",
+                  "header": [
+                      {
+                          "key": "Authorization",
+                          "value": "Bearer {{auth_token}}",
+                          "type": "text"
+                      }
+                  ],
+                  "url": {
+                      "raw": "{{baseUrl}}/permission/{{its_id}}",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["permission", "{{its_id}}"]
+                  }
+              }
+          },
+          {
+              "name": "Update Permission",
+              "request": {
+                  "method": "PUT",
+                  "header": [
+                      {
+                          "key": "Authorization",
+                          "value": "Bearer {{auth_token}}",
+                          "type": "text"
+                      },
+                      {
+                          "key": "Content-Type",
+                          "value": "application/json",
+                          "type": "text"
+                      }
+                  ],
+                  "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"module_id\": \"{{module_id}}\",\n    \"feature_id\": \"{{feature_id}}\"\n}"
+                  },
+                  "url": {
+                      "raw": "{{baseUrl}}/permission/{{its_id}}",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["permission", "{{its_id}}"]
+                  }
+              }
+          },
+          {
+              "name": "Delete Permission",
+              "request": {
+                  "method": "DELETE",
+                  "header": [
+                      {
+                          "key": "Authorization",
+                          "value": "Bearer {{auth_token}}",
+                          "type": "text"
+                      }
+                  ],
+                  "url": {
+                      "raw": "{{baseUrl}}/permission/{{its_id}}/{{module_id}}/{{feature_id}}",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["permission", "{{its_id}}", "{{module_id}}", "{{feature_id}}"]
+                  }
+              }
+          }
+      ]
+  },
+  {
+      "name": "Feature Endpoint Management",
+      "item": [
+          {
+              "name": "Create Feature Endpoint",
+              "request": {
+                  "method": "POST",
+                  "header": [
+                      {
+                          "key": "Authorization",
+                          "value": "Bearer {{auth_token}}",
+                          "type": "text"
+                      },
+                      {
+                          "key": "Content-Type",
+                          "value": "application/json",
+                          "type": "text"
+                      }
+                  ],
+                  "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"feature_id\": \"{{feature_id}}\",\n    \"url_endpoint\": \"{{url_endpoint}}\"\n}"
+                  },
+                  "url": {
+                      "raw": "{{baseUrl}}/feature-endpoint",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["feature-endpoint"]
+                  }
+              }
+          },
+          {
+              "name": "Get All Feature Endpoints",
+              "request": {
+                  "method": "GET",
+                  "header": [
+                      {
+                          "key": "Authorization",
+                          "value": "Bearer {{auth_token}}",
+                          "type": "text"
+                      }
+                  ],
+                  "url": {
+                      "raw": "{{baseUrl}}/feature-endpoints",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["feature-endpoints"]
+                  }
+              }
+          },
+          {
+              "name": "Get Feature Endpoint by ID",
+              "request": {
+                  "method": "POST",
+                  "header": [
+                      {
+                          "key": "Authorization",
+                          "value": "Bearer {{auth_token}}",
+                          "type": "text"
+                      },
+                      {
+                          "key": "Content-Type",
+                          "value": "application/json",
+                          "type": "text"
+                      }
+                  ],
+                  "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"id\": \"{{feature_endpoint_id}}\"\n}"
+                  },
+                  "url": {
+                      "raw": "{{baseUrl}}/feature-endpoint/get",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["feature-endpoint", "get"]
+                  }
+              }
+          },
+          {
+              "name": "Update Feature Endpoint",
+              "request": {
+                  "method": "PUT",
+                  "header": [
+                      {
+                          "key": "Authorization",
+                          "value": "Bearer {{auth_token}}",
+                          "type": "text"
+                      },
+                      {
+                          "key": "Content-Type",
+                          "value": "application/json",
+                          "type": "text"
+                      }
+                  ],
+                  "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"id\": \"{{feature_endpoint_id}}\",\n    \"url_endpoint\": \"{{url_endpoint}}\"\n}"
+                  },
+                  "url": {
+                      "raw": "{{baseUrl}}/feature-endpoint/update",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["feature-endpoint", "update"]
+                  }
+              }
+          },
+          {
+              "name": "Delete Feature Endpoint",
+              "request": {
+                  "method": "DELETE",
+                  "header": [
+                      {
+                          "key": "Authorization",
+                          "value": "Bearer {{auth_token}}",
+                          "type": "text"
+                      },
+                      {
+                          "key": "Content-Type",
+                          "value": "application/json",
+                          "type": "text"
+                      }
+                  ],
+                  "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"id\": \"{{feature_endpoint_id}}\"\n}"
+                  },
+                  "url": {
+                      "raw": "{{baseUrl}}/feature-endpoint/delete",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["feature-endpoint", "delete"]
+                  }
+              }
+          }
+      ]
+  },
+    {
+      "name": "PDF & Email",
+      "item": [
+        {
+          "name": "Fetch PDF",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/fetch-pdf/12345",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "fetch-pdf",
+                "12345"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Send Email",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/send-email",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "send-email"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"to\": \"user@example.com\",\n    \"subject\": \"Test Email\",\n    \"text\": \"This is a test email.\",\n    \"html\": \"<b>This is a test email.</b>\"\n}"
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3002",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

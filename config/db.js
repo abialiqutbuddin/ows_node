@@ -1,38 +1,7 @@
 const { Sequelize } = require("sequelize");
 
-// const db = mysql.createConnection({
-//     host: "36.50.12.171",  
-//     user: "aak",      
-//     password: "aak110", 
-//     database: "ows",   
-//     multipleStatements: true
-// });
-
-// const db = mysql.createConnection({
-//     host: "localhost",  // Replace with your host
-//     user: "root",       // Replace with your username
-//     password: "Abiali46@", // Replace with your password
-//     database: "ows",   // Replace with your database name
-//     multipleStatements: true
-// });
-
-const sequelize = new Sequelize("ows2", "root", "Abiali46@", {
-    host: "localhost", 
-    dialect: "mysql",  
-    dialectOptions: {
-        multipleStatements: true, 
-    },
-    pool: {
-        max: 10, // Max connections
-        min: 0,
-        acquire: 30000, // Maximum time in ms to try getting a connection
-        idle: 10000 // Connection timeout when idle
-    },
-    logging: false // Set to `true` for debugging SQL queries
-});
-
-// const sequelize = new Sequelize("ows", "aak", "aak110", {
-//     host: "36.50.12.171", 
+// const sequelize = new Sequelize("owstest", "aak", "aak110", {
+//     host: "localhost", 
 //     dialect: "mysql",  
 //     dialectOptions: {
 //         multipleStatements: true, 
@@ -45,6 +14,22 @@ const sequelize = new Sequelize("ows2", "root", "Abiali46@", {
 //     },
 //     logging: false // Set to `true` for debugging SQL queries
 // });
+
+const sequelize = new Sequelize("owstest", "aak", "aak110", {
+    host: "36.50.12.171", 
+    dialect: "mysql", 
+    port: 3309, 
+    dialectOptions: {
+        multipleStatements: true, 
+    },
+    pool: {
+        max: 10, // Max connections
+        min: 0,
+        acquire: 30000, // Maximum time in ms to try getting a connection
+        idle: 10000 // Connection timeout when idle
+    },
+    logging: false // Set to `true` for debugging SQL queries
+});
 
 // ✅ Function to check database connection
 async function connectToDatabase() {
