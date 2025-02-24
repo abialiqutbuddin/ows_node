@@ -7,12 +7,12 @@ const { Sequelize } = require("sequelize");
 //         multipleStatements: true, 
 //     },
 //     pool: {
-//         max: 10, // Max connections
+//         max: 10, 
 //         min: 0,
-//         acquire: 30000, // Maximum time in ms to try getting a connection
-//         idle: 10000 // Connection timeout when idle
+//         acquire: 30000, 
+//         idle: 10000 
 //     },
-//     logging: false // Set to `true` for debugging SQL queries
+//     logging: false 
 // });
 
 const sequelize = new Sequelize("owstest", "aak", "aak110", {
@@ -23,36 +23,36 @@ const sequelize = new Sequelize("owstest", "aak", "aak110", {
         multipleStatements: true, 
     },
     pool: {
-        max: 10, // Max connections
+        max: 10,
         min: 0,
-        acquire: 30000, // Maximum time in ms to try getting a connection
-        idle: 10000 // Connection timeout when idle
+        acquire: 30000, 
+        idle: 10000 
     },
-    logging: false // Set to `true` for debugging SQL queries
+    logging: false 
 });
 
-// ✅ Function to check database connection
+// Function to check database connection
 async function connectToDatabase() {
     try {
         await sequelize.authenticate();
-        console.log("✅ Connected to MySQL database.");
+        console.log("Connected to MySQL database.");
     } catch (error) {
-        console.error("❌ Database connection failed:", error.message);
-        setTimeout(connectToDatabase, 5000); // Retry connection every 5 seconds
+        console.error("Database connection failed:", error.message);
+        setTimeout(connectToDatabase, 5000); 
     }
 }
 
-// ✅ Keep connection alive
+// Keep connection alive
 setInterval(async () => {
     try {
         await sequelize.query("SELECT 1");
     } catch (err) {
-        console.error("❌ MySQL keep-alive failed:", err.message);
+        console.error("MySQL keep-alive failed:", err.message);
         connectToDatabase();
     }
-}, 60000); // Run every 60 seconds
+}, 60000); 
 
-// ✅ Initialize database connection
+// Initialize database connection
 connectToDatabase();
 
 module.exports = sequelize;

@@ -36,7 +36,7 @@ router.post("/login", async (req, res) => {
         return returnUserPermissions(user, res);
 
     } catch (err) {
-        console.error("Auth Error:", err.message);
+        //console.error("Auth Error:", err.message);
         return res.status(500).json({ error: "Internal Server Error" });
     }
 });
@@ -53,13 +53,33 @@ async function returnUserPermissions(user, res) {
             ]
         });
 
-        // ✅ Transform Permissions Data
-        const userPermissions = permissions.map(p => ({
+        // ✅ Transform Permissions Data from DB
+        let userPermissions = permissions.map(p => ({
             module_id: p.module_id,
             module_name: p.Module?.module_name,
             feature_id: p.feature_id,
             feature_name: p.Feature?.feature_name
         }));
+
+        // ✅ Define Default Permissions for Features 2-6
+        const defaultFeatureIds = [2, 3, 4, 5];
+
+        // ✅ Fetch feature details for 2-6 (assuming these exist in DB)
+        const defaultFeatures = await Feature.findAll({
+            where: { id: defaultFeatureIds },
+            attributes: ["id", "feature_name"]
+        });
+
+        // ✅ Add Default Features (if they don’t already exist in userPermissions)
+        const defaultPermissions = defaultFeatures.map(feature => ({
+            module_id: 1, // Assuming default features aren't tied to a specific module
+            module_name: "edu_assistance",
+            feature_id: feature.id,
+            feature_name: feature.feature_name
+        }));
+
+        // ✅ Merge Both Permissions
+        userPermissions = [...userPermissions, ...defaultPermissions];
 
         // ✅ Generate JWT Token
         const tokenPayload = {
@@ -67,6 +87,8 @@ async function returnUserPermissions(user, res) {
             role: user.role,
             name: user.name,
             email: user.email,
+            mohalla: user.mohalla,
+            umoor: user.umoor,
             permissions: userPermissions
         };
 

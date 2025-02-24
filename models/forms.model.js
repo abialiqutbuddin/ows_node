@@ -10,7 +10,7 @@ const Form = sequelize.define("Form", {
         primaryKey: true
     },
     user_id: {
-        type: DataTypes.CHAR(8),
+        type: DataTypes.CHAR(20),
         allowNull: false,
         references: {
             model: User,

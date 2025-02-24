@@ -27,6 +27,10 @@ const OwsReqForm = sequelize.define("owsReqForm", {
     type: DataTypes.STRING(100),
     allowNull: false
   },
+  mohalla:{
+    type: DataTypes.STRING(255),
+    allowNull: true
+  },
   city: {
     type: DataTypes.STRING(50),
     allowNull: true
@@ -89,7 +93,7 @@ const OwsReqForm = sequelize.define("owsReqForm", {
     allowNull: true
   },
   currentStatus: {
-    type: DataTypes.STRING(10),
+    type: DataTypes.STRING(100),
     allowNull: true
   },
   created_by: {
@@ -117,7 +121,6 @@ const OwsReqForm = sequelize.define("owsReqForm", {
   updatedAt: "updated_at"
 });
 
-// Define Foreign Key Relation
 OwsReqForm.belongsTo(OwsReqMas, { foreignKey: "ITS", onDelete: "CASCADE" });
 
 module.exports = OwsReqForm;

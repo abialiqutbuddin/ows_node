@@ -3,7 +3,7 @@ const sequelize = require("../config/db");
 
 const User = sequelize.define("User", {
     its_id: {
-        type: DataTypes.CHAR(8),
+        type: DataTypes.CHAR(20),
         allowNull: false,
         primaryKey: true,
         unique: true
@@ -25,6 +25,14 @@ const User = sequelize.define("User", {
     password: {
         type: DataTypes.STRING(255),
         allowNull: false
+    },
+    mohalla:{
+        type: DataTypes.STRING(255),
+        allowNull: false
+    },
+    umoor:{
+        type: DataTypes.STRING(255),
+        allowNull: true
     }
 }, {
     tableName: "users",

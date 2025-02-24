@@ -12,7 +12,7 @@ const Permission = sequelize.define("Permission", {
         autoIncrement: true
     },
     its_id: {
-        type: DataTypes.STRING(8),
+        type: DataTypes.STRING(20),
         allowNull: false,
         references: {
             model: User,
