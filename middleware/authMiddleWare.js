@@ -44,7 +44,6 @@ const checkPermissions = async (its_id, originalUrl, next, res) => {
     try {
         let user = await User.findOne({ where: { its_id } });
 
-        // ✅ If user doesn't exist, use default ITS_ID = 0
         if (!user) {
             user = await User.findOne({ where: { its_id: "0" } });
 
@@ -63,52 +62,13 @@ const checkPermissions = async (its_id, originalUrl, next, res) => {
 
         const featureId = featureEndpoint.feature_id;
 
-        // ✅ Grant Default Access to Feature IDs 2-6
         if (featureId >= 2 && featureId <= 6) {
-            return next(); // ✅ Allow Access
+            return next(); 
         }
 
         // ✅ Check if User Has Permission for other Features
         const permission = await Permission.findOne({
             where: { its_id, feature_id: featureId }
-        });
-
-        if (permission) {
-            return next(); // ✅ Allow Access
-        } else {
-            return res.status(403).json({ error: "Forbidden: You do not have permission for this API" });
-        }
-    } catch (err) {
-        console.error("Database Error:", err.message);
-        return res.status(500).json({ error: "Database error" });
-    }
-};
-
-// 🔹 Function to Check Feature Permissions Based on URL
-const checkPermissions2 = async (its_id, originalUrl, next, res) => {
-    try {
-        let user = await User.findOne({ where: { its_id } });
-
-        // ✅ If user doesn't exist, use default ITS_ID = 0
-        if (!user) {
-            user = await User.findOne({ where: { its_id: "0" } });
-
-            if (!user) return res.status(404).json({ error: "Default user (ITS_ID=0) not found." });
-
-            its_id = "0"; 
-        }
-
-        // ✅ Find Feature for the Requested URL
-        const featureEndpoint = await FeatureEndpoint.findOne({
-            where: { url_endpoint: originalUrl },
-            include: [{ model: Feature }]
-        });
-
-        if (!featureEndpoint) return res.status(404).json({ error: "Forbidden Access!" });
-
-        // ✅ Check if User Has Permission for this Feature
-        const permission = await Permission.findOne({
-            where: { its_id, feature_id: featureEndpoint.feature_id }
         });
 
         if (permission) {

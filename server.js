@@ -14,6 +14,10 @@ const sendMail = require("./config/mail");
 require("dotenv").config();
 const OwsReqForm = require("./models/owsReqForm.model");
 const OwsReqMas = require("./models/owsReqMas.model");
+const AiutRecord = require("./models/aiut_record.model");
+const AmbtRecord = require("./models/ambt_record.model");
+const StsmfRecord = require("./models/stsmf_record.model");
+
 const User = require("./models/user.model");
 
 const app = express();
@@ -22,6 +26,11 @@ const sequelize = require("./config/db");
 app.use(cors());
 app.use(bodyParser.json());
 
+const API_VERSION = "1.1.1"; // Change this based on your version
+
+
+//const uploadRoutes = require("./utils/upload");
+//app.use("/upload", uploadRoutes);
 
 // Authentication Routes
 app.use("/auth", authRoutes);
@@ -344,15 +353,14 @@ app.post("/get-url", authMiddleware, async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+const PORT = 3002;
 
 // Load SSL Certificates
 // const options = {
 //     key: fs.readFileSync("/etc/letsencrypt/live/mode.imadiinnovations.com/privkey.pem"),
 //     cert: fs.readFileSync("/etc/letsencrypt/live/mode.imadiinnovations.com/fullchain.pem"),
 // };
-
-// Start HTTPS Server
-const PORT = 3002;
+// // Start HTTPS Server
 // https.createServer(options, app).listen(PORT, () => {
 //     console.log(`HTTPS Server running on https://mode.imadiinnovations.com:${PORT}`);
 // });
@@ -386,7 +394,7 @@ app.post(
 
         try {
             const {
-                ITS, reqByITS, reqByName, city, institution, class_degree, fieldOfStudy, subject_course,
+                ITS, studentFirstName,studentFullName, reqByITS, reqByName, city, institution, class_degree, fieldOfStudy, subject_course,
                 yearOfStart, grade, email, contactNo, whatsappNo, purpose, fundAsking, classification,
                 organization, description, currentStatus, created_by, updated_by, mohalla, address, dob
             } = req.body;
@@ -401,8 +409,8 @@ app.post(
                 existingUser = await OwsReqMas.create(
                     {
                         ITS,
-                        name: reqByName,
-                        fullName: reqByName,
+                        name: studentFirstName,
+                        fullName: studentFullName,
                         email,
                         mobile: contactNo,
                         whatsapp: whatsappNo,
@@ -441,7 +449,7 @@ app.post(
                     classification,
                     organization,
                     description,
-                    currentStatus,
+                    currentStatus: "Request Generated",
                     created_by,
                     updated_by,
                     mohalla,
@@ -467,23 +475,66 @@ app.post(
 
 app.post("/users-by-mohalla", async (req, res) => {
     try {
-        const { mohalla } = req.body;
+        const { mohalla, org, userRole, ITS } = req.body; // Extract ITS for user filtering
 
-        if (!mohalla) {
+        if (!userRole) {
             return res.status(400).json({
                 success: false,
-                message: "Mohalla name is required",
+                message: "User role is required",
             });
         }
 
-        const users = await OwsReqForm.findAll({
-            where: { mohalla },
-        });
+        let users;
 
-        if (users.length === 0) {
+        if (userRole === "admin") {
+            // ✅ Admins: Fetch all requests
+            console.log("Admin: Fetching all requests...");
+            users = await OwsReqForm.findAll();
+        } else if (userRole === "user") {
+            // ✅ Users: Fetch only their own requests (ITS matching)
+            console.log(`User: Fetching requests for ITS: '${ITS}'...`);
+            users = await OwsReqForm.findAll({
+                where: { ITS },
+            });
+        } else if (userRole === "mini-admin") {
+            if (!mohalla) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Mohalla name is required for Mini-Admin",
+                });
+            }
+
+            if (mohalla === "Unknown") {
+                // ✅ Mini-Admin + Mohalla is "Unknown" → Fetch based on organization
+                if (!org) {
+                    return res.status(400).json({
+                        success: false,
+                        message: "Organization is required when Mohalla is Unknown",
+                    });
+                }
+                console.log(`Mini-Admin: Fetching requests for organization: '${org}'...`);
+                users = await OwsReqForm.findAll({
+                    where: { organization: org },
+                });
+            } else {
+                // ✅ Mini-Admin + Mohalla Provided → Fetch based on Mohalla
+                console.log(`Mini-Admin: Fetching requests for mohalla: '${mohalla}'...`);
+                users = await OwsReqForm.findAll({
+                    where: { mohalla },
+                });
+            }
+        } else {
+            return res.status(403).json({
+                success: false,
+                message: "Unauthorized: Invalid user role",
+            });
+        }
+
+        // ✅ If no users found, return a 404 response
+        if (!users || users.length === 0) {
             return res.status(404).json({
                 success: false,
-                message: "No users found for the specified Mohalla",
+                message: "No requests found for the specified criteria",
             });
         }
 
@@ -643,4 +694,141 @@ app.post("/run-query", authMiddleware, async (req, res) => {
         console.error("Error executing SQL query:", error);
         return res.status(500).json({ success: false, message: "Database query failed", error: error.message });
     }
+});
+
+// POST /api/aiut-records (Create a new AiutRecord)
+app.post("/create-aiut-record", async (req, res) => {
+    try {
+        const { org, mohalla, its, sf, student, father, school, parents_p, org_p } = req.body;
+
+        // Validate required fields
+        if (!org || !student || !father || !school) {
+            return res.status(400).json({ error: "Missing required fields (org, student, father, school)" });
+        }
+
+        // Create a new record
+        const newRecord = await AiutRecord.create({
+            org,
+            mohalla,
+            its,
+            sf,
+            student,
+            father,
+            school,
+            parents_p: parents_p || 0,
+            org_p: org_p || 0
+        });
+
+        res.status(201).json({ message: "Record created successfully", record: newRecord });
+    } catch (error) {
+        console.error("Error creating record:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+app.post("/fetch-aiut-records", async (req, res) => {
+    try {
+        const { its } = req.body;
+
+        if (!its) {
+            return res.status(400).json({ error: "ITS parameter is required in the request body" });
+        }
+
+        const records = await AiutRecord.findAll({ where: { its } });
+
+        if (records.length === 0) {
+            return res.status(404).json({ message: "No records found for this ITS" });
+        }
+
+        res.status(200).json(records);
+    } catch (error) {
+        console.error("Error fetching records:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+app.post("/fetch-records", async (req, res) => {
+    try {
+        const { its } = req.body;
+
+        if (!its) {
+            return res.status(400).json({ error: "ITS parameter is required in the request body" });
+        }
+
+        // Fetch records from both AiutRecord & AmbtRecord tables
+        const aiutRecords = await AiutRecord.findAll({ where: { its } });
+        const ambtRecords = await AmbtRecord.findAll({ where: { its } });
+        const stsmfRecords = await StsmfRecord.findAll({ where: { its } });
+
+
+        // Convert database objects to plain JSON
+        const aiutData = aiutRecords.map(record => ({
+            id: record.id || "",
+            org: record.org || "",
+            mohalla: record.mohalla || "",
+            its: record.its || "",
+            sf: record.sf || "",
+            student: record.student || "",
+            father: record.father || "",
+            school: record.school || "",
+            parents_p: record.parents_p || "",
+            date: "",
+            org_p: record.org_p || "",
+            amount: "",  // Amount field will be empty for Aiut records
+            created_at: record.created_at || "",
+            updated_at: record.updated_at || ""
+        }));
+
+        const ambtData = ambtRecords.map(record => ({
+            id: record.id || "",
+            org: record.org || "",
+            mohalla: record.mohalla || "",
+            its: record.its || "",
+            sf: record.sf || "",
+            student: record.student || "",
+            father: "",  // AmbtRecord doesn't have 'father', so keep empty
+            school: record.school || "",
+            date: record.date || "",
+            parents_p: "", // No parents_p in AmbtRecord
+            org_p: "", // No org_p in AmbtRecord
+            amount: record.amount || "", // Amount field present in AmbtRecord
+            created_at: record.created_at || "",
+            updated_at: record.updated_at || ""
+        }));
+
+        const stsmfData = stsmfRecords.map(record => ({
+            id: record.id || "",
+            org: record.org || "",
+            mohalla: record.mohalla || "",
+            its: record.its || "",
+            sf: record.sf || "",
+            student: "",
+            father: "",
+            school: "",
+            parents_p: "",
+            date: "",
+            org_p: "",
+            amount: record.amount || "", // Amount field present in AmbtRecord
+            created_at: record.created_at || "",
+            updated_at: record.updated_at || ""
+        }));
+
+        // Merge both datasets into one array
+        const combinedData = [...aiutData, ...ambtData, ...stsmfData];
+
+        console.log(combinedData);
+
+        if (combinedData.length === 0) {
+            return res.status(404).json({ message: "No records found for this ITS" });
+        }
+
+        res.status(200).json(combinedData);
+    } catch (error) {
+        console.error("Error fetching records:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+app.get("/api-version", (req, res) => {
+    res.status(200).json({ version: API_VERSION });
 });

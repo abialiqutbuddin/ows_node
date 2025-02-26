@@ -11,6 +11,9 @@ const FeatureEndpoint = require("./models/featureEndpoint.model");
 const Forms = require("./models/forms.model");
 const FormFieldValue = require("./models/formFieldValue.model");
 const FormField = require("./models/formField.model");
+const AiutRecord  = require("./models/aiut_record.model"); // Import models
+const AmbtRecord  = require("./models/ambt_record.model"); // Import models
+const StsmfRecord  = require("./models/stsmf_record.model"); // Import models
 
 (async () => {
   try {

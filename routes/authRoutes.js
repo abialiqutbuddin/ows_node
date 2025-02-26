@@ -78,8 +78,15 @@ async function returnUserPermissions(user, res) {
             feature_name: feature.feature_name
         }));
 
+        const defaultPermissions2 = defaultFeatures.map(feature => ({
+            module_id: 2, // Assuming default features aren't tied to a specific module
+            module_name: "admin_panel",
+            feature_id: 6,
+            feature_name: 'view_requests'
+        }));
+
         // ✅ Merge Both Permissions
-        userPermissions = [...userPermissions, ...defaultPermissions];
+        userPermissions = [...userPermissions, ...defaultPermissions, ...defaultPermissions2];
 
         // ✅ Generate JWT Token
         const tokenPayload = {
