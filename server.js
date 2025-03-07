@@ -17,18 +17,29 @@ const OwsReqMas = require("./models/owsReqMas.model");
 const AiutRecord = require("./models/aiut_record.model");
 const AmbtRecord = require("./models/ambt_record.model");
 const StsmfRecord = require("./models/stsmf_record.model");
-
 const User = require("./models/user.model");
-
+const multer = require('multer');
+const path = require('path');
 const app = express();
 const { body, validationResult } = require("express-validator");
 const sequelize = require("./config/db");
 app.use(cors());
 app.use(bodyParser.json());
 
-const API_VERSION = "1.1.1"; // Change this based on your version
+const API_VERSION = "1.1.3"; // Change this based on your version
 
+const PORT = 3002;
 
+//Load SSL Certificates
+const options = {
+    key: fs.readFileSync("/etc/letsencrypt/live/mode.imadiinnovations.com/privkey.pem"),
+    cert: fs.readFileSync("/etc/letsencrypt/live/mode.imadiinnovations.com/fullchain.pem"),
+};
+// Start HTTPS Server
+https.createServer(options, app).listen(PORT, () => {
+    console.log(`HTTPS Server running on https://mode.imadiinnovations.com:${PORT}`);
+});
+//app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 //const uploadRoutes = require("./utils/upload");
 //app.use("/upload", uploadRoutes);
 
@@ -57,136 +68,6 @@ app.get("/get-last-req", authMiddleware, async (req, res) => {
             details: error.message,
         });
     }
-});
-
-app.post("/add-request", authMiddleware, (req, res) => {
-    const data = req.body;
-
-    const owsReqMasQuery = `
-        INSERT IGNORE INTO owsReqMas (
-    reqMasId, reqDt, ITS, name, fullName, mohalla, address, dob, email, mobile, whatsapp
-) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
-    `;
-
-    const owsReqFormQuery = `
-        INSERT INTO owsReqForm (
-            reqId, ITS, reqByITS, reqByName, city, institution, class_degree, 
-            fieldOfStudy, subject_course, yearOfStart, grade, email, contactNo, 
-            whatsappNo, purpose, fundAsking, classification, organization, 
-            description, currentStatus, created_by
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
-
-    const dbConnection = db;
-
-    dbConnection.beginTransaction((err) => {
-        if (err) {
-            console.error("Transaction failed to start:", err);
-            return res.status(500).send({ error: "Transaction failed to start", details: err });
-        }
-
-        // Fetch the last reqMasId from the table
-        const fetchLastReqMasIdQuery = `SELECT MAX(reqMasId) AS lastReqMasId FROM owsReqMas`;
-
-        dbConnection.query(fetchLastReqMasIdQuery, (fetchErr, fetchResult) => {
-            if (fetchErr) {
-                console.error("Failed to fetch the last reqMasId:", fetchErr);
-                return dbConnection.rollback(() => {
-                    res.status(500).send({ error: "Failed to fetch the last reqMasId", details: fetchErr });
-                });
-            }
-
-            const lastReqMasId = fetchResult[0].lastReqMasId || 0; // Default to 0 if no rows exist
-            const nextReqMasId = lastReqMasId + 1; // Increment by 1
-
-            // Insert into owsReqMas
-            const reqMasValues = [
-                nextReqMasId,
-                new Date().toISOString().slice(0, 19).replace("T", " "), // Current timestamp for reqDt
-                data.memberITS,
-                data.firstName || null,
-                data.fullName,
-                data.mohalla || null,
-                data.address || null,
-                data.dob || null,
-                data.email || null,
-                data.phoneNumber || null,
-                data.whatsappNumber || null,
-            ];
-
-            dbConnection.query(owsReqMasQuery, reqMasValues, (masErr, masResult) => {
-                if (masErr) {
-                    console.error("Failed to insert data into owsReqMas:", masErr);
-                    return dbConnection.rollback(() => {
-                        res.status(500).send({ error: "Failed to insert data into owsReqMas", details: masErr });
-                    });
-                }
-
-                const fetchLastReqFormIdQuery = `SELECT MAX(reqId) AS lastReqFormId FROM owsReqForm`;
-
-
-                dbConnection.query(fetchLastReqFormIdQuery, (fetchErr, fetchResult) => {
-                    if (fetchErr) {
-                        console.error("Failed to fetch the last reqMasId:", fetchErr);
-                        return res.status(500).send({
-                            error: "Failed to fetch the last reqMasId",
-                            details: fetchErr,
-                        });
-                    }
-
-                    const lastReqFormId = fetchResult[0].lastReqFormId || 0; // Default to 0 if no rows exist
-                    const nextReqFormId = lastReqFormId + 1; // Increment by 1
-
-                    const reqFormValues = [
-                        nextReqFormId,
-                        data.memberITS,
-                        data.appliedbyIts,
-                        data.appliedbyName,
-                        data.city,
-                        data.institution,
-                        data.classDegree,
-                        data.study,
-                        data.subject,
-                        data.year,
-                        null,
-                        data.email,
-                        data.phoneNumber,
-                        data.whatsappNumber,
-                        "Education Assistance",
-                        data.fundAmount,
-                        "Education",
-                        null,
-                        data.fundDescription,
-                        "Pending",
-                        data.appliedby,
-                    ];
-
-                    dbConnection.query(owsReqFormQuery, reqFormValues, (formErr, formResult) => {
-                        if (formErr) {
-                            console.error("Failed to insert data into owsReqForm:", formErr);
-                            return dbConnection.rollback(() => {
-                                res.status(500).send({ error: "Failed to insert data into owsReqForm", details: formErr });
-                            });
-                        }
-                    });
-
-                    // Commit the transaction
-                    dbConnection.commit((commitErr) => {
-                        if (commitErr) {
-                            console.error("Failed to commit transaction:", commitErr);
-                            return dbConnection.rollback(() => {
-                                res.status(500).send({ error: "Failed to commit transaction", details: commitErr });
-                            });
-                        }
-
-                        console.log("Data inserted successfully");
-
-                        res.send({ message: "Data inserted successfully", reqMasId: nextReqMasId });
-                    });
-                });
-            });
-        });
-    });
 });
 
 app.get('/fetch-image', async (req, res) => {
@@ -353,19 +234,6 @@ app.post("/get-url", authMiddleware, async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
-const PORT = 3002;
-
-// Load SSL Certificates
-// const options = {
-//     key: fs.readFileSync("/etc/letsencrypt/live/mode.imadiinnovations.com/privkey.pem"),
-//     cert: fs.readFileSync("/etc/letsencrypt/live/mode.imadiinnovations.com/fullchain.pem"),
-// };
-// // Start HTTPS Server
-// https.createServer(options, app).listen(PORT, () => {
-//     console.log(`HTTPS Server running on https://mode.imadiinnovations.com:${PORT}`);
-// });
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
 
 /////////////////
 
@@ -537,6 +405,8 @@ app.post("/users-by-mohalla", async (req, res) => {
                 message: "No requests found for the specified criteria",
             });
         }
+
+        console.log(users);
 
         return res.status(200).json({
             success: true,
@@ -831,4 +701,179 @@ app.post("/fetch-records", async (req, res) => {
 
 app.get("/api-version", (req, res) => {
     res.status(200).json({ version: API_VERSION });
+});
+
+app.get("/fetch-goods", (req, res) => {
+    console.log("FETCHING");
+    const sql = "SELECT * FROM goods";
+    db2.query(sql, (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(result);
+    });
+});
+
+//////////////////////////
+// Storage configuration for multer
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      const studentId = req.body.studentId;
+      const docType = file.fieldname; // Document type is dynamically determined by the field name
+      
+      if (!docType) {
+        return cb(new Error('Document type is undefined'));
+      }
+  
+      // Define the folder path dynamically based on studentId and document type
+      const folderPath = `./uploads/${studentId}/${docType}`;
+      console.log(`Uploading to folder: ${folderPath}`);
+  
+      // Create the folder structure if it doesn't exist
+      fs.mkdirSync(folderPath, { recursive: true });
+  
+      cb(null, folderPath);  // The folder path where the file will be stored
+    },
+    filename: (req, file, cb) => {
+      const studentId = req.body.studentId;
+      const docType = file.fieldname;  // Document type
+      const reqId = req.body.reqId || Date.now();  // Include reqId or use timestamp if not provided
+      
+      if (!docType) {
+        return cb(new Error('Document type is undefined'));
+      }
+  
+      // Determine the file extension based on mimetype
+      let extname = '';
+      if (file.mimetype === 'application/pdf') {
+        extname = '.pdf';
+      } else if (file.mimetype === 'image/jpeg') {
+        extname = '.jpg';
+      } else if (file.mimetype === 'image/png') {
+        extname = '.png';
+      } else if (file.mimetype === 'application/msword') {
+        extname = '.doc';
+      } else if (file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+        extname = '.docx';
+      }
+  
+      // Generate the dynamic filename
+      const fileName = `${studentId}_${docType}_${reqId}`;
+      cb(null, fileName + extname);  // Return the final filename
+    }
+  });
+  
+  // Initialize multer with the storage configuration
+  const upload = multer({ storage: storage });
+
+// Endpoint to upload a single document of any type
+app.post('/upload', upload.any(), (req, res) => {
+
+    // Check if files are uploaded
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).send('No file uploaded.');
+    }
+  
+    // Since upload.any() can upload files with different field names,
+    // check the files in req.files and handle dynamically.
+    const uploadedFile = req.files[0];  // We expect only one file in this case.
+
+    console.log(uploadedFile.path);
+  
+    // Return a success message with the file path
+    res.status(200).send({
+      message: 'File uploaded successfully',
+      file: {
+        docType: uploadedFile.fieldname,  // Field name indicates the document type
+        filePath: uploadedFile.path,      // Path to the uploaded file
+      }
+    });
+  });
+
+/// DELETE endpoint for removing a document
+// DELETE endpoint for removing a document
+app.delete('/delete', (req, res) => {
+    const { studentId, docType, filePath } = req.query;  // Get filePath, studentId, and docType from the query
+    
+    console.log('Received request to delete:', { studentId, docType, filePath });
+    
+    // Validate that all required parameters are provided
+    if (!studentId || !docType || !filePath) {
+      return res.status(400).send({ message: 'Missing required parameters.' });
+    }
+  
+    // Resolve the full file path from the `filePath` query and ensure no additional prefixes are included
+    const resolvedFilePath = path.join(__dirname,filePath);
+  
+    console.log(`Attempting to delete: ${resolvedFilePath}`);
+    
+    // Delete the file from the file system
+    fs.unlink(resolvedFilePath, (err) => {
+      if (err) {
+        console.error('Error deleting file:', err);
+        return res.status(500).send({ message: 'Error deleting file.' });
+      }
+      // Successfully deleted the file
+      res.status(200).send({ message: 'File deleted successfully.' });
+    });
+  });
+
+  const upload_paktalim = multer();
+
+  app.post("/update-paktalim-profile", upload_paktalim.none(), async (req, res) => {
+    try {
+        const {
+            m_id,
+            p_id,
+            j_id,
+            its_id,
+            c_id,
+            city_id,
+            imani,
+            i_id,
+            scholarship_taken,
+            qardan,
+            scholar,
+            class_id,
+            s_id,
+            year_count_dir,
+            edate,
+            duration,
+            sdate
+        } = req.body;
+
+        // Construct FormData (multipart)
+        const formData = new URLSearchParams();
+        formData.append("m_id", m_id);
+        if (p_id) formData.append("p_id", p_id);
+        formData.append("j_id", j_id);
+        formData.append("its_id", its_id);
+        formData.append("c_id", c_id);
+        formData.append("city_id", city_id);
+        formData.append("imani", imani);
+        formData.append("i_id", i_id);
+        formData.append("scholarship_taken", scholarship_taken);
+        formData.append("qardan", qardan);
+        formData.append("scholar", scholar);
+        formData.append("class_id", class_id);
+        formData.append("s_id", s_id);
+        if (year_count_dir) formData.append("year_count_dir", year_count_dir);
+        formData.append("edate", edate);
+        formData.append("duration", duration);
+        formData.append("sdate", sdate);
+
+        // Construct API URL
+        const apiUrl = `https://paktalim.com/admin/ws_app/UpdateProfile?access_key=bbb1d493d3c4969f55045326d6e2f4a662b85374&username=40459629`;
+
+        // Send the form-data request using Axios
+        const response = await axios.post(apiUrl, formData, {
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            }
+        });
+
+        // Send the API response back to the client
+        res.json(response.data);
+    } catch (error) {
+        console.error("Error:", error.response ? error.response.data : error.message);
+        res.status(500).json({ error: error.response ? error.response.data : "Internal Server Error" });
+    }
 });
