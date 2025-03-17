@@ -1,22 +1,22 @@
 const mysql = require("mysql2");
 
 // Database Connection
-const db2 = mysql.createConnection({
-    host: "36.50.12.171",
-    port: "3309",
-    user: "aak",
-    password: "aak110",  // Add your database password
-    database: "aiut_records",
-});
-
-//Database Connection
 // const db2 = mysql.createConnection({
-//     host: "localhost",
-//     port: "3306",
+//     host: "36.50.12.171",
+//     port: "3309",
 //     user: "aak",
-//     password: "aak110", 
+//     password: "aak110",  // Add your database password
 //     database: "aiut_records",
 // });
+
+//Database Connection
+const db2 = mysql.createConnection({
+    host: "localhost",
+    port: "3306",
+    user: "aak",
+    password: "aak110", 
+    database: "aiut_records",
+});
 
 // Connect to the database.
 db2.connect(err => {
