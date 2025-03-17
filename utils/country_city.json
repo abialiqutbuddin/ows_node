@@ -1,0 +1,3602 @@
+[
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 2,
+        "city_name": "Bahawalpur"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 3,
+        "city_name": "Faisalabad"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 4,
+        "city_name": "Gujranwala"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 6,
+        "city_name": "Islamabad"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 7,
+        "city_name": "Jhang"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 8,
+        "city_name": "Karachi"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 9,
+        "city_name": "Lahore"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 10,
+        "city_name": "Larkana"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 11,
+        "city_name": "Mardan"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 12,
+        "city_name": "Multan"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 13,
+        "city_name": "Peshawar"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 14,
+        "city_name": "Quetta"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 15,
+        "city_name": "Rahim Yar Khan"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 16,
+        "city_name": "Rawalpindi"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 17,
+        "city_name": "Sargodha"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 18,
+        "city_name": "Sheikhupura"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 19,
+        "city_name": "Sialkot"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 20,
+        "city_name": "Sukkur"
+    },
+    {
+        "country_id": 13,
+        "country_name": "Australia",
+        "country_code": "AU",
+        "continent": "Australia",
+        "currency_code": "AUD",
+        "city_id": 21,
+        "city_name": "Melbourne"
+    },
+    {
+        "country_id": 13,
+        "country_name": "Australia",
+        "country_code": "AU",
+        "continent": "Australia",
+        "currency_code": "AUD",
+        "city_id": 22,
+        "city_name": "Sydney"
+    },
+    {
+        "country_id": 18,
+        "country_name": "Bangladesh",
+        "country_code": "BD",
+        "continent": "Asia",
+        "currency_code": "BDT",
+        "city_id": 23,
+        "city_name": "Dacca"
+    },
+    {
+        "country_id": 18,
+        "country_name": "Bangladesh",
+        "country_code": "BD",
+        "continent": "Asia",
+        "currency_code": "BDT",
+        "city_id": 24,
+        "city_name": "Chittagong"
+    },
+    {
+        "country_id": 40,
+        "country_name": "Canada",
+        "country_code": "CA",
+        "continent": "North America",
+        "currency_code": "CAD",
+        "city_id": 25,
+        "city_name": "Toronto"
+    },
+    {
+        "country_id": 40,
+        "country_name": "Canada",
+        "country_code": "CA",
+        "continent": "North America",
+        "currency_code": "CAD",
+        "city_id": 26,
+        "city_name": "Mississauga"
+    },
+    {
+        "country_id": 40,
+        "country_name": "Canada",
+        "country_code": "CA",
+        "continent": "North America",
+        "currency_code": "CAD",
+        "city_id": 27,
+        "city_name": "Ontario"
+    },
+    {
+        "country_id": 64,
+        "country_name": "Egypt",
+        "country_code": "EG",
+        "continent": "Africa",
+        "currency_code": "EGP",
+        "city_id": 28,
+        "city_name": "Cairo"
+    },
+    {
+        "country_id": 81,
+        "country_name": "Germany",
+        "country_code": "DE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 29,
+        "city_name": "Berlin"
+    },
+    {
+        "country_id": 81,
+        "country_name": "Germany",
+        "country_code": "DE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 30,
+        "city_name": "Aachen"
+    },
+    {
+        "country_id": 81,
+        "country_name": "Germany",
+        "country_code": "DE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 31,
+        "city_name": "Bad Honnef"
+    },
+    {
+        "country_id": 98,
+        "country_name": "Hong Kong",
+        "country_code": "HK",
+        "continent": "Asia",
+        "currency_code": "HKD",
+        "city_id": 32,
+        "city_name": "Hong kong"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 33,
+        "city_name": "Porbandar"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 34,
+        "city_name": "Mumbai"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 35,
+        "city_name": "Surat"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 36,
+        "city_name": "Marol"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 37,
+        "city_name": "Malkapur"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 38,
+        "city_name": "Vallabh Vidyanagar"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 39,
+        "city_name": "Daman"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 41,
+        "city_name": "Pune"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 42,
+        "city_name": "Mandsaur"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 43,
+        "city_name": "Ujjain"
+    },
+    {
+        "country_id": 115,
+        "country_name": "Kenya",
+        "country_code": "KE",
+        "continent": "Africa",
+        "currency_code": "KES",
+        "city_id": 44,
+        "city_name": "Nairobi"
+    },
+    {
+        "country_id": 115,
+        "country_name": "Kenya",
+        "country_code": "KE",
+        "continent": "Africa",
+        "currency_code": "KES",
+        "city_id": 45,
+        "city_name": "Mombasa"
+    },
+    {
+        "country_id": 118,
+        "country_name": "Kuwait",
+        "country_code": "KW",
+        "continent": "Asia",
+        "currency_code": "KWD",
+        "city_id": 46,
+        "city_name": "Fahaheel"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 47,
+        "city_name": "San Deigo"
+    },
+    {
+        "country_id": 131,
+        "country_name": "Madagascar",
+        "country_code": "MG",
+        "continent": "Africa",
+        "currency_code": "MGA",
+        "city_id": 48,
+        "city_name": "Nosy Be"
+    },
+    {
+        "country_id": 133,
+        "country_name": "Malaysia",
+        "country_code": "MY",
+        "continent": "Asia",
+        "currency_code": "MYR",
+        "city_id": 49,
+        "city_name": "Kuala Lumpur"
+    },
+    {
+        "country_id": 166,
+        "country_name": "Oman",
+        "country_code": "OM",
+        "continent": "Asia",
+        "currency_code": "OMR",
+        "city_id": 50,
+        "city_name": "Muscat"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 51,
+        "city_name": "Jamshoro"
+    },
+    {
+        "country_id": 195,
+        "country_name": "Saudi Arabia",
+        "country_code": "SA",
+        "continent": "Asia",
+        "currency_code": "SAR",
+        "city_id": 56,
+        "city_name": "Jeddah"
+    },
+    {
+        "country_id": 200,
+        "country_name": "Singapore",
+        "country_code": "SG",
+        "continent": "Asia",
+        "currency_code": "SGD",
+        "city_id": 57,
+        "city_name": "Singapore"
+    },
+    {
+        "country_id": 210,
+        "country_name": "Sri Lanka",
+        "country_code": "LK",
+        "continent": "Asia",
+        "currency_code": "LKR",
+        "city_id": 58,
+        "city_name": "Colombo"
+    },
+    {
+        "country_id": 220,
+        "country_name": "Tanzania",
+        "country_code": "TZ",
+        "continent": "Africa",
+        "currency_code": "TZS",
+        "city_id": 59,
+        "city_name": "Zanzibar"
+    },
+    {
+        "country_id": 232,
+        "country_name": "Uganda",
+        "country_code": "UG",
+        "continent": "Africa",
+        "currency_code": "UGX",
+        "city_id": 61,
+        "city_name": "Kampala"
+    },
+    {
+        "country_id": 234,
+        "country_name": "United Arab Emirates",
+        "country_code": "AE",
+        "continent": "Asia",
+        "currency_code": "AED",
+        "city_id": 62,
+        "city_name": "Dubai"
+    },
+    {
+        "country_id": 234,
+        "country_name": "United Arab Emirates",
+        "country_code": "AE",
+        "continent": "Asia",
+        "currency_code": "AED",
+        "city_id": 63,
+        "city_name": "Shareka"
+    },
+    {
+        "country_id": 234,
+        "country_name": "United Arab Emirates",
+        "country_code": "AE",
+        "continent": "Asia",
+        "currency_code": "AED",
+        "city_id": 64,
+        "city_name": "Abu Dhabi"
+    },
+    {
+        "country_id": 234,
+        "country_name": "United Arab Emirates",
+        "country_code": "AE",
+        "continent": "Asia",
+        "currency_code": "AED",
+        "city_id": 65,
+        "city_name": "Ajman"
+    },
+    {
+        "country_id": 234,
+        "country_name": "United Arab Emirates",
+        "country_code": "AE",
+        "continent": "Asia",
+        "currency_code": "AED",
+        "city_id": 66,
+        "city_name": "Sharjah"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 67,
+        "city_name": "London"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 68,
+        "city_name": "Leeds"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 69,
+        "city_name": "Bradford"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 70,
+        "city_name": "Birmingham"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 71,
+        "city_name": "Chicago"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 72,
+        "city_name": "San Antonio "
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 74,
+        "city_name": "Houston"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 76,
+        "city_name": "East Brunswick"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 77,
+        "city_name": "New York"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 78,
+        "city_name": "Fort Collins"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 79,
+        "city_name": "Atlanta"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 80,
+        "city_name": "Dallas"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 81,
+        "city_name": "San Jose"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 83,
+        "city_name": "Orange County"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 84,
+        "city_name": "Virginia"
+    },
+    {
+        "country_id": 13,
+        "country_name": "Australia",
+        "country_code": "AU",
+        "continent": "Australia",
+        "currency_code": "AUD",
+        "city_id": 85,
+        "city_name": "Adelaide"
+    },
+    {
+        "country_id": 13,
+        "country_name": "Australia",
+        "country_code": "AU",
+        "continent": "Australia",
+        "currency_code": "AUD",
+        "city_id": 86,
+        "city_name": "Perth"
+    },
+    {
+        "country_id": 17,
+        "country_name": "Bahrain",
+        "country_code": "BH",
+        "continent": "Asia",
+        "currency_code": "BHD",
+        "city_id": 87,
+        "city_name": "Manama"
+    },
+    {
+        "country_id": 40,
+        "country_name": "Canada",
+        "country_code": "CA",
+        "continent": "North America",
+        "currency_code": "CAD",
+        "city_id": 88,
+        "city_name": "Winnipeg"
+    },
+    {
+        "country_id": 81,
+        "country_name": "Germany",
+        "country_code": "DE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 89,
+        "city_name": "Munich"
+    },
+    {
+        "country_id": 81,
+        "country_name": "Germany",
+        "country_code": "DE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 90,
+        "city_name": "Bremerhaven"
+    },
+    {
+        "country_id": 81,
+        "country_name": "Germany",
+        "country_code": "DE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 91,
+        "city_name": "Darmstadt"
+    },
+    {
+        "country_id": 81,
+        "country_name": "Germany",
+        "country_code": "DE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 92,
+        "city_name": "Erlangen"
+    },
+    {
+        "country_id": 98,
+        "country_name": "Hong Kong",
+        "country_code": "HK",
+        "continent": "Asia",
+        "currency_code": "HKD",
+        "city_id": 93,
+        "city_name": "Sai Ying Poon"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 95,
+        "city_name": "Panvel"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 96,
+        "city_name": "Lonavala"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 97,
+        "city_name": "Thandla"
+    },
+    {
+        "country_id": 105,
+        "country_name": "Ireland",
+        "country_code": "IE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 98,
+        "city_name": "Dublin"
+    },
+    {
+        "country_id": 131,
+        "country_name": "Madagascar",
+        "country_code": "MG",
+        "continent": "Africa",
+        "currency_code": "MGA",
+        "city_id": 99,
+        "city_name": "Toliara"
+    },
+    {
+        "country_id": 131,
+        "country_name": "Madagascar",
+        "country_code": "MG",
+        "continent": "Africa",
+        "currency_code": "MGA",
+        "city_id": 101,
+        "city_name": "Majunga"
+    },
+    {
+        "country_id": 195,
+        "country_name": "Saudi Arabia",
+        "country_code": "SA",
+        "continent": "Asia",
+        "currency_code": "SAR",
+        "city_id": 102,
+        "city_name": "Riyaadh"
+    },
+    {
+        "country_id": 220,
+        "country_name": "Tanzania",
+        "country_code": "TZ",
+        "continent": "Africa",
+        "currency_code": "TZS",
+        "city_id": 103,
+        "city_name": "Dar es Salaam"
+    },
+    {
+        "country_id": 228,
+        "country_name": "Turkey",
+        "country_code": "TR",
+        "continent": "Asia",
+        "currency_code": "TRY",
+        "city_id": 104,
+        "city_name": "Ankara"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 105,
+        "city_name": "Manchester"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 106,
+        "city_name": "Austin"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 107,
+        "city_name": "Downers Grove"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 108,
+        "city_name": "New Jersey"
+    },
+    {
+        "country_id": 40,
+        "country_name": "Canada",
+        "country_code": "CA",
+        "continent": "North America",
+        "currency_code": "CAD",
+        "city_id": 110,
+        "city_name": "Richmond Hill"
+    },
+    {
+        "country_id": 40,
+        "country_name": "Canada",
+        "country_code": "CA",
+        "continent": "North America",
+        "currency_code": "CAD",
+        "city_id": 111,
+        "city_name": "Calgary"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 112,
+        "city_name": "Ratlam"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 113,
+        "city_name": "Barwala"
+    },
+    {
+        "country_id": 102,
+        "country_name": "Indonesia",
+        "country_code": "ID",
+        "continent": "Asia",
+        "currency_code": "IDR",
+        "city_id": 114,
+        "city_name": "Jakarta"
+    },
+    {
+        "country_id": 131,
+        "country_name": "Madagascar",
+        "country_code": "MG",
+        "continent": "Africa",
+        "currency_code": "MGA",
+        "city_id": 115,
+        "city_name": "Ambanja"
+    },
+    {
+        "country_id": 195,
+        "country_name": "Saudi Arabia",
+        "country_code": "SA",
+        "continent": "Asia",
+        "currency_code": "SAR",
+        "city_id": 116,
+        "city_name": "Dammam"
+    },
+    {
+        "country_id": 40,
+        "country_name": "Canada",
+        "country_code": "CA",
+        "continent": "North America",
+        "currency_code": "CAD",
+        "city_id": 117,
+        "city_name": "Waterloo"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 119,
+        "city_name": "Detroit"
+    },
+    {
+        "country_id": 81,
+        "country_name": "Germany",
+        "country_code": "DE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 120,
+        "city_name": "Cologne"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 121,
+        "city_name": "Nasik"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 122,
+        "city_name": "Mumbra"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 123,
+        "city_name": "Kankroli"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 124,
+        "city_name": "Hyderabad Sindh"
+    },
+    {
+        "country_id": 115,
+        "country_name": "Kenya",
+        "country_code": "KE",
+        "continent": "Africa",
+        "currency_code": "KES",
+        "city_id": 125,
+        "city_name": "Malindi"
+    },
+    {
+        "country_id": 131,
+        "country_name": "Madagascar",
+        "country_code": "MG",
+        "continent": "Africa",
+        "currency_code": "MGA",
+        "city_id": 126,
+        "city_name": "Tamatave"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 127,
+        "city_name": "Pakpattan"
+    },
+    {
+        "country_id": 220,
+        "country_name": "Tanzania",
+        "country_code": "TZ",
+        "continent": "Africa",
+        "currency_code": "TZS",
+        "city_id": 129,
+        "city_name": "Tanga"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 130,
+        "city_name": "Leicester"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 131,
+        "city_name": "Illinois"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 132,
+        "city_name": "Glen Mills"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 133,
+        "city_name": "Minneapolis"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 134,
+        "city_name": "Bakersfield"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 135,
+        "city_name": "Bhimber"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 137,
+        "city_name": "Nerian Sharif"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 138,
+        "city_name": "Kashmir"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 139,
+        "city_name": "Kotli"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 140,
+        "city_name": "Poonch"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 141,
+        "city_name": "Bagh"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 142,
+        "city_name": "Khuzdar"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 144,
+        "city_name": "Uthal,"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 145,
+        "city_name": "Sibi"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 146,
+        "city_name": "Balochistan"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 147,
+        "city_name": "Gwadar"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 148,
+        "city_name": "Loralai"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 149,
+        "city_name": "Turbat"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 150,
+        "city_name": "Karakorum"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 151,
+        "city_name": "Skardu"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 152,
+        "city_name": "Marden"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 153,
+        "city_name": "Charsadda"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 154,
+        "city_name": "Topi"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 155,
+        "city_name": "Dera Ismail Khan"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 156,
+        "city_name": "Mansehra"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 157,
+        "city_name": "Hayatabad"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 158,
+        "city_name": "Karak"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 159,
+        "city_name": "Kohat"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 160,
+        "city_name": "Nowhsera"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 161,
+        "city_name": "Haripur"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 162,
+        "city_name": "Qurtuba"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 164,
+        "city_name": "Buner"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 165,
+        "city_name": "Chitral"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 166,
+        "city_name": "Swat"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 167,
+        "city_name": "Lakki Marwat"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 168,
+        "city_name": "Malakand"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 169,
+        "city_name": "Bannu"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 170,
+        "city_name": "Swabi"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 171,
+        "city_name": "Bhera"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 172,
+        "city_name": "Dera Ghazi Khan"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 173,
+        "city_name": "Taxila"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 174,
+        "city_name": "Khanewal"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 175,
+        "city_name": "Murree"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 177,
+        "city_name": "Mianwali"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 178,
+        "city_name": "Rawat"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 179,
+        "city_name": "Mandi Bahauddin"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 180,
+        "city_name": "Bhakkar"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 181,
+        "city_name": "Chakwal"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 182,
+        "city_name": "Layyah"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 184,
+        "city_name": "Narowal"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 185,
+        "city_name": "Okara"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 186,
+        "city_name": "Sahiwal"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 187,
+        "city_name": "Wah"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 189,
+        "city_name": "Gambat"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 190,
+        "city_name": "Mirpur Khas"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 191,
+        "city_name": "Nawabshah"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 192,
+        "city_name": "Sakrand"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 193,
+        "city_name": "Shaheed Benazirabad"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 194,
+        "city_name": "Tando Jam"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 195,
+        "city_name": "Shikarpur"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 196,
+        "city_name": "Tando Muhammad Khan"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 197,
+        "city_name": "Bhit Shah"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 199,
+        "city_name": "Boston"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 209,
+        "city_name": "Godhra"
+    },
+    {
+        "country_id": 74,
+        "country_name": "France",
+        "country_code": "FR",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 214,
+        "city_name": "Paris"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 217,
+        "city_name": "Udaipur"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 218,
+        "city_name": "Northampton"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 220,
+        "city_name": "Morbi"
+    },
+    {
+        "country_id": 174,
+        "country_name": "Philippines",
+        "country_code": "PH",
+        "continent": "Asia",
+        "currency_code": "PHP",
+        "city_id": 221,
+        "city_name": "Baguio"
+    },
+    {
+        "country_id": 122,
+        "country_name": "Lebanon",
+        "country_code": "LB",
+        "continent": "Asia",
+        "currency_code": "LBP",
+        "city_id": 222,
+        "city_name": "Beirut"
+    },
+    {
+        "country_id": 1,
+        "country_name": "Afghanistan",
+        "country_code": "AF",
+        "continent": "Asia",
+        "currency_code": "AFN",
+        "city_id": 223,
+        "city_name": "Kabul"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 225,
+        "city_name": "Mohmand"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 226,
+        "city_name": "Vadh"
+    },
+    {
+        "country_id": 2,
+        "country_name": "Albania",
+        "country_code": "AL",
+        "continent": "Europe",
+        "currency_code": "ALL",
+        "city_id": 227,
+        "city_name": "Albania"
+    },
+    {
+        "country_id": 81,
+        "country_name": "Germany",
+        "country_code": "DE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 232,
+        "city_name": "Kothen"
+    },
+    {
+        "country_id": 81,
+        "country_name": "Germany",
+        "country_code": "DE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 233,
+        "city_name": "Jena"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 234,
+        "city_name": "Newark"
+    },
+    {
+        "country_id": 81,
+        "country_name": "Germany",
+        "country_code": "DE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 235,
+        "city_name": "Soest"
+    },
+    {
+        "country_id": 13,
+        "country_name": "Australia",
+        "country_code": "AU",
+        "continent": "Australia",
+        "currency_code": "AUD",
+        "city_id": 236,
+        "city_name": "Wollongong"
+    },
+    {
+        "country_id": 81,
+        "country_name": "Germany",
+        "country_code": "DE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 237,
+        "city_name": "Chemnitz"
+    },
+    {
+        "country_id": 81,
+        "country_name": "Germany",
+        "country_code": "DE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 238,
+        "city_name": "Bamberg"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 239,
+        "city_name": "Huddersfield"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 240,
+        "city_name": "Coventry"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 241,
+        "city_name": "Glasgow"
+    },
+    {
+        "country_id": 13,
+        "country_name": "Australia",
+        "country_code": "AU",
+        "continent": "Australia",
+        "currency_code": "AUD",
+        "city_id": 242,
+        "city_name": "Redfern"
+    },
+    {
+        "country_id": 40,
+        "country_name": "Canada",
+        "country_code": "CA",
+        "continent": "North America",
+        "currency_code": "CAD",
+        "city_id": 244,
+        "city_name": "Windsor"
+    },
+    {
+        "country_id": 13,
+        "country_name": "Australia",
+        "country_code": "AU",
+        "continent": "Australia",
+        "currency_code": "AUD",
+        "city_id": 245,
+        "city_name": "Brisbane"
+    },
+    {
+        "country_id": 81,
+        "country_name": "Germany",
+        "country_code": "DE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 246,
+        "city_name": "Dortmund"
+    },
+    {
+        "country_id": 81,
+        "country_name": "Germany",
+        "country_code": "DE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 247,
+        "city_name": "Ingolstadt"
+    },
+    {
+        "country_id": 81,
+        "country_name": "Germany",
+        "country_code": "DE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 248,
+        "city_name": "Bochum"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 249,
+        "city_name": "Cambridge"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 250,
+        "city_name": "Canterbury"
+    },
+    {
+        "country_id": 81,
+        "country_name": "Germany",
+        "country_code": "DE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 251,
+        "city_name": "Hamburg"
+    },
+    {
+        "country_id": 133,
+        "country_name": "Malaysia",
+        "country_code": "MY",
+        "continent": "Asia",
+        "currency_code": "MYR",
+        "city_id": 252,
+        "city_name": "Negeri Sembilan"
+    },
+    {
+        "country_id": 81,
+        "country_name": "Germany",
+        "country_code": "DE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 253,
+        "city_name": "Duisburg"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 254,
+        "city_name": "Philadelphia"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 255,
+        "city_name": "Denton"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 256,
+        "city_name": "Hertfordshire"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 257,
+        "city_name": "Edinburgh"
+    },
+    {
+        "country_id": 81,
+        "country_name": "Germany",
+        "country_code": "DE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 258,
+        "city_name": "Detmold"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 259,
+        "city_name": "Schaumburg"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 264,
+        "city_name": "Jetpur"
+    },
+    {
+        "country_id": 46,
+        "country_name": "China",
+        "country_code": "CN",
+        "continent": "Asia",
+        "currency_code": "CNY",
+        "city_id": 270,
+        "city_name": "Chongqing"
+    },
+    {
+        "country_id": 46,
+        "country_name": "China",
+        "country_code": "CN",
+        "continent": "Asia",
+        "currency_code": "CNY",
+        "city_id": 275,
+        "city_name": "Shenzhen"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 277,
+        "city_name": "Burhanpur"
+    },
+    {
+        "country_id": 245,
+        "country_name": "Yemen",
+        "country_code": "YE",
+        "continent": "Asia",
+        "currency_code": "YER",
+        "city_id": 278,
+        "city_name": "Sanaa"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 280,
+        "city_name": "Texas"
+    },
+    {
+        "country_id": 195,
+        "country_name": "Saudi Arabia",
+        "country_code": "SA",
+        "continent": "Asia",
+        "currency_code": "SAR",
+        "city_id": 286,
+        "city_name": "Abha"
+    },
+    {
+        "country_id": 133,
+        "country_name": "Malaysia",
+        "country_code": "MY",
+        "continent": "Asia",
+        "currency_code": "MYR",
+        "city_id": 287,
+        "city_name": "Klang"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 288,
+        "city_name": "Norman"
+    },
+    {
+        "country_id": 4,
+        "country_name": "American Samoa",
+        "country_code": "AS",
+        "continent": "Oceania",
+        "currency_code": "USD",
+        "city_id": 291,
+        "city_name": "Samoa "
+    },
+    {
+        "country_id": 108,
+        "country_name": "Italy",
+        "country_code": "IT",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 292,
+        "city_name": "Catania "
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 293,
+        "city_name": "Gujarat"
+    },
+    {
+        "country_id": 159,
+        "country_name": "Niger",
+        "country_code": "NE",
+        "continent": "Africa",
+        "currency_code": "XOF",
+        "city_id": 296,
+        "city_name": "Niger"
+    },
+    {
+        "country_id": 205,
+        "country_name": "South Africa",
+        "country_code": "ZA",
+        "continent": "Africa",
+        "currency_code": "ZAR",
+        "city_id": 298,
+        "city_name": "Durban"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 301,
+        "city_name": "Sidhpur"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 305,
+        "city_name": "Wales"
+    },
+    {
+        "country_id": 118,
+        "country_name": "Kuwait",
+        "country_code": "KW",
+        "continent": "Asia",
+        "currency_code": "KWD",
+        "city_id": 307,
+        "city_name": "Kuwait"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 312,
+        "city_name": "Sunel"
+    },
+    {
+        "country_id": 234,
+        "country_name": "United Arab Emirates",
+        "country_code": "AE",
+        "continent": "Asia",
+        "currency_code": "AED",
+        "city_id": 313,
+        "city_name": "Al Qusais"
+    },
+    {
+        "country_id": 234,
+        "country_name": "United Arab Emirates",
+        "country_code": "AE",
+        "continent": "Asia",
+        "currency_code": "AED",
+        "city_id": 315,
+        "city_name": "Deira"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 318,
+        "city_name": "Mandvi"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 322,
+        "city_name": "Bhinder"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 327,
+        "city_name": "Khairpur"
+    },
+    {
+        "country_id": 210,
+        "country_name": "Sri Lanka",
+        "country_code": "LK",
+        "continent": "Asia",
+        "currency_code": "LKR",
+        "city_id": 336,
+        "city_name": "Eliya"
+    },
+    {
+        "country_id": 108,
+        "country_name": "Italy",
+        "country_code": "IT",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 339,
+        "city_name": "Italy"
+    },
+    {
+        "country_id": 221,
+        "country_name": "Thailand",
+        "country_code": "TH",
+        "continent": "Asia",
+        "currency_code": "THB",
+        "city_id": 340,
+        "city_name": "Bangkok"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 341,
+        "city_name": "Baaltimore"
+    },
+    {
+        "country_id": 165,
+        "country_name": "Norway",
+        "country_code": "NO",
+        "continent": "Europe",
+        "currency_code": "NOK",
+        "city_id": 351,
+        "city_name": "Oslo"
+    },
+    {
+        "country_id": 36,
+        "country_name": "Burma",
+        "country_code": "MM",
+        "continent": "Asia",
+        "currency_code": "MMK",
+        "city_id": 352,
+        "city_name": "Rangoon"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 356,
+        "city_name": "Akola"
+    },
+    {
+        "country_id": 56,
+        "country_name": "Cyprus",
+        "country_code": "CY",
+        "continent": "Asia",
+        "currency_code": "EUR",
+        "city_id": 363,
+        "city_name": "Nicosia"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 364,
+        "city_name": "Tampa"
+    },
+    {
+        "country_id": 68,
+        "country_name": "Estonia",
+        "country_code": "EE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 367,
+        "city_name": "Tartu"
+    },
+    {
+        "country_id": 108,
+        "country_name": "Italy",
+        "country_code": "IT",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 368,
+        "city_name": "Padua"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 371,
+        "city_name": "Shajapur"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 373,
+        "city_name": "Indore"
+    },
+    {
+        "country_id": 18,
+        "country_name": "Bangladesh",
+        "country_code": "BD",
+        "continent": "Asia",
+        "currency_code": "BDT",
+        "city_id": 375,
+        "city_name": "Khulna"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 376,
+        "city_name": "Banswara"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 378,
+        "city_name": "Vanthali"
+    },
+    {
+        "country_id": 98,
+        "country_name": "Hong Kong",
+        "country_code": "HK",
+        "continent": "Asia",
+        "currency_code": "HKD",
+        "city_id": 379,
+        "city_name": "Kowloon Tong"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 386,
+        "city_name": "Oklahoma "
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 388,
+        "city_name": "West Lafayette"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 390,
+        "city_name": "Cardiff"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 392,
+        "city_name": "Jamnagar"
+    },
+    {
+        "country_id": 234,
+        "country_name": "United Arab Emirates",
+        "country_code": "AE",
+        "continent": "Asia",
+        "currency_code": "AED",
+        "city_id": 393,
+        "city_name": "Al-Ain"
+    },
+    {
+        "country_id": 174,
+        "country_name": "Philippines",
+        "country_code": "PH",
+        "continent": "Asia",
+        "currency_code": "PHP",
+        "city_id": 399,
+        "city_name": "Manila"
+    },
+    {
+        "country_id": 40,
+        "country_name": "Canada",
+        "country_code": "CA",
+        "continent": "North America",
+        "currency_code": "CAD",
+        "city_id": 406,
+        "city_name": "Vancouver"
+    },
+    {
+        "country_id": 105,
+        "country_name": "Ireland",
+        "country_code": "IE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 407,
+        "city_name": "Belfast"
+    },
+    {
+        "country_id": 81,
+        "country_name": "Germany",
+        "country_code": "DE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 408,
+        "city_name": "Kleve"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 409,
+        "city_name": "Sadri"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 413,
+        "city_name": "Rajasthan"
+    },
+    {
+        "country_id": 69,
+        "country_name": "Ethiopia",
+        "country_code": "ET",
+        "continent": "Africa",
+        "currency_code": "ETB",
+        "city_id": 423,
+        "city_name": "Addis Ababa"
+    },
+    {
+        "country_id": 105,
+        "country_name": "Ireland",
+        "country_code": "IE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 428,
+        "city_name": "Limerick"
+    },
+    {
+        "country_id": 177,
+        "country_name": "Portugal",
+        "country_code": "PT",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 429,
+        "city_name": "Lisbon"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 433,
+        "city_name": "Kauka"
+    },
+    {
+        "country_id": 40,
+        "country_name": "Canada",
+        "country_code": "CA",
+        "continent": "North America",
+        "currency_code": "CAD",
+        "city_id": 434,
+        "city_name": "Ottawa"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 438,
+        "city_name": "College Station"
+    },
+    {
+        "country_id": 108,
+        "country_name": "Italy",
+        "country_code": "IT",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 440,
+        "city_name": "Milan"
+    },
+    {
+        "country_id": 220,
+        "country_name": "Tanzania",
+        "country_code": "TZ",
+        "continent": "Africa",
+        "currency_code": "TZS",
+        "city_id": 444,
+        "city_name": "Morogoro"
+    },
+    {
+        "country_id": 102,
+        "country_name": "Indonesia",
+        "country_code": "ID",
+        "continent": "Asia",
+        "currency_code": "IDR",
+        "city_id": 448,
+        "city_name": "Bali"
+    },
+    {
+        "country_id": 131,
+        "country_name": "Madagascar",
+        "country_code": "MG",
+        "continent": "Africa",
+        "currency_code": "MGA",
+        "city_id": 454,
+        "city_name": "Antananarivo"
+    },
+    {
+        "country_id": 133,
+        "country_name": "Malaysia",
+        "country_code": "MY",
+        "continent": "Asia",
+        "currency_code": "MYR",
+        "city_id": 459,
+        "city_name": "Subang Jaya"
+    },
+    {
+        "country_id": 40,
+        "country_name": "Canada",
+        "country_code": "CA",
+        "continent": "North America",
+        "currency_code": "CAD",
+        "city_id": 460,
+        "city_name": "Newfoundland "
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 464,
+        "city_name": "Khambhat"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 465,
+        "city_name": "Anand"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 466,
+        "city_name": "Barwani"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 467,
+        "city_name": "Los Angeles"
+    },
+    {
+        "country_id": 154,
+        "country_name": "Netherlands",
+        "country_code": "NL",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 468,
+        "city_name": "Eindhoven"
+    },
+    {
+        "country_id": 228,
+        "country_name": "Turkey",
+        "country_code": "TR",
+        "continent": "Asia",
+        "currency_code": "TRY",
+        "city_id": 469,
+        "city_name": "Istanbul"
+    },
+    {
+        "country_id": 81,
+        "country_name": "Germany",
+        "country_code": "DE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 474,
+        "city_name": "Saarbrücken"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 479,
+        "city_name": "Thatta"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 483,
+        "city_name": "Stoke-on-Trent"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 484,
+        "city_name": "Southern California"
+    },
+    {
+        "country_id": 40,
+        "country_name": "Canada",
+        "country_code": "CA",
+        "continent": "North America",
+        "currency_code": "CAD",
+        "city_id": 485,
+        "city_name": "Edmonton"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 491,
+        "city_name": "Leicestershire"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 496,
+        "city_name": "Amreli"
+    },
+    {
+        "country_id": 108,
+        "country_name": "Italy",
+        "country_code": "IT",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 497,
+        "city_name": "Genoa"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 501,
+        "city_name": "Rajkot"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 508,
+        "city_name": "Ahmedabad"
+    },
+    {
+        "country_id": 215,
+        "country_name": "Sweden",
+        "country_code": "SE",
+        "continent": "Europe",
+        "currency_code": "SEK",
+        "city_id": 511,
+        "city_name": "Stockholm"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 513,
+        "city_name": "Waterville"
+    },
+    {
+        "country_id": 115,
+        "country_name": "Kenya",
+        "country_code": "KE",
+        "continent": "Africa",
+        "currency_code": "KES",
+        "city_id": 520,
+        "city_name": "Nakuru"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 525,
+        "city_name": "Gopalganj"
+    },
+    {
+        "country_id": 81,
+        "country_name": "Germany",
+        "country_code": "DE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 528,
+        "city_name": "Dusseldorf"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 531,
+        "city_name": "Vermont"
+    },
+    {
+        "country_id": 99,
+        "country_name": "Hungary",
+        "country_code": "HU",
+        "continent": "Europe",
+        "currency_code": "HUF",
+        "city_id": 535,
+        "city_name": "Budapest"
+    },
+    {
+        "country_id": 81,
+        "country_name": "Germany",
+        "country_code": "DE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 536,
+        "city_name": "Kaiserslautern"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 538,
+        "city_name": "Lucknow"
+    },
+    {
+        "country_id": 133,
+        "country_name": "Malaysia",
+        "country_code": "MY",
+        "continent": "Asia",
+        "currency_code": "MYR",
+        "city_id": 540,
+        "city_name": "Cyberjaya"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 547,
+        "city_name": "Blackburn"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 548,
+        "city_name": "Madras"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 550,
+        "city_name": "Towson"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 558,
+        "city_name": "Lancashire"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 559,
+        "city_name": "Newcastle"
+    },
+    {
+        "country_id": 81,
+        "country_name": "Germany",
+        "country_code": "DE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 560,
+        "city_name": "Rhineland "
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 561,
+        "city_name": "Chennai"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 562,
+        "city_name": "Sheffield"
+    },
+    {
+        "country_id": 133,
+        "country_name": "Malaysia",
+        "country_code": "MY",
+        "continent": "Asia",
+        "currency_code": "MYR",
+        "city_id": 563,
+        "city_name": "Nilai"
+    },
+    {
+        "country_id": 99,
+        "country_name": "Hungary",
+        "country_code": "HU",
+        "continent": "Europe",
+        "currency_code": "HUF",
+        "city_id": 565,
+        "city_name": "Hungary"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 567,
+        "city_name": "Madison"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 569,
+        "city_name": "Worcester"
+    },
+    {
+        "country_id": 133,
+        "country_name": "Malaysia",
+        "country_code": "MY",
+        "continent": "Asia",
+        "currency_code": "MYR",
+        "city_id": 570,
+        "city_name": "Petaling"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 571,
+        "city_name": "Nottingham"
+    },
+    {
+        "country_id": 81,
+        "country_name": "Germany",
+        "country_code": "DE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 572,
+        "city_name": "Stuttgart"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 573,
+        "city_name": "Darugar"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 574,
+        "city_name": "Durham "
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 588,
+        "city_name": "Bhuj"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 592,
+        "city_name": "Neemuch"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 593,
+        "city_name": "Anjar"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 595,
+        "city_name": "Saint Paul"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 598,
+        "city_name": "Kansas"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 600,
+        "city_name": "Rampura"
+    },
+    {
+        "country_id": 154,
+        "country_name": "Netherlands",
+        "country_code": "NL",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 601,
+        "city_name": "Delft"
+    },
+    {
+        "country_id": 40,
+        "country_name": "Canada",
+        "country_code": "CA",
+        "continent": "North America",
+        "currency_code": "CAD",
+        "city_id": 603,
+        "city_name": "Burnaby"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 606,
+        "city_name": "Bharuch"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 608,
+        "city_name": "Dohad"
+    },
+    {
+        "country_id": 111,
+        "country_name": "Japan",
+        "country_code": "JP",
+        "continent": "Asia",
+        "currency_code": "JPY",
+        "city_id": 612,
+        "city_name": "Tokyo"
+    },
+    {
+        "country_id": 133,
+        "country_name": "Malaysia",
+        "country_code": "MY",
+        "continent": "Asia",
+        "currency_code": "MYR",
+        "city_id": 617,
+        "city_name": "Semenyih"
+    },
+    {
+        "country_id": 215,
+        "country_name": "Sweden",
+        "country_code": "SE",
+        "continent": "Europe",
+        "currency_code": "SEK",
+        "city_id": 619,
+        "city_name": "gothenburg"
+    },
+    {
+        "country_id": 111,
+        "country_name": "Japan",
+        "country_code": "JP",
+        "continent": "Asia",
+        "currency_code": "JPY",
+        "city_id": 622,
+        "city_name": "kaizu "
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 623,
+        "city_name": "Cookeville"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 624,
+        "city_name": "Connecticut"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 636,
+        "city_name": "Lubbock"
+    },
+    {
+        "country_id": 131,
+        "country_name": "Madagascar",
+        "country_code": "MG",
+        "continent": "Africa",
+        "currency_code": "MGA",
+        "city_id": 638,
+        "city_name": "Antsiranana"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 646,
+        "city_name": "Gondal "
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 651,
+        "city_name": "Bhopal"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 653,
+        "city_name": "Florida"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 655,
+        "city_name": "Risalpur"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 660,
+        "city_name": "Wisconsin"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 664,
+        "city_name": "Nagpur"
+    },
+    {
+        "country_id": 81,
+        "country_name": "Germany",
+        "country_code": "DE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 684,
+        "city_name": "Nurumburg"
+    },
+    {
+        "country_id": 108,
+        "country_name": "Italy",
+        "country_code": "IT",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 685,
+        "city_name": "Rome"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 686,
+        "city_name": "Bristol"
+    },
+    {
+        "country_id": 245,
+        "country_name": "Yemen",
+        "country_code": "YE",
+        "continent": "Asia",
+        "currency_code": "YER",
+        "city_id": 689,
+        "city_name": "Aden"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 694,
+        "city_name": "Junagadh"
+    },
+    {
+        "country_id": 18,
+        "country_name": "Bangladesh",
+        "country_code": "BD",
+        "continent": "Asia",
+        "currency_code": "BDT",
+        "city_id": 695,
+        "city_name": "Dhaka"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 696,
+        "city_name": " Brighton and Hove"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 700,
+        "city_name": "Nathdwara"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 703,
+        "city_name": "Limdi"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 704,
+        "city_name": "Oregon"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 705,
+        "city_name": "Manhattan"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 712,
+        "city_name": "Loughborough"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 716,
+        "city_name": "Dhar"
+    },
+    {
+        "country_id": 14,
+        "country_name": "Austria",
+        "country_code": "AT",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 718,
+        "city_name": "Salzburg"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 722,
+        "city_name": "Troy"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 725,
+        "city_name": "UK"
+    },
+    {
+        "country_id": 133,
+        "country_name": "Malaysia",
+        "country_code": "MY",
+        "continent": "Asia",
+        "currency_code": "MYR",
+        "city_id": 730,
+        "city_name": "Malaysia"
+    },
+    {
+        "country_id": 228,
+        "country_name": "Turkey",
+        "country_code": "TR",
+        "continent": "Asia",
+        "currency_code": "TRY",
+        "city_id": 737,
+        "city_name": "Cyprus"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 739,
+        "city_name": "Tandoazam"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 743,
+        "city_name": "Sacramento"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 749,
+        "city_name": "palanpur"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 753,
+        "city_name": "Nicobar"
+    },
+    {
+        "country_id": 108,
+        "country_name": "Italy",
+        "country_code": "IT",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 754,
+        "city_name": "Pavia"
+    },
+    {
+        "country_id": 195,
+        "country_name": "Saudi Arabia",
+        "country_code": "SA",
+        "continent": "Asia",
+        "currency_code": "SAR",
+        "city_id": 755,
+        "city_name": "Bahrain"
+    },
+    {
+        "country_id": 46,
+        "country_name": "China",
+        "country_code": "CN",
+        "continent": "Asia",
+        "currency_code": "CNY",
+        "city_id": 756,
+        "city_name": "Zhenjiang"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 757,
+        "city_name": "Pennsylvania"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 760,
+        "city_name": "Sussex"
+    },
+    {
+        "country_id": 167,
+        "country_name": "Pakistan",
+        "country_code": "PK",
+        "continent": "Asia",
+        "currency_code": "PKR",
+        "city_id": 774,
+        "city_name": "Abbottabad"
+    },
+    {
+        "country_id": 104,
+        "country_name": "Iraq",
+        "country_code": "IQ",
+        "continent": "Asia",
+        "currency_code": "IQD",
+        "city_id": 776,
+        "city_name": "Karbala"
+    },
+    {
+        "country_id": 111,
+        "country_name": "Japan",
+        "country_code": "JP",
+        "continent": "Asia",
+        "currency_code": "JPY",
+        "city_id": 788,
+        "city_name": "Okinawa"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 792,
+        "city_name": "Scotland"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 793,
+        "city_name": "Oxford"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 794,
+        "city_name": "Suhasra"
+    },
+    {
+        "country_id": 136,
+        "country_name": "Malta",
+        "country_code": "MT",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 795,
+        "city_name": "Vellata"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 799,
+        "city_name": "maharashtra"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 800,
+        "city_name": "Halwad"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 801,
+        "city_name": "Lancaster "
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 802,
+        "city_name": "South hadley"
+    },
+    {
+        "country_id": 81,
+        "country_name": "Germany",
+        "country_code": "DE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 803,
+        "city_name": "Chewinfurt"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 804,
+        "city_name": "benguluru"
+    },
+    {
+        "country_id": 81,
+        "country_name": "Germany",
+        "country_code": "DE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 810,
+        "city_name": "Schewinfurt"
+    },
+    {
+        "country_id": 235,
+        "country_name": "United Kingdom",
+        "country_code": "GB",
+        "continent": "Europe",
+        "currency_code": "GBP",
+        "city_id": 811,
+        "city_name": "England"
+    },
+    {
+        "country_id": 210,
+        "country_name": "Sri Lanka",
+        "country_code": "LK",
+        "continent": "Asia",
+        "currency_code": "LKR",
+        "city_id": 818,
+        "city_name": "jaffna"
+    },
+    {
+        "country_id": 195,
+        "country_name": "Saudi Arabia",
+        "country_code": "SA",
+        "continent": "Asia",
+        "currency_code": "SAR",
+        "city_id": 819,
+        "city_name": "Jubail"
+    },
+    {
+        "country_id": 13,
+        "country_name": "Australia",
+        "country_code": "AU",
+        "continent": "Australia",
+        "currency_code": "AUD",
+        "city_id": 822,
+        "city_name": "Cairns"
+    },
+    {
+        "country_id": 40,
+        "country_name": "Canada",
+        "country_code": "CA",
+        "continent": "North America",
+        "currency_code": "CAD",
+        "city_id": 823,
+        "city_name": "Oshawa"
+    },
+    {
+        "country_id": 40,
+        "country_name": "Canada",
+        "country_code": "CA",
+        "continent": "North America",
+        "currency_code": "CAD",
+        "city_id": 826,
+        "city_name": "Montreal"
+    },
+    {
+        "country_id": 81,
+        "country_name": "Germany",
+        "country_code": "DE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 828,
+        "city_name": "Cottbus"
+    },
+    {
+        "country_id": 64,
+        "country_name": "Egypt",
+        "country_code": "EG",
+        "continent": "Africa",
+        "currency_code": "EGP",
+        "city_id": 831,
+        "city_name": "Qahera"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 832,
+        "city_name": "Michigan"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 833,
+        "city_name": "Delhi"
+    },
+    {
+        "country_id": 21,
+        "country_name": "Belgium",
+        "country_code": "BE",
+        "continent": "Europe",
+        "currency_code": "EUR",
+        "city_id": 836,
+        "city_name": "Leuven"
+    },
+    {
+        "country_id": 40,
+        "country_name": "Canada",
+        "country_code": "CA",
+        "continent": "North America",
+        "currency_code": "CAD",
+        "city_id": 844,
+        "city_name": "Peterborough"
+    },
+    {
+        "country_id": 101,
+        "country_name": "India",
+        "country_code": "IN",
+        "continent": "Asia",
+        "currency_code": "INR",
+        "city_id": 845,
+        "city_name": "Dehradun"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 846,
+        "city_name": "Washington"
+    },
+    {
+        "country_id": 236,
+        "country_name": "United States",
+        "country_code": "US",
+        "continent": "North America",
+        "currency_code": "USD",
+        "city_id": 847,
+        "city_name": "Missouri"
+    }
+]

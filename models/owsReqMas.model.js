@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db"); 
+const Guardian = require("./guardian.model"); // Import Guardian for FK reference
 
 const OwsReqMas = sequelize.define("owsReqMas", {
   reqMasId: {
@@ -12,6 +13,16 @@ const OwsReqMas = sequelize.define("owsReqMas", {
   reqDt: {
     type: DataTypes.DATEONLY,
     allowNull: false
+  },
+  guardian_ITS: {
+    type: DataTypes.CHAR(8),
+    allowNull: true,
+    references: {
+      model: Guardian,
+      key: "ITS"
+    },
+    onUpdate: "CASCADE",
+    onDelete: "SET NULL" 
   },
   ITS: {
     type: DataTypes.CHAR(8),

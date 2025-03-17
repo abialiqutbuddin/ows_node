@@ -19,6 +19,10 @@ const OwsReqForm = sequelize.define("owsReqForm", {
     },
     onDelete: "CASCADE"
   },
+  studentName:{
+    type: DataTypes.STRING(255),
+    allowNull: true
+  },
   reqByITS: {
     type: DataTypes.CHAR(8),
     allowNull: false

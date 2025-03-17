@@ -1,0 +1,344 @@
+[
+    {
+        "id": 1,
+        "name": "Play Group",
+        "marhala_id": 1,
+        "class": "Play Group"
+    },
+    {
+        "id": 2,
+        "name": "Nursery",
+        "marhala_id": 1,
+        "class": "Nursery"
+    },
+    {
+        "id": 3,
+        "name": "Junior Kindergarten",
+        "marhala_id": 1,
+        "class": "Junior Kindergarten"
+    },
+    {
+        "id": 4,
+        "name": "Senior Kindergarten",
+        "marhala_id": 1,
+        "class": "Senior Kindergarten"
+    },
+    {
+        "id": 6,
+        "name": "STD 1",
+        "marhala_id": 2,
+        "class": "1st"
+    },
+    {
+        "id": 7,
+        "name": "STD 2",
+        "marhala_id": 2,
+        "class": "2nd"
+    },
+    {
+        "id": 8,
+        "name": "STD 3",
+        "marhala_id": 2,
+        "class": "3rd"
+    },
+    {
+        "id": 9,
+        "name": "STD 4",
+        "marhala_id": 2,
+        "class": "4th"
+    },
+    {
+        "id": 10,
+        "name": "STD 5",
+        "marhala_id": 3,
+        "class": "5th"
+    },
+    {
+        "id": 11,
+        "name": "STD 6",
+        "marhala_id": 3,
+        "class": "6th"
+    },
+    {
+        "id": 12,
+        "name": "STD 7",
+        "marhala_id": 3,
+        "class": "7th"
+    },
+    {
+        "id": 13,
+        "name": "STD 8",
+        "marhala_id": 3,
+        "class": "8th"
+    },
+    {
+        "id": 17,
+        "name": "A-Level/ Pearson Edexcel/ GED/ International Baccalaureate Diploma",
+        "marhala_id": 5,
+        "class": ""
+    },
+    {
+        "id": 114,
+        "name": "Home Sciences",
+        "marhala_id": 6,
+        "class": ""
+    },
+    {
+        "id": 115,
+        "name": "Medical & Related",
+        "marhala_id": 6,
+        "class": ""
+    },
+    {
+        "id": 116,
+        "name": "Biological & Life Sciences",
+        "marhala_id": 6,
+        "class": ""
+    },
+    {
+        "id": 117,
+        "name": "Chemical & Material Sciences",
+        "marhala_id": 6,
+        "class": ""
+    },
+    {
+        "id": 118,
+        "name": "Earth & Environmental Sciences",
+        "marhala_id": 6,
+        "class": ""
+    },
+    {
+        "id": 119,
+        "name": "Physics & Numerical Sciences",
+        "marhala_id": 6,
+        "class": ""
+    },
+    {
+        "id": 120,
+        "name": "Agricultural Sciences",
+        "marhala_id": 6,
+        "class": ""
+    },
+    {
+        "id": 121,
+        "name": "Engineering",
+        "marhala_id": 6,
+        "class": ""
+    },
+    {
+        "id": 122,
+        "name": "Computer Science",
+        "marhala_id": 6,
+        "class": ""
+    },
+    {
+        "id": 123,
+        "name": "Commerce & Management Sciences",
+        "marhala_id": 6,
+        "class": ""
+    },
+    {
+        "id": 124,
+        "name": "Education",
+        "marhala_id": 6,
+        "class": ""
+    },
+    {
+        "id": 125,
+        "name": "Media Sciences",
+        "marhala_id": 6,
+        "class": ""
+    },
+    {
+        "id": 126,
+        "name": "Art & Design",
+        "marhala_id": 6,
+        "class": ""
+    },
+    {
+        "id": 129,
+        "name": "SSC-(AKU-EB)",
+        "marhala_id": 4,
+        "class": ""
+    },
+    {
+        "id": 130,
+        "name": "SSC-(Provincial Board)",
+        "marhala_id": 4,
+        "class": ""
+    },
+    {
+        "id": 131,
+        "name": "GCSE (O Levels)",
+        "marhala_id": 4,
+        "class": ""
+    },
+    {
+        "id": 132,
+        "name": "IGCSE",
+        "marhala_id": 4,
+        "class": ""
+    },
+    {
+        "id": 133,
+        "name": "HSSC-(AKU-EB)",
+        "marhala_id": 5,
+        "class": ""
+    },
+    {
+        "id": 134,
+        "name": "HSSC-(Ziauddin Board)",
+        "marhala_id": 5,
+        "class": ""
+    },
+    {
+        "id": 135,
+        "name": "HSSC-(Provincial Board)",
+        "marhala_id": 5,
+        "class": ""
+    },
+    {
+        "id": 139,
+        "name": "Doctor of Medicine - M.D.",
+        "marhala_id": 7,
+        "class": ""
+    },
+    {
+        "id": 140,
+        "name": "Masters of Arts",
+        "marhala_id": 7,
+        "class": ""
+    },
+    {
+        "id": 141,
+        "name": "Master of Business Admininstration",
+        "marhala_id": 7,
+        "class": ""
+    },
+    {
+        "id": 142,
+        "name": "Master of Commerce",
+        "marhala_id": 7,
+        "class": ""
+    },
+    {
+        "id": 143,
+        "name": "Masters in Computer applications- M.C.A",
+        "marhala_id": 7,
+        "class": ""
+    },
+    {
+        "id": 144,
+        "name": "Master of Architecture - M.Arch.",
+        "marhala_id": 7,
+        "class": ""
+    },
+    {
+        "id": 145,
+        "name": "Master of Dental Surgery - M.D.S.",
+        "marhala_id": 7,
+        "class": ""
+    },
+    {
+        "id": 146,
+        "name": "Master of Education - M.Ed",
+        "marhala_id": 7,
+        "class": ""
+    },
+    {
+        "id": 147,
+        "name": "Master of Engineering - M.E",
+        "marhala_id": 7,
+        "class": ""
+    },
+    {
+        "id": 148,
+        "name": "Master of Fine Arts (M.F.A.)",
+        "marhala_id": 7,
+        "class": ""
+    },
+    {
+        "id": 149,
+        "name": "Master of Fisheries Science - M.F.Sc.",
+        "marhala_id": 7,
+        "class": ""
+    },
+    {
+        "id": 150,
+        "name": "Master of Law- L.L.M",
+        "marhala_id": 7,
+        "class": ""
+    },
+    {
+        "id": 151,
+        "name": "Master of Pharmacy - M.Pharm",
+        "marhala_id": 7,
+        "class": ""
+    },
+    {
+        "id": 152,
+        "name": "Master of Philosophy - M.Phil.",
+        "marhala_id": 7,
+        "class": ""
+    },
+    {
+        "id": 153,
+        "name": "Master of Physiotherapy - M.P.T.",
+        "marhala_id": 7,
+        "class": ""
+    },
+    {
+        "id": 154,
+        "name": "Master of Planning",
+        "marhala_id": 7,
+        "class": ""
+    },
+    {
+        "id": 155,
+        "name": "Master of Science - M.Sc.",
+        "marhala_id": 7,
+        "class": ""
+    },
+    {
+        "id": 156,
+        "name": "Master of Surgery - M.S.",
+        "marhala_id": 7,
+        "class": ""
+    },
+    {
+        "id": 157,
+        "name": "Master of Technology",
+        "marhala_id": 7,
+        "class": ""
+    },
+    {
+        "id": 158,
+        "name": "Master of Veterinary Science - M.V.Sc.",
+        "marhala_id": 7,
+        "class": ""
+    },
+    {
+        "id": 161,
+        "name": "Other",
+        "marhala_id": 5,
+        "class": ""
+    },
+    {
+        "id": 162,
+        "name": "CA (Chartered Accountant)",
+        "marhala_id": 7,
+        "class": ""
+    },
+    {
+        "id": 164,
+        "name": "Social Sciences",
+        "marhala_id": 6,
+        "class": ""
+    },
+    {
+        "id": 165,
+        "name": "Other",
+        "marhala_id": 4,
+        "class": ""
+    }
+]
