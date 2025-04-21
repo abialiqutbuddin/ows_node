@@ -126,8 +126,8 @@ async function transferDraftToApplication(draftId) {
     }
 
     // Step 5: Delete draft entry
-    await DraftModel.destroy({ where: { id: draftId }, transaction });
-    console.log(`[CLEANUP] Draft deleted with ID: ${draftId}`);
+    // await DraftModel.destroy({ where: { id: draftId }, transaction });
+    // console.log(`[CLEANUP] Draft deleted with ID: ${draftId}`);
 
     // Final commit
     await transaction.commit();
