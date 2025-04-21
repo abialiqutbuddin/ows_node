@@ -31,7 +31,7 @@ const sequelize = require("./config/db");
 app.use(cors());
 app.use(bodyParser.json());
 
-const API_VERSION = "1.1.4"; // Change this based on your version
+const API_VERSION = "1.2.0"; // Change this based on your version
 
 const PORT = 3003;
 
