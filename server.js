@@ -33,18 +33,18 @@ app.use(bodyParser.json());
 
 const API_VERSION = "1.1.4"; // Change this based on your version
 
-const PORT = 3002;
+const PORT = 3003;
 
 //Load SSL Certificates
-// const options = {
-//     key: fs.readFileSync("/etc/letsencrypt/live/mode.imadiinnovations.com/privkey.pem"),
-//     cert: fs.readFileSync("/etc/letsencrypt/live/mode.imadiinnovations.com/fullchain.pem"),
-// };
-// // Start HTTPS Server
-// https.createServer(options, app).listen(PORT, () => {
-//     console.log(`HTTPS Server running on https://mode.imadiinnovations.com:${PORT}`);
-// });
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const options = {
+    key: fs.readFileSync("/etc/letsencrypt/live/dev.imadiinnovations.com/privkey.pem"),
+    cert: fs.readFileSync("/etc/letsencrypt/live/dev.imadiinnovations.com/fullchain.pem"),
+};
+// Start HTTPS Server
+https.createServer(options, app).listen(PORT, () => {
+    console.log(`HTTPS Server running on https://dev.imadiinnovations.com:${PORT}`);
+});
+//app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 //const uploadRoutes = require("./utils/upload");
 //app.use("/upload", uploadRoutes);
 
