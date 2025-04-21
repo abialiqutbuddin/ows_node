@@ -11,10 +11,10 @@ const FeatureEndpoint = require("./models/featureEndpoint.model");
 const Forms = require("./models/forms.model");
 const FormFieldValue = require("./models/formFieldValue.model");
 const FormField = require("./models/formField.model");
-const AiutRecord  = require("./models/aiut_record.model"); // Import models
-const AmbtRecord  = require("./models/ambt_record.model"); // Import models
-const StsmfRecord  = require("./models/stsmf_record.model"); // Import models
-const Guardian  = require("./models/guardian.model"); // Import models
+const AiutRecord  = require("./models/aiut_record.model"); 
+const AmbtRecord  = require("./models/ambt_record.model"); 
+const StsmfRecord  = require("./models/stsmf_record.model"); 
+const Guardian  = require("./models/guardian.model"); 
 
 (async () => {
   try {

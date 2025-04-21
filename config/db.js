@@ -1,35 +1,35 @@
 const { Sequelize } = require("sequelize");
 
-const sequelize = new Sequelize("owstest", "aak", "aak110", {
-    host: "localhost", 
-    dialect: "mysql",  
-    dialectOptions: {
-        multipleStatements: true, 
-    },
-    pool: {
-        max: 10, 
-        min: 0,
-        acquire: 30000, 
-        idle: 10000 
-    },
-    logging: false 
-});
-
 // const sequelize = new Sequelize("owstest", "aak", "aak110", {
-//     host: "36.50.12.171", 
-//     dialect: "mysql", 
-//     port: 3309, 
+//     host: "localhost", 
+//     dialect: "mysql",  
 //     dialectOptions: {
 //         multipleStatements: true, 
 //     },
 //     pool: {
-//         max: 10,
+//         max: 10, 
 //         min: 0,
 //         acquire: 30000, 
 //         idle: 10000 
 //     },
 //     logging: false 
 // });
+
+const sequelize = new Sequelize("owstest", "aak", "aak110", {
+    host: "36.50.12.171", 
+    dialect: "mysql", 
+    port: 3309, 
+    dialectOptions: {
+        multipleStatements: true, 
+    },
+    pool: {
+        max: 10,
+        min: 0,
+        acquire: 30000, 
+        idle: 10000 
+    },
+    logging: false 
+});
 
 // Function to check database connection
 async function connectToDatabase() {

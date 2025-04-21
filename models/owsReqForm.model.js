@@ -1,7 +1,8 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db"); // Import database connection
 const OwsReqMas = require("./owsReqMas.model"); // Import related table
-
+const StudentApplication = require("./app_form/student_application.model").StudentApplication;
+const DraftModel = require("./student_application_draft.model");
 const OwsReqForm = sequelize.define("owsReqForm", {
   reqId: {
     type: DataTypes.INTEGER,
@@ -19,9 +20,27 @@ const OwsReqForm = sequelize.define("owsReqForm", {
     },
     onDelete: "CASCADE"
   },
-  studentName:{
+  studentName: {
     type: DataTypes.STRING(255),
     allowNull: true
+  },
+  draft_id: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'student_application_draft',
+      key: 'id'
+    },
+    onDelete: 'SET NULL'
+  },
+  application_id: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'student_application',
+      key: 'id'
+    },
+    onDelete: 'SET NULL'
   },
   reqByITS: {
     type: DataTypes.CHAR(8),
@@ -31,7 +50,7 @@ const OwsReqForm = sequelize.define("owsReqForm", {
     type: DataTypes.STRING(100),
     allowNull: false
   },
-  mohalla:{
+  mohalla: {
     type: DataTypes.STRING(255),
     allowNull: true
   },
@@ -81,7 +100,7 @@ const OwsReqForm = sequelize.define("owsReqForm", {
     allowNull: true
   },
   fundAsking: {
-    type: DataTypes.DECIMAL(10,2),
+    type: DataTypes.DECIMAL(10, 2),
     allowNull: true
   },
   classification: {
@@ -126,5 +145,14 @@ const OwsReqForm = sequelize.define("owsReqForm", {
 });
 
 OwsReqForm.belongsTo(OwsReqMas, { foreignKey: "ITS", onDelete: "CASCADE" });
+OwsReqForm.belongsTo(StudentApplication, {
+  foreignKey: "application_id",
+  onDelete: "SET NULL"
+});
+
+OwsReqForm.belongsTo(DraftModel, {
+  foreignKey: "draft_id",
+  onDelete: "SET NULL"
+});
 
 module.exports = OwsReqForm;

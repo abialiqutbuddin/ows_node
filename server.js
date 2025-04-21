@@ -21,6 +21,8 @@ const AmbtRecord = require("./models/ambt_record.model");
 const StsmfRecord = require("./models/stsmf_record.model");
 const Guardian = require("./models/guardian.model");
 const User = require("./models/user.model");
+const StudentApplicationDraft = require('./models/student_application_draft.model'); 
+const transferDraftToApplication = require("./controllers/transferDraftToApplication");
 const multer = require('multer');
 const path = require('path');
 const app = express();
@@ -31,18 +33,18 @@ app.use(bodyParser.json());
 
 const API_VERSION = "1.1.4"; // Change this based on your version
 
-const PORT = 3003;
+const PORT = 3002;
 
 //Load SSL Certificates
-const options = {
-    key: fs.readFileSync("/etc/letsencrypt/live/dev.imadiinnovations.com/privkey.pem"),
-    cert: fs.readFileSync("/etc/letsencrypt/live/dev.imadiinnovations.com/fullchain.pem"),
-};
-// Start HTTPS Server
-https.createServer(options, app).listen(PORT, () => {
-    console.log(`HTTPS Server running on https://dev.imadiinnovations.com:${PORT}`);
-});
-//app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// const options = {
+//     key: fs.readFileSync("/etc/letsencrypt/live/mode.imadiinnovations.com/privkey.pem"),
+//     cert: fs.readFileSync("/etc/letsencrypt/live/mode.imadiinnovations.com/fullchain.pem"),
+// };
+// // Start HTTPS Server
+// https.createServer(options, app).listen(PORT, () => {
+//     console.log(`HTTPS Server running on https://mode.imadiinnovations.com:${PORT}`);
+// });
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 //const uploadRoutes = require("./utils/upload");
 //app.use("/upload", uploadRoutes);
 
@@ -134,7 +136,7 @@ app.post("/get-family-profile", authMiddleware, async (req, res) => {
             return res.status(400).json({ error: "'its_id' must be a non-empty string" });
         }
 
-        const url = `http://192.168.52.58:8080/crc_live/backend/dist/mumineen/getFamilyDetails.php?user_name=umoor_talimiyah&password=UTalim2025&token=0a1d240f3f39c454e22b2402303aa2959d00b770d9802ed359d75cf07d2e2b65&its_id=${its_id}`;
+        const url = `http://192.168.52.58:8080/crc_live/backend/dist/mumineen/getFamilyDetails.php?user_name=umoor_talimiyah&password=UTalim2025&token=1242621ebdaac37b03d88310abc26f9aaee505f7e5654a47421fb39ec6ece94f&its_id=${its_id}`;
         const response = await axios.get(url);
         return res.status(200).json(response.data);
 
@@ -325,6 +327,11 @@ app.post(
                 console.log("✅ ITS already exists in owsReqMas:", existingUser.toJSON());
             }
 
+            console.log("📝 Creating empty student_application_draft record...");
+            const draft = await StudentApplicationDraft.create({}, { transaction });
+            const draftId = draft.id;
+            console.log("✅ Empty draft created with ID:", draftId);
+
             // ✅ Step 3: Insert into `owsReqForm`
             console.log(`📌 Inserting request form for ITS: ${ITS}...`);
             const newRequest = await OwsReqForm.create(
@@ -348,9 +355,11 @@ app.post(
                     organization,
                     description,
                     currentStatus: "Request Generated",
+                    draft_id: draftId,
                     created_by,
                     updated_by,
                     mohalla,
+                    studentName: studentFullName,
                 },
                 { transaction }
             );
@@ -370,6 +379,25 @@ app.post(
         }
     }
 );
+
+// POST /create-draft
+app.post("/create-draft-application", async (req, res) => {
+    try {
+      const draft = await StudentApplicationDraft.create({}); // create empty draft
+      return res.status(201).json({
+        success: true,
+        message: "Draft created successfully.",
+        draftId: draft.id
+      });
+    } catch (error) {
+      console.error("🚨 Error creating draft:", error);
+      return res.status(500).json({
+        success: false,
+        message: "Failed to create draft.",
+        error: error.message
+      });
+    }
+  });
 
 app.post("/users-by-mohalla", async (req, res) => {
     try {
@@ -951,203 +979,6 @@ app.post("/post-url-v2", upload.none(), async (req, res) => {
     }
 });
 
-//////////
-
-app.post('/submit-draft-form', (req, res) => {
-    const formData = req.body;
-    console.log(formData);
-
-    // Utility function to convert empty string to null for numeric/date fields
-    const nonEmpty = (value) => (value === '' ? null : value);
-    const encodeList = (list) => Buffer.from(JSON.stringify(list || [])).toString('base64');
-
-    // Construct the values array ensuring we have exactly 40 items
-    const values = [
-        formData.its || null,                    // 1. its (provided by frontend: 8-digit string)
-        formData.reqId || null,                  // 2. reqId (new field to check uniqueness)
-        formData.sfNo || null,                   // 3: sf_no
-        formData.hofIts || null,                 // 4: hof_its
-        formData.familySurname || null,          // 5: family_surname
-        formData.fullName || null,               // 6: full_name
-        formData.cnic || null,                   // 7: cnic
-        nonEmpty(formData.dateOfBirth),          // 8: date_of_birth
-        formData.mobileNo || null,               // 9: mobile_no
-        formData.whatsappNo || null,             // 10: whatsapp_no
-        formData.email || null,                  // 11: email
-        formData.residentialAddress || null,     // 12: residential_address
-        formData.fatherName || null,             // 13: father_name
-        formData.fatherCnic || null,             // 14: father_cnic
-        formData.motherName || null,             // 15: mother_name
-        formData.motherCnic || null,             // 16: mother_cnic
-        formData.guardianName || null,           // 17: guardian_name
-        formData.guardianCnic || null,           // 18: guardian_cnic
-        formData.relationToStudent || null,      // 19: relation_to_student
-        formData.mohallaName || null,            // 20: mohalla_name
-        nonEmpty(formData.appliedAmount),        // 21: applied_amount
-        nonEmpty(formData.amanat),               // 22: amanat
-        nonEmpty(formData.personalIncome),       // 23: personal_income
-        nonEmpty(formData.otherFamilyIncome),    // 24: other_family_income
-        nonEmpty(formData.studentIncome),        // 25: student_income
-        nonEmpty(formData.ownedProperty),        // 26: owned_property
-        nonEmpty(formData.rentProperty),         // 27: rent_property
-        nonEmpty(formData.goodwillProperty),     // 28: goodwill_property
-        nonEmpty(formData.property),             // 29: property
-        nonEmpty(formData.jewelry),              // 30: jewelry
-        nonEmpty(formData.transport),            // 31: transport
-        nonEmpty(formData.others),               // 32: others
-        encodeList(formData.businessList), 
-        encodeList(formData.familyEducationList), 
-        encodeList(formData.otherCertificationList), 
-        encodeList(formData.travelling), 
-        encodeList(formData.dependents),  // ✅ Fix: Convert dependents to Base64
-        encodeList(formData.liabilities), 
-        encodeList(formData.enayat), 
-        encodeList(formData.guarantor), 
-        encodeList(formData.payments), 
-        encodeList(formData.repayments),
-    ];
-
-    console.log("Number of values to insert/update:", values.length);
-
-    // Step 1: Check if the record exists based on its and reqId
-    const checkQuery = `
-        SELECT draft_id FROM draft_application_form 
-        WHERE its = ? AND reqId = ?
-    `;
-
-    db2.query(checkQuery, [formData.its, formData.reqId], (err, result) => {
-        if (err) {
-            console.error("Error checking existing record:", err);
-            return res.status(500).json({ error: err.message });
-        }
-
-        if (result.length > 0) {
-            // Record exists, update it
-            const updateQuery = `
-                UPDATE draft_application_form SET
-                    sf_no = ?, hof_its = ?, family_surname = ?, full_name = ?, cnic = ?, date_of_birth = ?, 
-                    mobile_no = ?, whatsapp_no = ?, email = ?, residential_address = ?, father_name = ?, 
-                    father_cnic = ?, mother_name = ?, mother_cnic = ?, guardian_name = ?, guardian_cnic = ?, 
-                    relation_to_student = ?, mohalla_name = ?, applied_amount = ?, amanat = ?, personal_income = ?, 
-                    other_family_income = ?, student_income = ?, owned_property = ?, rent_property = ?, 
-                    goodwill_property = ?, property = ?, jewelry = ?, transport = ?, others = ?, 
-                    business_list = ?, family_education_list = ?, other_certification_list = ?, travelling = ?, 
-                    dependents = ?, liabilities = ?, enayat = ?, guarantor = ?, payments = ?, repayments = ?, 
-                    updated_at = CURRENT_TIMESTAMP
-                WHERE its = ? AND reqId = ?
-            `;
-
-            db2.query(updateQuery, [...values.slice(2), formData.its, formData.reqId], (updateErr, updateResult) => {
-                if (updateErr) {
-                    console.error("Error updating record:", updateErr);
-                    return res.status(500).json({ error: updateErr.message });
-                }
-                res.json({ message: "Form updated successfully!", id: result[0].draft_id });
-            });
-
-        } else {
-            // Record does not exist, insert a new one
-            const placeholders = Array(values.length).fill('?').join(',');
-            const insertQuery = `
-                INSERT INTO draft_application_form (
-                    its, reqId, sf_no, hof_its, family_surname, full_name, cnic, date_of_birth, 
-                    mobile_no, whatsapp_no, email, residential_address, father_name, father_cnic, 
-                    mother_name, mother_cnic, guardian_name, guardian_cnic, relation_to_student, 
-                    mohalla_name, applied_amount, amanat, personal_income, other_family_income, 
-                    student_income, owned_property, rent_property, goodwill_property, property, 
-                    jewelry, transport, others, business_list, family_education_list, other_certification_list, 
-                    travelling, dependents, liabilities, enayat, guarantor, payments, repayments, created_at, updated_at
-                ) VALUES (${placeholders}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-            `;
-
-            db2.query(insertQuery, values, (insertErr, insertResult) => {
-                if (insertErr) {
-                    console.error("Error inserting form data:", insertErr);
-                    return res.status(500).json({ error: insertErr.message });
-                }
-                res.json({ message: "Form submitted successfully!", id: insertResult.insertId });
-            });
-        }
-    });
-});
-
-// API to fetch application data by `its` and `reqId`
-app.get('/get-draft-application', (req, res) => {
-    const { its, reqId } = req.query;
-
-    if (!its || !reqId) {
-        return res.status(400).json({ error: 'Both its and reqId are required' });
-    }
-
-    const sql = `SELECT * FROM draft_application_form WHERE its = ? AND reqId = ?`;
-
-    db2.query(sql, [its, reqId], (err, result) => {
-        if (err) {
-            console.error('Error fetching record:', err);
-            return res.status(500).json({ error: 'Database query error' });
-        }
-
-        if (result.length === 0) {
-            return res.status(404).json({ error: 'No record found' });
-        }
-
-        const applicationData = result[0];
-
-        // Decode Base64 fields before sending
-        const decodeBase64 = (encodedStr) => {
-            return encodedStr ? JSON.parse(Buffer.from(encodedStr, 'base64').toString('utf8')) : null;
-        };
-
-        const response = {
-            its: applicationData.its,
-            reqId: applicationData.reqId,
-            sfNo: applicationData.sf_no,
-            hofIts: applicationData.hof_its,
-            familySurname: applicationData.family_surname,
-            fullName: applicationData.full_name,
-            cnic: applicationData.cnic,
-            dateOfBirth: applicationData.date_of_birth,
-            mobileNo: applicationData.mobile_no,
-            whatsappNo: applicationData.whatsapp_no,
-            email: applicationData.email,
-            residentialAddress: applicationData.residential_address,
-            fatherName: applicationData.father_name,
-            fatherCnic: applicationData.father_cnic,
-            motherName: applicationData.mother_name,
-            motherCnic: applicationData.mother_cnic,
-            guardianName: applicationData.guardian_name,
-            guardianCnic: applicationData.guardian_cnic,
-            relationToStudent: applicationData.relation_to_student,
-            mohallaName: applicationData.mohalla_name,
-            appliedAmount: applicationData.applied_amount,
-            amanat: applicationData.amanat,
-            personalIncome: applicationData.personal_income,
-            otherFamilyIncome: applicationData.other_family_income,
-            studentIncome: applicationData.student_income,
-            ownedProperty: applicationData.owned_property,
-            rentProperty: applicationData.rent_property,
-            goodwillProperty: applicationData.goodwill_property,
-            property: applicationData.property,
-            jewelry: applicationData.jewelry,
-            transport: applicationData.transport,
-            others: applicationData.others,
-            businessList: decodeBase64(applicationData.business_list),
-            familyEducationList: decodeBase64(applicationData.family_education_list),
-            otherCertificationList: decodeBase64(applicationData.other_certification_list),
-            travelling: decodeBase64(applicationData.travelling),
-            dependents: decodeBase64(applicationData.dependents),
-            liabilities: decodeBase64(applicationData.liabilities),
-            enayat: decodeBase64(applicationData.enayat),
-            guarantor: decodeBase64(applicationData.guarantor),
-            payments: decodeBase64(applicationData.payments),
-            repayments: decodeBase64(applicationData.repayments),
-            createdAt: applicationData.created_at,
-            updatedAt: applicationData.updated_at
-        };
-
-        res.json(response);
-    });
-});
 
 app.put("/add-guardian", async (req, res) => {
     try {
@@ -1180,5 +1011,76 @@ app.put("/add-guardian", async (req, res) => {
     } catch (error) {
       console.error("Error updating guardian:", error);
       res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+
+  app.post('/save-draft', async (req, res) => {
+    const { application_id, draft_data } = req.body;
+  
+    console.log("📥 Received draft data for application_id:", application_id);
+    console.log("📝 Draft data content:", draft_data);
+  
+    if (!application_id || !draft_data) {
+      console.error("❌ Missing application_id or draft_data");
+      return res.status(400).json({ error: 'Missing application_id or draft_data' });
+    }
+  
+    try {
+      const existing = await StudentApplicationDraft.findByPk(application_id);
+  
+      if (existing) {
+        console.log("🔁 Existing draft found. Updating...");
+        await StudentApplicationDraft.update(draft_data, {
+          where: { id: application_id },
+        });
+        console.log("✅ Draft updated successfully for:", application_id);
+      } else {
+        console.log("🆕 No existing draft. Creating new entry...");
+        await StudentApplicationDraft.create({
+          id: application_id,
+          ...draft_data,
+        });
+        console.log("✅ Draft created successfully for:", application_id);
+      }
+  
+      res.status(200).json({ message: '✅ Draft saved successfully' });
+    } catch (error) {
+      console.error('❌ Error saving draft:', error.message);
+      res.status(500).json({ error: 'Internal server error', details: error.message });
+    }
+  });
+
+  app.get('/load-draft/:application_id', async (req, res) => {
+    const { application_id } = req.params;
+  
+    try {
+      const draft = await StudentApplicationDraft.findByPk(application_id);
+      if (!draft) {
+        return res.status(404).json({ error: 'Draft not found' });
+      }
+  
+      res.status(200).json(draft);
+    } catch (error) {
+      console.error('❌ Error loading draft:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+
+  app.post("/submit-draft/:id", async (req, res) => {
+    const draftId = req.params.id;
+  
+    try {
+      const result = await transferDraftToApplication(draftId);
+      res.status(200).json({
+        message: "Draft submitted successfully.",
+        applicationId: result.applicationId
+      });
+    } catch (err) {
+      console.error("Submission error:", err);
+      res.status(500).json({
+        message: "Failed to submit application.",
+        error: err.message
+      });
     }
   });
