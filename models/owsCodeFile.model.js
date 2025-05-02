@@ -7,23 +7,31 @@ const OwsCodeFile = sequelize.define("owsCodeFile", {
     unique: true,
     allowNull: false,
     autoIncrement: true,
-    primaryKey: true
+    primaryKey: true,
   },
   codType: {
-    type: DataTypes.STRING(5),
-    allowNull: true
+    type: DataTypes.STRING(20),
+    allowNull: true,
+  },
+  codGroup: {
+    type: DataTypes.STRING(30),
+    allowNull: true,
+  },
+  GrpSer: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
   },
   shortDesc: {
     type: DataTypes.STRING(20),
-    allowNull: true
+    allowNull: true,
   },
   longDesc: {
-    type: DataTypes.STRING(100),
-    allowNull: true
-  }
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
 }, {
   tableName: "owsCodeFile",
-  timestamps: false // No created_at and updated_at columns
+  timestamps: false,
 });
 
 module.exports = OwsCodeFile;

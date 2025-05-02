@@ -14,6 +14,7 @@ const permissionRoutes = require("./routes/permissionRoutes");
 const authMiddleware = require("./middleware/authMiddleWare");
 const sendMail = require("./config/mail");
 require("dotenv").config();
+const OwsCodeFile = require('./models/owsCodeFile.model');
 const OwsReqForm = require("./models/owsReqForm.model");
 const OwsReqMas = require("./models/owsReqMas.model");
 const AiutRecord = require("./models/aiut_record.model");
@@ -21,7 +22,7 @@ const AmbtRecord = require("./models/ambt_record.model");
 const StsmfRecord = require("./models/stsmf_record.model");
 const Guardian = require("./models/guardian.model");
 const User = require("./models/user.model");
-const StudentApplicationDraft = require('./models/student_application_draft.model'); 
+const StudentApplicationDraft = require('./models/student_application_draft.model');
 const transferDraftToApplication = require("./controllers/transferDraftToApplication");
 const multer = require('multer');
 const path = require('path');
@@ -33,19 +34,19 @@ app.use(bodyParser.json());
 
 const API_VERSION = "1.2.0"; // Change this based on your version
 
-const PORT = 3003;
+const PORT = 3001;
 
 //Load SSL Certificates
-const options = {
-    key: fs.readFileSync("/etc/letsencrypt/live/dev.imadiinnovations.com/privkey.pem"),
-    cert: fs.readFileSync("/etc/letsencrypt/live/dev.imadiinnovations.com/fullchain.pem"),
-};
-// Start HTTPS Server
-https.createServer(options, app).listen(PORT, () => {
-    console.log(`HTTPS Server running on https://dev.imadiinnovations.com:${PORT}`);
-});
-//app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-//const uploadRoutes = require("./utils/upload");
+// const options = {
+//     key: fs.readFileSync("/etc/letsencrypt/live/dev.imadiinnovations.com/privkey.pem"),
+//     cert: fs.readFileSync("/etc/letsencrypt/live/dev.imadiinnovations.com/fullchain.pem"),
+// };
+// // Start HTTPS Server
+// https.createServer(options, app).listen(PORT, () => {
+//     console.log(`HTTPS Server running on https://dev.imadiinnovations.com:${PORT}`);
+// });
+app.listen(PORT,'0.0.0.0', () => console.log(`Server running on port ${PORT}`));
+const uploadRoutes = require("./utils/upload");
 //app.use("/upload", uploadRoutes);
 
 // Authentication Routes
@@ -294,7 +295,7 @@ app.post(
 
         try {
             const {
-                ITS, studentFirstName,studentFullName, reqByITS, reqByName, city, institution, class_degree, fieldOfStudy, subject_course,
+                ITS, studentFirstName, studentFullName, reqByITS, reqByName, city, institution, class_degree, fieldOfStudy, subject_course,
                 yearOfStart, grade, email, contactNo, whatsappNo, purpose, fundAsking, classification,
                 organization, description, currentStatus, created_by, updated_by, mohalla, address, dob
             } = req.body;
@@ -325,6 +326,25 @@ app.post(
                 console.log("✅ ITS inserted into owsReqMas successfully:", existingUser.toJSON());
             } else {
                 console.log("✅ ITS already exists in owsReqMas:", existingUser.toJSON());
+            }
+
+            // ✅ Check for existing application
+            console.log(`🔍 Checking for existing application for ITS: ${ITS}, Organization: ${organization}, Year of Start: ${yearOfStart}...`);
+            const existingApplication = await OwsReqForm.findOne({
+                where: {
+                    ITS,
+                    organization,
+                    yearOfStart
+                },
+                transaction
+            });
+
+            if (existingApplication) {
+                await transaction.rollback();
+                return res.status(200).json({
+                    success: false,
+                    message: "An application already exists for this ITS, organization, and year of start.",
+                });
             }
 
             console.log("📝 Creating empty student_application_draft record...");
@@ -383,21 +403,21 @@ app.post(
 // POST /create-draft
 app.post("/create-draft-application", async (req, res) => {
     try {
-      const draft = await StudentApplicationDraft.create({}); // create empty draft
-      return res.status(201).json({
-        success: true,
-        message: "Draft created successfully.",
-        draftId: draft.id
-      });
+        const draft = await StudentApplicationDraft.create({}); // create empty draft
+        return res.status(201).json({
+            success: true,
+            message: "Draft created successfully.",
+            draftId: draft.id
+        });
     } catch (error) {
-      console.error("🚨 Error creating draft:", error);
-      return res.status(500).json({
-        success: false,
-        message: "Failed to create draft.",
-        error: error.message
-      });
+        console.error("🚨 Error creating draft:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Failed to create draft.",
+            error: error.message
+        });
     }
-  });
+});
 
 app.post("/users-by-mohalla", async (req, res) => {
     try {
@@ -442,7 +462,7 @@ app.post("/users-by-mohalla", async (req, res) => {
                 users = await OwsReqForm.findAll({
                     where: { organization: org },
                 });
-            } else if(mohalla === "ALL"){
+            } else if (mohalla === "ALL") {
                 console.log("mohalla: Fetching all requests...");
                 users = await OwsReqForm.findAll();
             }
@@ -767,120 +787,120 @@ app.get("/fetch-goods", (req, res) => {
     console.log("FETCHING");
     const sql = "SELECT * FROM goods";
     db2.query(sql, (err, result) => {
-      if (err) {
-        console.error("Error executing query:", err);
-        return res.status(500).json({ error: err.message });
-      }
-      res.json(result);
+        if (err) {
+            console.error("Error executing query:", err);
+            return res.status(500).json({ error: err.message });
+        }
+        res.json(result);
     });
-  });
+});
 
 //////////////////////////
 // Storage configuration for multer
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      const studentId = req.body.studentId;
-      const docType = file.fieldname; // Document type is dynamically determined by the field name
-      
-      if (!docType) {
-        return cb(new Error('Document type is undefined'));
-      }
-  
-      // Define the folder path dynamically based on studentId and document type
-      const folderPath = `./uploads/${studentId}/${docType}`;
-      console.log(`Uploading to folder: ${folderPath}`);
-  
-      // Create the folder structure if it doesn't exist
-      fs.mkdirSync(folderPath, { recursive: true });
-  
-      cb(null, folderPath);  // The folder path where the file will be stored
+        const studentId = req.body.studentId;
+        const docType = file.fieldname; // Document type is dynamically determined by the field name
+
+        if (!docType) {
+            return cb(new Error('Document type is undefined'));
+        }
+
+        // Define the folder path dynamically based on studentId and document type
+        const folderPath = `./uploads/${studentId}/${docType}`;
+        console.log(`Uploading to folder: ${folderPath}`);
+
+        // Create the folder structure if it doesn't exist
+        fs.mkdirSync(folderPath, { recursive: true });
+
+        cb(null, folderPath);  // The folder path where the file will be stored
     },
     filename: (req, file, cb) => {
-      const studentId = req.body.studentId;
-      const docType = file.fieldname;  // Document type
-      const reqId = req.body.reqId || Date.now();  // Include reqId or use timestamp if not provided
-      
-      if (!docType) {
-        return cb(new Error('Document type is undefined'));
-      }
-  
-      // Determine the file extension based on mimetype
-      let extname = '';
-      if (file.mimetype === 'application/pdf') {
-        extname = '.pdf';
-      } else if (file.mimetype === 'image/jpeg') {
-        extname = '.jpg';
-      } else if (file.mimetype === 'image/png') {
-        extname = '.png';
-      } else if (file.mimetype === 'application/msword') {
-        extname = '.doc';
-      } else if (file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-        extname = '.docx';
-      }
-  
-      // Generate the dynamic filename
-      const fileName = `${studentId}_${docType}_${reqId}`;
-      cb(null, fileName + extname);  // Return the final filename
+        const studentId = req.body.studentId;
+        const docType = file.fieldname;  // Document type
+        const reqId = req.body.reqId || Date.now();  // Include reqId or use timestamp if not provided
+
+        if (!docType) {
+            return cb(new Error('Document type is undefined'));
+        }
+
+        // Determine the file extension based on mimetype
+        let extname = '';
+        if (file.mimetype === 'application/pdf') {
+            extname = '.pdf';
+        } else if (file.mimetype === 'image/jpeg') {
+            extname = '.jpg';
+        } else if (file.mimetype === 'image/png') {
+            extname = '.png';
+        } else if (file.mimetype === 'application/msword') {
+            extname = '.doc';
+        } else if (file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+            extname = '.docx';
+        }
+
+        // Generate the dynamic filename
+        const fileName = `${studentId}_${docType}_${reqId}`;
+        cb(null, fileName + extname);  // Return the final filename
     }
-  });
-  
-  // Initialize multer with the storage configuration
-  const upload = multer({ storage: storage });
+});
+
+// Initialize multer with the storage configuration
+const upload = multer({ storage: storage });
 
 // Endpoint to upload a single document of any type
 app.post('/upload', upload.any(), (req, res) => {
 
     // Check if files are uploaded
     if (!req.files || req.files.length === 0) {
-      return res.status(400).send('No file uploaded.');
+        return res.status(400).send('No file uploaded.');
     }
-  
+
     // Since upload.any() can upload files with different field names,
     // check the files in req.files and handle dynamically.
     const uploadedFile = req.files[0];  // We expect only one file in this case.
 
     console.log(uploadedFile.path);
-  
+
     // Return a success message with the file path
     res.status(200).send({
-      message: 'File uploaded successfully',
-      file: {
-        docType: uploadedFile.fieldname,  // Field name indicates the document type
-        filePath: uploadedFile.path,      // Path to the uploaded file
-      }
+        message: 'File uploaded successfully',
+        file: {
+            docType: uploadedFile.fieldname,  // Field name indicates the document type
+            filePath: uploadedFile.path,      // Path to the uploaded file
+        }
     });
-  });
+});
 
 // DELETE endpoint for removing a document
 app.delete('/delete', (req, res) => {
     const { studentId, docType, filePath } = req.query;  // Get filePath, studentId, and docType from the query
-    
+
     console.log('Received request to delete:', { studentId, docType, filePath });
-    
+
     // Validate that all required parameters are provided
     if (!studentId || !docType || !filePath) {
-      return res.status(400).send({ message: 'Missing required parameters.' });
+        return res.status(400).send({ message: 'Missing required parameters.' });
     }
-  
+
     // Resolve the full file path from the `filePath` query and ensure no additional prefixes are included
-    const resolvedFilePath = path.join(__dirname,filePath);
-  
+    const resolvedFilePath = path.join(__dirname, filePath);
+
     console.log(`Attempting to delete: ${resolvedFilePath}`);
-    
+
     // Delete the file from the file system
     fs.unlink(resolvedFilePath, (err) => {
-      if (err) {
-        console.error('Error deleting file:', err);
-        return res.status(500).send({ message: 'Error deleting file.' });
-      }
-      // Successfully deleted the file
-      res.status(200).send({ message: 'File deleted successfully.' });
+        if (err) {
+            console.error('Error deleting file:', err);
+            return res.status(500).send({ message: 'Error deleting file.' });
+        }
+        // Successfully deleted the file
+        res.status(200).send({ message: 'File deleted successfully.' });
     });
-  });
+});
 
-  const upload_paktalim = multer();
+const upload_paktalim = multer();
 
-  app.post("/update-paktalim-profile", upload_paktalim.none(), async (req, res) => {
+app.post("/update-paktalim-profile", upload_paktalim.none(), async (req, res) => {
     try {
         const {
             m_id,
@@ -982,105 +1002,124 @@ app.post("/post-url-v2", upload.none(), async (req, res) => {
 
 app.put("/add-guardian", async (req, res) => {
     try {
-      const { name, ITS, contact, relation, student_ITS } = req.body;
-  
-      // Check if the guardian exists
-      const guardian = await Guardian.findOne({ where: { ITS } });
-      
-      if (!guardian) {
-        return res.status(404).json({ message: "Guardian not found" });
-      }
-  
-      // Validate if the student ITS exists (optional check)
-      if (student_ITS) {
-        const student = await OwsReqMas.findOne({ where: { ITS: student_ITS } });
-        if (!student) {
-          return res.status(400).json({ message: "Student ITS not found" });
+        const { name, ITS, contact, relation, student_ITS } = req.body;
+
+        // Check if the guardian exists
+        const guardian = await Guardian.findOne({ where: { ITS } });
+
+        if (!guardian) {
+            return res.status(404).json({ message: "Guardian not found" });
         }
-      }
-  
-      // Update guardian details
-      await guardian.update({ name, ITS, contact, relation });
-  
-      // If student_ITS is provided, update the student's guardian
-      if (student_ITS) {
-        await OwsReqMas.update({ guardian_ITS: ITS }, { where: { ITS: student_ITS } });
-      }
-  
-      res.status(200).json({ message: "Guardian updated successfully", guardian });
+
+        // Validate if the student ITS exists (optional check)
+        if (student_ITS) {
+            const student = await OwsReqMas.findOne({ where: { ITS: student_ITS } });
+            if (!student) {
+                return res.status(400).json({ message: "Student ITS not found" });
+            }
+        }
+
+        // Update guardian details
+        await guardian.update({ name, ITS, contact, relation });
+
+        // If student_ITS is provided, update the student's guardian
+        if (student_ITS) {
+            await OwsReqMas.update({ guardian_ITS: ITS }, { where: { ITS: student_ITS } });
+        }
+
+        res.status(200).json({ message: "Guardian updated successfully", guardian });
     } catch (error) {
-      console.error("Error updating guardian:", error);
-      res.status(500).json({ message: "Internal server error" });
+        console.error("Error updating guardian:", error);
+        res.status(500).json({ message: "Internal server error" });
     }
-  });
+});
 
 
-  app.post('/save-draft', async (req, res) => {
+app.post('/save-draft', async (req, res) => {
     const { application_id, draft_data } = req.body;
-  
+
     console.log("📥 Received draft data for application_id:", application_id);
     console.log("📝 Draft data content:", draft_data);
-  
+
     if (!application_id || !draft_data) {
-      console.error("❌ Missing application_id or draft_data");
-      return res.status(400).json({ error: 'Missing application_id or draft_data' });
+        console.error("❌ Missing application_id or draft_data");
+        return res.status(400).json({ error: 'Missing application_id or draft_data' });
     }
-  
-    try {
-      const existing = await StudentApplicationDraft.findByPk(application_id);
-  
-      if (existing) {
-        console.log("🔁 Existing draft found. Updating...");
-        await StudentApplicationDraft.update(draft_data, {
-          where: { id: application_id },
-        });
-        console.log("✅ Draft updated successfully for:", application_id);
-      } else {
-        console.log("🆕 No existing draft. Creating new entry...");
-        await StudentApplicationDraft.create({
-          id: application_id,
-          ...draft_data,
-        });
-        console.log("✅ Draft created successfully for:", application_id);
-      }
-  
-      res.status(200).json({ message: '✅ Draft saved successfully' });
-    } catch (error) {
-      console.error('❌ Error saving draft:', error.message);
-      res.status(500).json({ error: 'Internal server error', details: error.message });
-    }
-  });
 
-  app.get('/load-draft/:application_id', async (req, res) => {
+    try {
+        const existing = await StudentApplicationDraft.findByPk(application_id);
+
+        if (existing) {
+            console.log("🔁 Existing draft found. Updating...");
+            await StudentApplicationDraft.update(draft_data, {
+                where: { id: application_id },
+            });
+            console.log("✅ Draft updated successfully for:", application_id);
+        } else {
+            console.log("🆕 No existing draft. Creating new entry...");
+            await StudentApplicationDraft.create({
+                id: application_id,
+                ...draft_data,
+            });
+            console.log("✅ Draft created successfully for:", application_id);
+        }
+
+        res.status(200).json({ message: '✅ Draft saved successfully' });
+    } catch (error) {
+        console.error('❌ Error saving draft:', error.message);
+        res.status(500).json({ error: 'Internal server error', details: error.message });
+    }
+});
+
+app.get('/load-draft/:application_id', async (req, res) => {
     const { application_id } = req.params;
-  
-    try {
-      const draft = await StudentApplicationDraft.findByPk(application_id);
-      if (!draft) {
-        return res.status(404).json({ error: 'Draft not found' });
-      }
-  
-      res.status(200).json(draft);
-    } catch (error) {
-      console.error('❌ Error loading draft:', error);
-      res.status(500).json({ error: 'Internal server error' });
-    }
-  });
 
-  app.post("/submit-draft/:id", async (req, res) => {
-    const draftId = req.params.id;
-  
     try {
-      const result = await transferDraftToApplication(draftId);
-      res.status(200).json({
-        message: "Draft submitted successfully.",
-        applicationId: result.applicationId
-      });
-    } catch (err) {
-      console.error("Submission error:", err);
-      res.status(500).json({
-        message: "Failed to submit application.",
-        error: err.message
-      });
+        const draft = await StudentApplicationDraft.findByPk(application_id);
+        if (!draft) {
+            return res.status(404).json({ error: 'Draft not found' });
+        }
+
+        res.status(200).json(draft);
+    } catch (error) {
+        console.error('❌ Error loading draft:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
-  });
+});
+
+app.post("/submit-draft/:id", async (req, res) => {
+    const draftId = req.params.id;
+
+    try {
+        const result = await transferDraftToApplication(draftId);
+        res.status(200).json({
+            message: "Draft submitted successfully.",
+            applicationId: result.applicationId
+        });
+    } catch (err) {
+        console.error("Submission error:", err);
+        res.status(500).json({
+            message: "Failed to submit application.",
+            error: err.message
+        });
+    }
+});
+
+app.post('/code-by-group', async (req, res) => {
+    try {
+        const { codGroup } = req.body;
+
+        if (!codGroup) {
+            return res.status(400).json({ error: "codGroup is required" });
+        }
+
+        const codes = await OwsCodeFile.findAll({
+            where: { codGroup }
+        });
+
+        res.status(200).json(codes);
+    } catch (error) {
+        console.error("Error fetching code group:", error);
+        res.status(500).json({ error: "Failed to fetch data" });
+    }
+});
