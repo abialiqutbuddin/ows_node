@@ -1,0 +1,117 @@
+{
+    "student": {
+        "khidmat_current": "None",
+        "khidmat_intent": "Shabab ul Eid-e-Zahabi",
+        "studied_kalemat_daim": "No",
+        "memorized_names": "No",
+        "offers_sila_vajebaat": "No",
+        "attended_misaq_majlis": "No",
+        "moharramaat_survey": "Yes",
+        "shaadi_status": "Married",
+        "spouse_name": "Aboaali",
+        "its": "30445124",
+        "ashara_attendance": "All 9 days",
+        "ziarat_raudat_tahera": "Yes",
+        "namaz_daily": "All five Faraz",
+        "assets": "TV, Telephone/Mobile, Animal Cart",
+        "house_title": "Ownership - On Own Plot",
+        "area": "Smaller than 200 sqft",
+        "neighborhood": "Mumineen Mohalla",
+        "drinking_water": "Handpump - Non-Drinkable Water",
+        "sanitation_bathroom": "Combined Bathroom/Toilet - Inside House",
+        "wallFlooring": "No",
+        "leakage": "No",
+        "personalBank": "No",
+        "taking_fmb": "Yes daily",
+        "fmb_quantity_sufficient": "Not enough for 1 time",
+        "height": "15 cm",
+        "weight": "15",
+        "physically_mentally_challenged": "No",
+        "child_death_past_5yrs": "Yes",
+        "vaccination_status": "No",
+        "chronic_illness": "No",
+        "disease_details": "",
+        "family_member_working": "No",
+        "working_details": "",
+        "family_member_disability": "No",
+        "disability_details": "",
+        "wajebaat_expenses": "155",
+        "niyaz_expenses": "155",
+        "sabeel_expenses": "155",
+        "zyarat_expenses": "155",
+        "ashara_expenses": "155",
+        "qardanhasana": "155",
+        "other_deeni_expenses": "155",
+        "groceries_supplies": "155",
+        "dineout_expense": "155",
+        "essential_expense": "155",
+        "doctor_expenses": "155",
+        "dental_expenses": "155",
+        "glass_expenses": "155",
+        "meds_expenses": "155",
+        "vacation_expenses": "155",
+        "rent_expense": "155",
+        "maintenance_expense": "155",
+        "gas_expense": "155",
+        "electricity_expense": "155",
+        "mobile_expense": "155",
+        "water_expense": "155",
+        "cable_expense": "155",
+        "internet_expense": "155",
+        "clothing_expense": "155",
+        "appliances_expense": "155",
+        "other_expenses": "155",
+        "property_assets": "155",
+        "jewelry_Assets": "155",
+        "transport_assets": "155",
+        "other_assets": "155"
+    },
+    "occupation": {
+        "mode_work": "work",
+        "name_org": "work",
+        "work_phone": "work",
+        "work_web": "work",
+        "work_form": "work",
+        "work_address": "work",
+        "work_email": "work",
+        "work_desc": "work"
+    },
+    "repeatables": {
+        "education_expenses": [],
+        "dependents": [
+            {
+                "dependent_name": "Aboaali",
+                "its": "30445124",
+                "dependentAge": "12"
+            }
+        ],
+        "travelling_expense": [
+            {
+                "travelPlace": "karachi",
+                "travelYear": "1222",
+                "travelPurpose": "wrr"
+            },
+            {
+                "travelPlace": "wrawr",
+                "travelYear": "1111",
+                "travelPurpose": "wfsefs"
+            }
+        ],
+        "business_assets": [],
+        "qh_liability": [
+            {
+                "member_name": "Aboaali",
+                "its": "30445124",
+                "qhLiabilityPurpose": "222",
+                "qhLiabilityAmount": "2222"
+            },
+            {
+                "member_name": "Qutbuddinb",
+                "its": "30445123",
+                "qhLiabilityPurpose": "222",
+                "qhLiabilityAmount": "222"
+            }
+        ],
+        "enayat_liability": []
+    }
+}

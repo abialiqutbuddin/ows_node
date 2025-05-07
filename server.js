@@ -30,9 +30,10 @@ const app = express();
 const { body, validationResult } = require("express-validator");
 const sequelize = require("./config/db");
 app.use(cors());
+const xml2js  = require('xml2js');
 app.use(bodyParser.json());
 
-const API_VERSION = "1.2.0"; // Change this based on your version
+const API_VERSION = "1.3.0"; // Change this based on your version
 
 const PORT = 3001;
 
@@ -53,7 +54,7 @@ const uploadRoutes = require("./utils/upload");
 app.use("/auth", authRoutes);
 app.use("/", moduleRoutes, permissionRoutes, userRoutes);
 
-app.get("/get-last-req", authMiddleware, async (req, res) => {
+app.get("/get-last-req", async (req, res) => {
     try {
         const lastReq = await OwsReqForm.findOne({
             attributes: ["reqId"],
@@ -95,7 +96,7 @@ app.get('/fetch-image', async (req, res) => {
     }
 });
 
-app.post("/get-profile", authMiddleware, async (req, res) => {
+app.post("/get-profile", async (req, res) => {
     try {
         const { its_id } = req.body;
 
@@ -126,7 +127,7 @@ app.post("/get-profile", authMiddleware, async (req, res) => {
 
 
 // NEW FAMILY API
-app.post("/get-family-profile", authMiddleware, async (req, res) => {
+app.post("/get-family-profile", async (req, res) => {
     try {
         const { its_id } = req.body;
 
@@ -137,7 +138,7 @@ app.post("/get-family-profile", authMiddleware, async (req, res) => {
             return res.status(400).json({ error: "'its_id' must be a non-empty string" });
         }
 
-        const url = `http://192.168.52.58:8080/crc_live/backend/dist/mumineen/getFamilyDetails.php?user_name=umoor_talimiyah&password=UTalim2025&token=1242621ebdaac37b03d88310abc26f9aaee505f7e5654a47421fb39ec6ece94f&its_id=${its_id}`;
+        const url = `http://182.188.38.224:8083/crc_live/backend/dist/mumineen/getFamilyDetails.php?user_name=umoor_talimiyah&password=UTalim2025&token=1242621ebdaac37b03d88310abc26f9aaee505f7e5654a47421fb39ec6ece94f&its_id=${its_id}`;
         const response = await axios.get(url);
         return res.status(200).json(response.data);
 
@@ -153,7 +154,7 @@ app.post("/get-family-profile", authMiddleware, async (req, res) => {
 });
 
 // Endpoint to fetch family profile data
-app.post("/get-family-profile-old", authMiddleware, async (req, res) => {
+app.post("/get-family-profile-old", async (req, res) => {
     const { itsId } = req.body;
 
     const url = `https://paktalim.com/admin/ws_app/GetProfileFamily/${itsId}?access_key=c197364bbcef92456a31b1773941964a728e2c33&username=40459629&password=1107865253`;
@@ -171,7 +172,7 @@ app.post("/get-family-profile-old", authMiddleware, async (req, res) => {
     }
 });
 
-app.post("/fetch-pdf", authMiddleware, async (req, res) => {
+app.post("/fetch-pdf", async (req, res) => {
     try {
         const { its } = req.body;
 
@@ -222,7 +223,7 @@ app.post("/send-email", async (req, res) => {
 });
 
 //GET FROM URL
-app.post("/get-url", authMiddleware, async (req, res) => {
+app.post("/get-url", async (req, res) => {
     try {
         const { url } = req.body;
         if (!url) {
@@ -517,7 +518,7 @@ const validStatuses = [
 ];
 
 // ✅ API: Update Request Status (POST)
-app.post("/update-request-status", authMiddleware, async (req, res) => {
+app.post("/update-request-status", async (req, res) => {
     try {
         console.log("HERE");
         const { reqId, newStatus } = req.body;
@@ -567,7 +568,7 @@ app.post("/update-request-status", authMiddleware, async (req, res) => {
     }
 });
 
-app.post("/all-requests", authMiddleware, async (req, res) => {
+app.post("/all-requests", async (req, res) => {
     try {
         const requests = await OwsReqForm.findAll();
 
@@ -592,7 +593,7 @@ app.post("/all-requests", authMiddleware, async (req, res) => {
     }
 });
 
-app.post("/requests-by-organization", authMiddleware, async (req, res) => {
+app.post("/requests-by-organization", async (req, res) => {
     try {
         const { organization } = req.body;
 
@@ -628,7 +629,7 @@ app.post("/requests-by-organization", authMiddleware, async (req, res) => {
     }
 });
 
-app.post("/run-query", authMiddleware, async (req, res) => {
+app.post("/run-query", async (req, res) => {
     const { query } = req.body;
 
     if (!query) {
@@ -799,77 +800,73 @@ app.get("/fetch-goods", (req, res) => {
 // Storage configuration for multer
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const studentId = req.body.studentId;
-        const docType = file.fieldname; // Document type is dynamically determined by the field name
-
-        if (!docType) {
-            return cb(new Error('Document type is undefined'));
-        }
-
-        // Define the folder path dynamically based on studentId and document type
-        const folderPath = `./uploads/${studentId}/${docType}`;
-        console.log(`Uploading to folder: ${folderPath}`);
-
-        // Create the folder structure if it doesn't exist
-        fs.mkdirSync(folderPath, { recursive: true });
-
-        cb(null, folderPath);  // The folder path where the file will be stored
+      const studentId = req.body.studentId;
+      const reqId = req.body.reqId;
+      const folderPath = `./uploads/${studentId}_${reqId}`;
+  
+      if (!studentId || !reqId) {
+        return cb(new Error('Missing studentId or reqId'));
+      }
+  
+      console.log(`Uploading to folder: ${folderPath}`);
+  
+      fs.mkdirSync(folderPath, { recursive: true });
+      cb(null, folderPath);
     },
+  
     filename: (req, file, cb) => {
-        const studentId = req.body.studentId;
-        const docType = file.fieldname;  // Document type
-        const reqId = req.body.reqId || Date.now();  // Include reqId or use timestamp if not provided
-
-        if (!docType) {
-            return cb(new Error('Document type is undefined'));
-        }
-
-        // Determine the file extension based on mimetype
-        let extname = '';
-        if (file.mimetype === 'application/pdf') {
-            extname = '.pdf';
-        } else if (file.mimetype === 'image/jpeg') {
-            extname = '.jpg';
-        } else if (file.mimetype === 'image/png') {
-            extname = '.png';
-        } else if (file.mimetype === 'application/msword') {
-            extname = '.doc';
-        } else if (file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-            extname = '.docx';
-        }
-
-        // Generate the dynamic filename
-        const fileName = `${studentId}_${docType}_${reqId}`;
-        cb(null, fileName + extname);  // Return the final filename
+      const docType = file.fieldname;
+  
+      if (!docType) {
+        return cb(new Error('Document type is undefined'));
+      }
+  
+      // Get extension from mimetype
+      let extname = '';
+      switch (file.mimetype) {
+        case 'application/pdf':
+          extname = '.pdf';
+          break;
+        case 'image/jpeg':
+          extname = '.jpg';
+          break;
+        case 'image/png':
+          extname = '.png';
+          break;
+        case 'application/msword':
+          extname = '.doc';
+          break;
+        case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+          extname = '.docx';
+          break;
+        default:
+          extname = path.extname(file.originalname); // fallback
+      }
+  
+      const fileName = `${docType}${extname}`; // e.g., cnic_front.pdf
+      cb(null, fileName);
     }
-});
-
+  });
+  
 // Initialize multer with the storage configuration
 const upload = multer({ storage: storage });
 
 // Endpoint to upload a single document of any type
 app.post('/upload', upload.any(), (req, res) => {
-
-    // Check if files are uploaded
     if (!req.files || req.files.length === 0) {
-        return res.status(400).send('No file uploaded.');
+      return res.status(400).send('No file uploaded.');
     }
-
-    // Since upload.any() can upload files with different field names,
-    // check the files in req.files and handle dynamically.
-    const uploadedFile = req.files[0];  // We expect only one file in this case.
-
-    console.log(uploadedFile.path);
-
-    // Return a success message with the file path
+  
+    const uploadedFile = req.files[0];
+  
     res.status(200).send({
-        message: 'File uploaded successfully',
-        file: {
-            docType: uploadedFile.fieldname,  // Field name indicates the document type
-            filePath: uploadedFile.path,      // Path to the uploaded file
-        }
+      message: 'File uploaded successfully',
+      file: {
+        docType: uploadedFile.fieldname,
+        filePath: uploadedFile.path,
+      }
     });
-});
+  });
 
 // DELETE endpoint for removing a document
 app.delete('/delete', (req, res) => {
@@ -899,6 +896,42 @@ app.delete('/delete', (req, res) => {
 });
 
 const upload_paktalim = multer();
+
+app.post('/get-student-documents', async (req, res) => {
+    const { studentId, reqId } = req.body;
+  
+    if (!studentId || !reqId) {
+      return res.status(400).json({ message: 'Missing studentId or reqId in request body' });
+    }
+  
+    const folderName = `${studentId}_${reqId}`;
+    const folderPath = path.join(__dirname, 'uploads', folderName);
+  
+    try {
+      if (!fs.existsSync(folderPath)) {
+        return res.status(404).json({ message: 'No documents found for this student & reqId.' });
+      }
+  
+      const files = fs.readdirSync(folderPath);
+      const documents = files.map(file => {
+        const docType = path.parse(file).name; // filename without extension
+        return {
+          docType,
+          fileName: file,
+          filePath: path.join('uploads', folderName, file),
+        };
+      });
+  
+      return res.status(200).json({
+        studentId,
+        reqId,
+        documents,
+      });
+    } catch (err) {
+      console.error('❌ Error reading documents:', err);
+      return res.status(500).json({ message: 'Server error fetching documents.' });
+    }
+  });
 
 app.post("/update-paktalim-profile", upload_paktalim.none(), async (req, res) => {
     try {
@@ -1123,3 +1156,117 @@ app.post('/code-by-group', async (req, res) => {
         res.status(500).json({ error: "Failed to fetch data" });
     }
 });
+
+const SOAP_URL  = 'https://qardanhasana.pk/BQHT_App_WS/BQHTAPP.asmx';
+const NAMESPACE = 'http://test.qardanhasana.pk/BQHT_App_WS';
+
+
+async function callSoap(action, bodyXml) {
+    // 1) Build the full SOAP envelope
+    const envelope = `<?xml version="1.0" encoding="utf-8"?>
+  <soap:Envelope 
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+      xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+      ${bodyXml}
+    </soap:Body>
+  </soap:Envelope>`;
+  
+    // 2) Send it
+    const response = await axios.post(SOAP_URL, envelope, {
+      headers: {
+        'Content-Type': 'text/xml; charset=utf-8',
+        'SOAPAction':   `"${NAMESPACE}/${action}"`
+      },
+      timeout: 10000, // 10s timeout for debugging
+    });
+  
+    // 3) Parse XML → JS object
+    let parsed;
+    try {
+      parsed = await xml2js.parseStringPromise(response.data, {
+        explicitArray: false,
+        ignoreAttrs:   true
+      });
+    } catch (xmlErr) {
+      throw xmlErr;
+    }
+
+    return parsed;
+  }
+  
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Route: POST /occupationDetails
+  //  - Reads ITS credentials from JSON body
+  //  - Calls AuthenticateFundReport → gets token
+  //  - Calls Get_WorkProfile_BasicDetail → gets JSON blob
+  //  - Logs DataTable to console & returns it
+  // ─────────────────────────────────────────────────────────────────────────────
+  app.post('/occupationDetails', async (req, res) => {
+    const { ITSID, Password, CountryID='1', DeviceDetail='0', IPAddress='' } = req.body;
+    if (!ITSID) {
+      return res.status(400).json({ error: 'ITSID and Password are required.' });
+    }
+  
+    try {
+      // 1) AuthenticateFundReport
+      const authXml = `
+        <AuthenticateFundReport xmlns="${NAMESPACE}">
+          <ITSID>33693369</ITSID>
+          <Password>Beyond@2468</Password>
+          <CountryID>${CountryID}</CountryID>
+          <DeviceDetail>${DeviceDetail}</DeviceDetail>
+          <IPAddress>72.255.0.187</IPAddress>
+        </AuthenticateFundReport>`;
+      const authResp = await callSoap('AuthenticateFundReport', authXml);
+  
+      // rawAuth is a string containing JSON array:
+      const rawAuth = authResp['soap:Envelope']
+                            ['soap:Body']
+                            ['AuthenticateFundReportResponse']
+                            ['AuthenticateFundReportResult'];
+      let authJson;
+      try {
+        authJson = JSON.parse(rawAuth);
+      } catch (e) {
+        return res.status(500).json({ error: 'Invalid JSON in authenticate response.', detail: rawAuth });
+      }
+      if (!Array.isArray(authJson) || authJson.length === 0 || !authJson[0].Token) {
+        return res.status(500).json({ error: 'No token returned.', detail: authJson });
+      }
+      const token = authJson[0].Token;
+  
+      // 2) Get_WorkProfile_BasicDetail
+      const workXml = `
+        <Get_WorkProfile_BasicDetail xmlns="${NAMESPACE}">
+          <Token>${token}</Token>
+          <ITSID>${ITSID}</ITSID>
+        </Get_WorkProfile_BasicDetail>`;
+      const workResp = await callSoap('Get_WorkProfile_BasicDetail', workXml);
+  
+      const rawWork = workResp['soap:Envelope']
+                           ['soap:Body']
+                           ['Get_WorkProfile_BasicDetailResponse']
+                           ['Get_WorkProfile_BasicDetailResult'];
+      let workJson;
+      try {
+        workJson = JSON.parse(rawWork);
+      } catch (e) {
+        return res.status(500).json({ error: 'Invalid JSON in workprofile response.', detail: rawWork });
+      }
+  
+      // Normalize to an object with ExcStatus / DataTable
+      let resultObj = Array.isArray(workJson) ? workJson[0] : workJson;
+      if (resultObj.ExcStatus !== 'Success') {
+        return res.status(500).json({ error: resultObj.ExcMessage || 'Unknown error', detail: resultObj });
+      }
+  
+      // Return DataTable (could be array or single object)
+      return res.json(resultObj.DataTable);
+    } catch (err) {
+      console.error('Error in /occupationDetails:', err);
+      return res.status(500).json({ error: err.message || err.toString() });
+    }
+  });
+
