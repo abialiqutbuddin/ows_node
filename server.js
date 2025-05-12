@@ -32,6 +32,7 @@ const sequelize = require("./config/db");
 app.use(cors());
 const xml2js  = require('xml2js');
 app.use(bodyParser.json());
+const mysql = require('mysql2/promise');
 
 const API_VERSION = "1.3.0"; // Change this based on your version
 
@@ -1270,8 +1271,17 @@ async function callSoap(action, bodyXml) {
     }
   });
 
+  // Configure MySQL pool
+  const pool = mysql.createPool({
+      host: "36.50.12.171",
+      port: "3309",
+      user: "aak",
+      password: "aak110",  // Add your database password
+      database: "owstest",
+  });
+
   // Load form config JSON
-const formConfig = JSON.parse(fs.readFileSync('./formConfig.json', 'utf-8'));
+const formConfig = JSON.parse(fs.readFileSync('./form_config.json', 'utf-8'));
 
 // Helper to fetch main form data
 async function getMainFormData(appId) {
