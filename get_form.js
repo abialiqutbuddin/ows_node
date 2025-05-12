@@ -1,187 +1,154 @@
-const express = require('express');
 const mysql = require('mysql2/promise');
-const app = express();
+const formConfig = require('./form_config.json'); // Save your Dart-style JSON as a JS file
 
 const dbConfig = {
-  host: "36.50.12.171",
-  port: "3309",
-  user: "aak",
-  password: "aak110",
-  database: "owstest",
+    host: "36.50.12.171",
+    port: "3309",
+    user: "aak",
+    password: "aak110",  // Add your database password
+    database: "owstest",
 };
 
-// Utility to remove null/undefined from JSON response
-function removeNulls(obj) {
-  return Object.fromEntries(Object.entries(obj).filter(([_, v]) => v !== null && v !== undefined));
-}
+let sectionCounter = 1;
 
-app.get('/form-config', async (req, res) => {
-  const db = await mysql.createConnection(dbConfig);
+async function insertData() {
+  const connection = await mysql.createConnection(dbConfig);
+  await connection.beginTransaction();
 
   try {
-    const [sections] = await db.execute('SELECT * FROM form_sections ORDER BY display_order');
-    const formConfig = [];
-
-    for (const section of sections) {
-      const sectionData = {
-        title: section.title,
-        key: section.key,
-        type: section.type,
-      };
-
-      if (section.type === 'static') {
-        formConfig.push(removeNulls(sectionData));
-        continue;
-      }
-
-      const [subSections] = await db.execute(
-        'SELECT * FROM form_subsections WHERE section_id = ? ORDER BY display_order',
-        [section.id]
+    for (const section of formConfig) {
+      const sectionSerial = sectionCounter.toString();
+      const [sectionResult] = await connection.execute(
+        `INSERT INTO sections (parent_id, serial, title, key_name) VALUES (?, ?, ?, ?)`,
+        [null, sectionSerial, section.title, section.key]
       );
+      const sectionId = sectionResult.insertId;
 
-      sectionData.subSections = [];
-
-      for (const sub of subSections) {
-        const subSectionData = {
-          title: sub.title,
-          key: sub.key,
-          type: sub.type,
-          radioLabel: sub.radio_label
-        };
-
-        const [fields] = await db.execute(
-          'SELECT * FROM form_fields WHERE subsection_id = ? AND parent_field_id IS NULL ORDER BY display_order',
-          [sub.id]
-        );
-
-        subSectionData.fields = [];
-
-        for (const field of fields) {
-          const fieldData = {
-            type: field.type,
-            label: field.label,
-            key: field.key,
-            validator: field.validator,
-            enable: !!field.enable,
-            hint: field.hint,
-            itemsKey: field.items_key,
-            dropdownLabel: field.dropdown_label,
-            dropdownKey: field.dropdown_key,
-            itemsKey2: field.items_key2,
-            textFieldLabel: field.text_field_label,
-            textFieldKey: field.text_field_key,
-            conditional_value: field.conditional_value,
-            on_condition: field.on_condition
-          };
-
-          if (field.condition_options) {
-            try {
-              fieldData.condition_options = JSON.parse(field.condition_options);
-            } catch {
-              fieldData.condition_options = [];
-            }
-          }
-
-          if (field.has_unit) {
-            fieldData.hasUnit = true;
-            fieldData.unitKey = field.unit_key;
-            fieldData.unitOptions = JSON.parse(field.unit_options || '[]');
-          }
-
-          // Field options
-          const [options] = await db.execute(
-            'SELECT option_label FROM form_field_options WHERE field_id = ?',
-            [field.id]
+      if (section.subSections) {
+        let subCounter = 1;
+        for (const sub of section.subSections) {
+          const subSerial = `${sectionSerial}.${subCounter}`;
+          const [subResult] = await connection.execute(
+            `INSERT INTO sections (parent_id, serial, title, key_name, type) VALUES (?, ?, ?, ?, ?)`,
+            [sectionId, subSerial, sub.title, sub.key, sub.type || null]
           );
-          if (options.length > 0) {
-            fieldData.options = options.map(opt => opt.option_label);
-          }
+          const subId = subResult.insertId;
 
-          // Conditional logic from condition table
-          const [conditions] = await db.execute(
-            'SELECT * FROM form_field_conditions WHERE field_id = ?',
-            [field.id]
-          );
-
-          for (const cond of conditions) {
-            if (cond.condition_type === 'showTextFieldIf') {
-              fieldData.showTextFieldIf = cond.condition_value;
-              fieldData.textFieldLabel = cond.show_field_label;
-              fieldData.textFieldKey = cond.show_field_key;
-            }
-            if (cond.condition_type === 'showDropdownIf') {
-              fieldData.showDropdownIf = Number(cond.condition_value);
-              fieldData.dropdownLabel = cond.show_field_label;
-              fieldData.dropdownKey = cond.show_field_key;
-              fieldData.itemsKey2 = cond.show_field_options;
-            }
-            if (cond.condition_type === 'on_condition') {
-              fieldData.on_condition = cond.condition_value;
-              fieldData.conditional_value = cond.show_field_label;
-              try {
-                fieldData.condition_options = JSON.parse(cond.show_field_options || '[]');
-              } catch {
-                fieldData.condition_options = [];
-              }
-            }
-          }
-
-          // Nested fields for repeatables
-          if (field.type === 'repeatable') {
-            const [nestedFields] = await db.execute(
-              'SELECT * FROM form_fields WHERE parent_field_id = ? ORDER BY display_order',
-              [field.id]
-            );
-
-            fieldData.fields = [];
-
-            for (const nested of nestedFields) {
-              const nestedField = {
-                type: nested.type,
-                label: nested.label,
-                key: nested.key,
-                validator: nested.validator,
-                enable: !!nested.enable,
-                hint: nested.hint,
-                itemsKey: nested.items_key
-              };
-
-              if (nested.has_unit) {
-                nestedField.hasUnit = true;
-                nestedField.unitKey = nested.unit_key;
-                nestedField.unitOptions = JSON.parse(nested.unit_options || '[]');
-              }
-
-              const [nestedOptions] = await db.execute(
-                'SELECT option_label FROM form_field_options WHERE field_id = ?',
-                [nested.id]
+          if (sub.fields) {
+            let qCounter = 1;
+            for (const field of sub.fields) {
+              const qSerial = `${subSerial}.${qCounter}`;
+              const [qResult] = await connection.execute(
+                `INSERT INTO questions 
+                  (section_id, serial, label, key_name, type, validator, hint, 
+                   has_unit_dropdown, unit_key, unit_options, show_if_value, 
+                   child_key, child_label, is_repeatable_group)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                [
+                  subId, qSerial, field.label, field.key, field.type, field.validator || null,
+                  field.hint || null,
+                  field.hasUnitDropdown || false,
+                  field.unitKey || null,
+                  field.unitOptions ? JSON.stringify(field.unitOptions) : null,
+                  field.showTextFieldIf || field.showDropdownIf || null,
+                  field.textFieldKey || field.dropdownKey || null,
+                  field.textFieldLabel || field.dropdownLabel || null,
+                  field.type === 'repeatable'
+                ]
               );
-              if (nestedOptions.length > 0) {
-                nestedField.options = nestedOptions.map(opt => opt.option_label);
+              const questionId = qResult.insertId;
+
+              // Insert radio or dropdown options
+              if (Array.isArray(field.options)) {
+                for (const opt of field.options) {
+                  await connection.execute(
+                    `INSERT INTO question_options (question_id, option_type, label, is_conditional) VALUES (?, ?, ?, ?)`,
+                    [questionId, field.type, opt, false]
+                  );
+                }
               }
 
-              fieldData.fields.push(removeNulls(nestedField));
+              // Insert dynamic option source keys
+              if (field.itemsKey) {
+                await connection.execute(
+                  `INSERT INTO question_options (question_id, option_type, source_key) VALUES (?, ?, ?)`,
+                  [questionId, field.type, field.itemsKey]
+                );
+              }
+              if (field.itemsKey2) {
+                await connection.execute(
+                  `INSERT INTO question_options (question_id, option_type, source_key) VALUES (?, ?, ?)`,
+                  [questionId, field.type, field.itemsKey2]
+                );
+              }
+
+              // Handle nested fields in repeatable groups
+              if (field.type === 'repeatable' && Array.isArray(field.fields)) {
+                let subQCounter = 1;
+                for (const nestedField of field.fields) {
+                  const nestedSerial = `${qSerial}.${subQCounter}`;
+                  const [nestedQResult] = await connection.execute(
+                    `INSERT INTO questions 
+                      (section_id, parent_question_id, serial, label, key_name, type, validator, hint, 
+                       has_unit_dropdown, unit_key, unit_options)
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                    [
+                      subId, questionId, nestedSerial, nestedField.label, nestedField.key, nestedField.type,
+                      nestedField.validator || null, null,
+                      nestedField.hasUnitDropdown || false,
+                      nestedField.unitKey || null,
+                      nestedField.unitOptions ? JSON.stringify(nestedField.unitOptions) : null
+                    ]
+                  );
+
+                  const nestedQuestionId = nestedQResult.insertId;
+
+                  // Insert nested options if any
+                  if (Array.isArray(nestedField.options)) {
+                    for (const opt of nestedField.options) {
+                      await connection.execute(
+                        `INSERT INTO question_options (question_id, option_type, label, is_conditional) VALUES (?, ?, ?, ?)`,
+                        [nestedQuestionId, nestedField.type, opt, false]
+                      );
+                    }
+                  }
+
+                  if (nestedField.itemsKey) {
+                    await connection.execute(
+                      `INSERT INTO question_options (question_id, option_type, source_key) VALUES (?, ?, ?)`,
+                      [nestedQuestionId, nestedField.type, nestedField.itemsKey]
+                    );
+                  }
+
+                  if (nestedField.itemsKey2) {
+                    await connection.execute(
+                      `INSERT INTO question_options (question_id, option_type, source_key) VALUES (?, ?, ?)`,
+                      [nestedQuestionId, nestedField.type, nestedField.itemsKey2]
+                    );
+                  }
+
+                  subQCounter++;
+                }
+              }
+
+              qCounter++;
             }
           }
 
-          subSectionData.fields.push(removeNulls(fieldData));
+          subCounter++;
         }
-
-        sectionData.subSections.push(removeNulls(subSectionData));
       }
-
-      formConfig.push(removeNulls(sectionData));
+      sectionCounter++;
     }
 
-    await db.end();
-    res.json(formConfig);
-
+    await connection.commit();
+    console.log('Form config successfully inserted into MySQL.');
   } catch (err) {
-    console.error("❌ Error generating form config:", err);
-    res.status(500).json({ message: "Internal server error" });
+    await connection.rollback();
+    console.error('Error inserting data:', err);
+  } finally {
+    await connection.end();
   }
-});
+}
 
-app.listen(3009,"0.0.0.0", () => {
-  console.log('🚀 Server running at http://localhost:3000');
-});
+insertData();
