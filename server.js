@@ -1386,3 +1386,36 @@ app.get('/api/application/:id', async (req, res) => {
 });
 
 
+app.post('/api/submit-application', async (req, res) => {
+  const { application, repeatables } = req.body;
+  const conn = await mysql.createConnection(pool);
+
+  try {
+    await conn.beginTransaction();
+
+    // Insert main application
+    const [result] = await conn.query(
+      `INSERT INTO student_application SET ?`,
+      application
+    );
+
+    const appId = result.insertId;
+
+    // Insert each repeatable table entries
+    for (const [tableKey, entries] of Object.entries(repeatables)) {
+      for (const entry of entries) {
+        entry.app_id = appId; // Ensure app_id is linked
+        await conn.query(`INSERT INTO ${tableKey} SET ?`, entry);
+      }
+    }
+
+    await conn.commit();
+    res.json({ success: true, id: appId });
+  } catch (err) {
+    await conn.rollback();
+    console.error(err);
+    res.status(500).json({ success: false, error: 'Failed to submit application' });
+  } finally {
+    await conn.end();
+  }
+});
