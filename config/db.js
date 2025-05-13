@@ -15,10 +15,10 @@ const { Sequelize } = require("sequelize");
 //     logging: false 
 // });
 
-const sequelize = new Sequelize("owstest", "aak", "aak110", {
-    host: "36.50.12.171", 
+const sequelize = new Sequelize("ows_db", "ows_user", "20250507.Osw*", {
+    host: "ls-71e245ea4a0374b94a685ec89d871c50a32f80c2.cotk02keuuc1.us-east-1.rds.amazonaws.com", 
     dialect: "mysql", 
-    port: 3309, 
+    port: 3306, 
     dialectOptions: {
         multipleStatements: true, 
     },
