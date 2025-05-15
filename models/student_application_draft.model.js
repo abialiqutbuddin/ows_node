@@ -52,6 +52,11 @@ const StudentApplicationDraft = sequelize.define('student_application_draft', {
   qardanhasana: DataTypes.DECIMAL(10, 2),
   other_deeni_expenses: DataTypes.DECIMAL(10, 2),
 
+  jewelry_Assets: DataTypes.DECIMAL(10, 2),
+  transport_assets: DataTypes.DECIMAL(10, 2),
+  other_assets  : DataTypes.DECIMAL(10, 2),
+  property_assets : DataTypes.DECIMAL(10, 2),
+
   // Expenses
   groceries_supplies: DataTypes.DECIMAL(10, 2),
   dineout_expense: DataTypes.DECIMAL(10, 2),
