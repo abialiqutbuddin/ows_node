@@ -1419,3 +1419,5 @@ app.post('/api/submit-application', async (req, res) => {
     await conn.end();
   }
 });
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
