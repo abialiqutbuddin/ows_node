@@ -1421,3 +1421,162 @@ app.post('/api/submit-application', async (req, res) => {
 });
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+app.get('/api/form-config', async (req, res) => {
+  try {
+    const conn = await pool.getConnection();
+
+    // Fetch all sections
+    const [sections] = await conn.execute(`SELECT * FROM form_sections ORDER BY sort_order, id`);
+
+    const formConfig = [];
+
+    for (const section of sections) {
+      const sectionData = {
+        title: section.title,
+        key: section.key,
+      };
+
+      // Fetch subsections
+      const [subsections] = await conn.execute(
+        `SELECT * FROM form_subsections WHERE section_id = ? ORDER BY sort_order, id`,
+        [section.id]
+      );
+
+      if (subsections.length > 0) {
+        sectionData.subSections = [];
+
+        for (const sub of subsections) {
+          const subSection = {
+            title: sub.title,
+            key: sub.key,
+            fields: [],
+          };
+
+          // Fetch fields
+          const [fields] = await conn.execute(
+            `SELECT * FROM form_fields WHERE subsection_id = ? ORDER BY sort_order, id`,
+            [sub.id]
+          );
+
+          for (const field of fields) {
+            const fieldData = {
+              type: field.type,
+              label: field.label,
+              key: field.field_key,
+            };
+
+            if (field.validator) fieldData.validator = field.validator;
+            if (field.hint) fieldData.hint = field.hint;
+            if (field.parent_key) fieldData.parent_key = field.parent_key;
+            if (field.enable_child_on) fieldData.enable_child_on = field.enable_child_on;
+            if (!field.enable) fieldData.enable = false;
+            if (field.has_unit_dropdown) fieldData.hasUnitDropdown = true;
+            if (field.unit_key) fieldData.unitKey = field.unit_key;
+
+            // If it's a repeatable field, load children from form_repeatable_fields
+            if (field.type === 'repeatable') {
+              const [repeatables] = await conn.execute(
+                `SELECT * FROM form_repeatable_fields WHERE parent_field_id = ? ORDER BY sort_order, id`,
+                [field.id]
+              );
+
+              fieldData.fields = repeatables.map((rf) => {
+                const rfData = {
+                  type: rf.type,
+                  label: rf.label,
+                  key: rf.repeatable_field_key,
+                };
+                if (rf.validator) rfData.validator = rf.validator;
+                if (rf.hint) rfData.hint = rf.hint;
+                if (!rf.enable) rfData.enable = false;
+                return rfData;
+              });
+            }
+
+            // If it has options (dropdown, multiselect, radio), load from form_field_options
+            if (['dropdown', 'multiselect', 'radio'].includes(field.type)) {
+              const [options] = await conn.execute(
+                `SELECT label, value FROM form_field_options WHERE field_id = ? ORDER BY sort_order, id`,
+                [field.id]
+              );
+
+              if (options.length > 0) {
+                fieldData.options = options.map((opt) => opt.label); // optional: use `.value`
+              }
+            }
+
+            subSection.fields.push(fieldData);
+          }
+
+          sectionData.subSections.push(subSection);
+        }
+      }
+
+      formConfig.push(sectionData);
+    }
+
+    res.json(formConfig);
+    conn.release();
+  } catch (error) {
+    console.error('Error fetching form config:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+const repeatableTables = [
+  'income_types',
+  'dependents',
+  'travelling_expense',
+  'education_expenses',
+  'business_assets',
+  'qh_liability',
+  'enayat_liability',
+];
+
+// Fetch records from repeatable table
+async function fetchRepeatable(conn, tableName, applicationId) {
+  try {
+    const [rows] = await conn.execute(
+      `SELECT * FROM ${tableName} WHERE application_id = ?`,
+      [applicationId]
+    );
+    return rows;
+  } catch (err) {
+    console.error(`Error fetching from ${tableName}:`, err);
+    return [];
+  }
+}
+
+// GET /api/application/:id
+app.get('/api/get-application/:id', async (req, res) => {
+  const appId = req.params.id;
+
+  const conn = await pool.getConnection();
+  try {
+    // Fetch main record
+    const [mainRows] = await conn.execute(
+      `SELECT * FROM application_main WHERE id = ?`,
+      [appId]
+    );
+
+    if (mainRows.length === 0) {
+      return res.status(404).json({ message: 'Application not found' });
+    }
+
+    const application = mainRows[0];
+
+    // Append repeatable sections
+    for (const table of repeatableTables) {
+      application[table] = await fetchRepeatable(conn, table, appId);
+    }
+
+    res.json(application);
+  } catch (err) {
+    console.error('API Error:', err);
+    res.status(500).json({ message: 'Server error' });
+  } finally {
+    conn.release();
+  }
+});

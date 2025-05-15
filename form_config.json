@@ -1,100 +1,14 @@
 [
   {
-    "title": "Intend",
+    "title": "Intent",
     "key": "intendInfo"
-  },
-  {
-    "title": "Work Information",
-    "key": "workInfo",
-    "subSections": [
-      {
-        "title": "Occupation",
-        "key": "occupationInfo",
-        "fields": [
-          {
-            "type": "text",
-            "label": "Mode of Work",
-            "enable": true,
-            "key": "mode_work",
-            "validator": "name"
-          },
-          {
-            "type": "text",
-            "label": "Name of Organization",
-            "enable": true,
-            "key": "name_org",
-            "validator": "name"
-          },
-          {
-            "type": "text",
-            "label": "Work Phone",
-            "enable": true,
-            "key": "work_phone",
-            "validator": "name"
-          },
-          {
-            "type": "text",
-            "label": "Website Address",
-            "enable": true,
-            "key": "work_web",
-            "validator": "name"
-          },
-          {
-            "type": "text",
-            "label": "Current Form of Business",
-            "enable": true,
-            "key": "work_form",
-            "validator": "name"
-          },
-          {
-            "type": "text",
-            "label": "Address of Organization",
-            "enable": true,
-            "key": "work_address",
-            "validator": "name"
-          },
-          {
-            "type": "text",
-            "label": "Work Email",
-            "enable": true,
-            "key": "work_email",
-            "validator": "name"
-          },
-          {
-            "type": "text",
-            "label": "Business Description",
-            "enable": true,
-            "key": "work_desc",
-            "validator": "name"
-          }
-        ]
-      },
-      {
-        "title": "Khidmat Details",
-        "key": "khidmatInfo",
-        "fields": [
-          {
-            "type": "dropdown",
-            "label":
-                "Are you currently a part of any of the following khidmat avenues?",
-            "key": "khidmat_current",
-            "itemsKey": "khidmatOptions",
-            "showDropdownIf": 5,
-            "dropdownLabel":
-                "Are you intending to be a part of any of the following khidmat avenues?",
-            "dropdownKey": "khidmat_intent",
-            "itemsKey2": "khidmatOptions"
-          }
-        ]
-      }
-    ]
   },
   {
     "title": "Housing",
     "key": "houseInfo",
     "subSections": [
       {
-        "title": "House Details",
+        "title": "Housing Info",
         "key": "housingInfo",
         "fields": [
           {
@@ -125,80 +39,58 @@
             "type": "radio",
             "label": "Has a personal Bank Account?",
             "key": "personalBank",
-            "options": ["Yes", "No"]
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "title": "FMB",
-    "key": "fmbSection",
-    "subSections": [
-      {
-        "title": "Health & Nutrition",
-        "key": "fmbInfo",
-        "fields": [
+            "options": [
+              "Yes",
+              "No"
+            ]
+          },
           {
             "type": "dropdown",
-            "label": "Are you taking FMB Thali? (HOF)",
-            "key": "taking_fmb",
-            "itemsKey": "fmbThaliOptions",
-            "showDropdownIf": 0,
-            "dropdownLabel":
-                "Does the quantity sufficient for the whole family?",
-            "dropdownKey": "fmb_quantity_sufficient",
-            "itemsKey2": "fmbQuantityOptions"
+            "label": "Are you currently a part of any of the following khidmat avenues?",
+            "key": "khidmat_current",
+            "itemsKey": "khidmatOptions"
           },
           {
-            "type": "radio",
-            "label":
-                "Is there anyone who is physically or mentally challenged in the house? (HOF)",
-            "key": "physically_mentally_challenged",
-            "options": ["Yes", "No"]
-          },
-          {
-            "type": "radio",
-            "label":
-                "Are all children in the household taking/taken the required vaccinations? (HOF)",
-            "key": "vaccination_status",
-            "options": ["Yes", "No"]
-          },
-          {
-            "type": "radio",
-            "label":
-                "Any Chronic (long term, incurable) illness(e.g Diabetes, Hypertension)?",
-            "key": "chronic_illness",
-            "options": ["Yes", "No"],
-            "showTextFieldIf": "Yes",
-            "textFieldKey": "disease_details",
-            "textFieldLabel": "Give Details"
-          },
-          {
-            "type": "radio",
-            "label": "Do you frequently participate in any sports or physical activities",
-            "key": "sports",
-            "options": ["Yes", "No"],
-            "showMultiSelectOn": "Yes",
-            "itemsKey": "sportsOptions",
-            "MultiSelectKey":"sports_playing"
-          },
-          {
-            "type": "radio",
-            "label":
-                "Does any family member have a disability or chronic illness affecting earning capacity?",
-            "key": "family_member_disability",
-            "options": ["Yes", "No"],
-            "showTextFieldIf": "Yes",
-            "textFieldKey": "disability_details",
-            "textFieldLabel": "Give Details"
+            "type": "dropdown",
+            "label": "Are you intending to be a part of any of the following khidmat avenues?",
+            "key": "khidmat_intent",
+            "itemsKey": "khidmatOptions",
+            "parent_key": "khidmat_current",
+            "enable_child_on": "5"
           }
         ]
       },
       {
-        "title": "BMI",
-        "key": "bmiInfo",
+        "title": "Financial",
+        "key": "studentFinancial",
         "fields": [
+          {
+            "label": "Self Earning",
+            "key": "self_earning",
+            "type": "text",
+            "validator": "amount",
+            "hint": "Enter 0 if not applicable"
+          }
+        ]
+      },
+      {
+        "title": "Nutrition & Health",
+        "key": "studentNutrition",
+        "fields": [
+          {
+            "type": "dropdown",
+            "label": "Are you taking FMB Thali?",
+            "key": "taking_fmb",
+            "itemsKey": "fmbThaliOptions"
+          },
+          {
+            "type": "dropdown",
+            "label": "Does the quantity suffice for the whole family?",
+            "key": "fmb_quantity_sufficient",
+            "itemsKey": "fmbQuantityOptions",
+            "parent_key": "taking_fmb",
+            "enable_child_on": "0"
+          },
           {
             "type": "text",
             "label": "Height",
@@ -206,13 +98,231 @@
             "validator": "amount",
             "hasUnitDropdown": true,
             "unitKey": "heightUnit",
-            "unitOptions": ["cm", "feet", "inches", "m"]
+            "unitOptions": [
+              "cm",
+              "feet",
+              "inches",
+              "m"
+            ]
           },
           {
             "type": "text",
             "label": "Weight (in KG)",
             "key": "weight",
             "validator": "number"
+          },
+          {
+            "type": "radio",
+            "label": "Do you frequently participate in any sports or physical activities",
+            "key": "sports",
+            "options": [
+              "Yes",
+              "No"
+            ]
+          },
+          {
+            "type": "multiselect",
+            "label": "Select Sports & Physical Activities",
+            "key": "sports_physical_activities",
+            "itemsKey": "sportsOptions",
+            "parent_key": "sports",
+            "enable_child_on": "Yes"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Work Information",
+    "key": "workInfo",
+    "subSections": [
+      {
+        "title": "Father Occupation",
+        "key": "fatherOccupationInfo",
+        "type": "repeatable",
+        "fields": [
+          {
+            "type": "text",
+            "label": "Mode of Work",
+            "enable": true,
+            "key": "father_mode_work",
+            "validator": "name"
+          },
+          {
+            "type": "text",
+            "label": "Name of Organization",
+            "enable": true,
+            "key": "father_name_org",
+            "validator": "name"
+          },
+          {
+            "type": "text",
+            "label": "Work Phone",
+            "enable": true,
+            "key": "father_work_phone",
+            "validator": "phone"
+          },
+          {
+            "type": "text",
+            "label": "Website Address",
+            "enable": true,
+            "key": "father_work_web",
+            "validator": "text"
+          },
+          {
+            "type": "text",
+            "label": "Current Form of Business",
+            "enable": true,
+            "key": "father_work_form",
+            "validator": "text"
+          },
+          {
+            "type": "text",
+            "label": "Address of Organization",
+            "enable": true,
+            "key": "father_work_address",
+            "validator": "text"
+          },
+          {
+            "type": "text",
+            "label": "Work Email",
+            "enable": true,
+            "key": "father_work_email",
+            "validator": "email"
+          },
+          {
+            "type": "text",
+            "label": "Business Description",
+            "enable": true,
+            "key": "father_work_desc",
+            "validator": "text"
+          }
+        ]
+      },
+      {
+        "title": "Mother Occupation",
+        "key": "motherOccupationInfo",
+        "type": "repeatable",
+        "fields": [
+          {
+            "type": "text",
+            "label": "Mode of Work",
+            "enable": true,
+            "key": "mother_mode_work",
+            "validator": "name"
+          },
+          {
+            "type": "text",
+            "label": "Name of Organization",
+            "enable": true,
+            "key": "mother_name_org",
+            "validator": "name"
+          },
+          {
+            "type": "text",
+            "label": "Work Phone",
+            "enable": true,
+            "key": "mother_work_phone",
+            "validator": "phone"
+          },
+          {
+            "type": "text",
+            "label": "Website Address",
+            "enable": true,
+            "key": "mother_work_web",
+            "validator": "text"
+          },
+          {
+            "type": "text",
+            "label": "Current Form of Business",
+            "enable": true,
+            "key": "mother_work_form",
+            "validator": "text"
+          },
+          {
+            "type": "text",
+            "label": "Address of Organization",
+            "enable": true,
+            "key": "mother_work_address",
+            "validator": "text"
+          },
+          {
+            "type": "text",
+            "label": "Work Email",
+            "enable": true,
+            "key": "mother_work_email",
+            "validator": "email"
+          },
+          {
+            "type": "text",
+            "label": "Business Description",
+            "enable": true,
+            "key": "mother_work_desc",
+            "validator": "text"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Health & Nutrition",
+    "key": "fmbSection",
+    "subSections": [
+      {
+        "title": "Health & Nutrition",
+        "key": "fmbInfo",
+        "fields": [
+          {
+            "type": "radio",
+            "label": "Is there anyone who is physically or mentally challenged in the house?",
+            "key": "physically_mentally_challenged",
+            "options": [
+              "Yes",
+              "No"
+            ]
+          },
+          {
+            "type": "radio",
+            "label": "Are all children in the household taking/taken the required vaccinations?",
+            "key": "vaccination_status",
+            "options": [
+              "Yes",
+              "No"
+            ]
+          },
+          {
+            "type": "radio",
+            "label": "Any Chronic (long term, incurable) illness(e.g Diabetes, Hypertension)?",
+            "key": "chronic_illness",
+            "options": [
+              "Yes",
+              "No"
+            ]
+          },
+          {
+            "type": "text",
+            "label": "Give Details",
+            "key": "disease_details",
+            "parent_key": "chronic_illness",
+            "enable_child_on": "Yes",
+            "validator": "text"
+          },
+          {
+            "type": "radio",
+            "label": "Does any family member have a disability or chronic illness affecting earning capacity?",
+            "key": "family_member_disability",
+            "options": [
+              "Yes",
+              "No"
+            ]
+          },
+          {
+            "type": "text",
+            "label": "Give Details",
+            "key": "disability_details",
+            "parent_key": "family_member_disability",
+            "enable_child_on": "Yes",
+            "validator": "text"
           }
         ]
       }
@@ -254,13 +364,20 @@
           },
           {
             "type": "radio",
-            "label":
-                "Is any member of the household unemployed but capable of working?",
+            "label": "Is any member of the household unemployed but capable of working?",
             "key": "family_member_working",
-            "options": ["Yes", "No"],
-            "showTextFieldIf": "Yes",
-            "textFieldKey": "working_details",
-            "textFieldLabel": "Give Details"
+            "options": [
+              "Yes",
+              "No"
+            ]
+          },
+          {
+            "type": "text",
+            "label": "Give Details",
+            "key": "working_details",
+            "validator": "text",
+            "parent_key": "family_member_working",
+            "enable_child_on": "Yes"
           }
         ]
       },
@@ -271,9 +388,12 @@
         "fields": [
           {
             "type": "radio",
-            "label": "Does he/she offer in Sila Fitra / Vajebaat? (Only HOF)",
+            "label": "Does he/she offer in Sila Fitra / Vajebaat?",
             "key": "offers_sila_vajebaat",
-            "options": ["Yes", "No"]
+            "options": [
+              "Yes",
+              "No"
+            ]
           },
           {
             "label": "Wajebaat / Khumus",
@@ -339,7 +459,12 @@
             "itemsKey": "familyMembers",
             "itsFieldKey": "its"
           },
-          {"label": "Age", "key": "eduAge", "type": "text", "validator": "age"},
+          {
+            "label": "Age",
+            "key": "eduAge",
+            "type": "text",
+            "validator": "age"
+          },
           {
             "label": "Institute Name",
             "key": "eduInsName",
