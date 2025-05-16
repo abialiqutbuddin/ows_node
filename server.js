@@ -1395,7 +1395,7 @@ app.post('/api/submit-application', async (req, res) => {
 
     // Insert main application
     const [result] = await conn.query(
-      `INSERT INTO student_application SET ?`,
+      `INSERT INTO application_main SET ?`,
       application
     );
 
