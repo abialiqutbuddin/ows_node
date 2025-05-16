@@ -1276,7 +1276,7 @@ async function callSoap(action, bodyXml) {
     host: "ls-71e245ea4a0374b94a685ec89d871c50a32f80c2.cotk02keuuc1.us-east-1.rds.amazonaws.com",
     port: "3306",
     user: "ows_user",
-    password: "20250507.Osw*",  // Add your database password
+    password: "20250507.Osw*", 
     database: "ows_db",
   });
 
@@ -1388,7 +1388,7 @@ app.get('/api/application/:id', async (req, res) => {
 
 app.post('/api/submit-application', async (req, res) => {
   const { application, repeatables } = req.body;
-  const conn = await mysql.createConnection(pool);
+ const conn = await pool.getConnection(); 
 
   try {
     await conn.beginTransaction();
