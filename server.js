@@ -1291,7 +1291,7 @@ async function getMainFormData(appId) {
 
 // Helper to fetch repeatable table values
 async function getRepeatableTableValues(appId, tableName) {
-  const [rows] = await pool.query(`SELECT * FROM ${tableName} WHERE app_id = ?`, [appId]);
+  const [rows] = await pool.query(`SELECT * FROM ${tableName} WHERE application_id = ?`, [appId]);
   return rows;
 }
 
@@ -1404,7 +1404,7 @@ app.post('/api/submit-application', async (req, res) => {
     // Insert each repeatable table entries
     for (const [tableKey, entries] of Object.entries(repeatables)) {
       for (const entry of entries) {
-        entry.app_id = appId; // Ensure app_id is linked
+        entry.application_id = appId; // Ensure app_id is linked
         await conn.query(`INSERT INTO ${tableKey} SET ?`, entry);
       }
     }
