@@ -1580,3 +1580,147 @@ app.get('/api/get-application/:id', async (req, res) => {
     conn.release();
   }
 });
+
+// Assuming Express.js and MySQL2 setup
+
+app.get('/api/keys-applications/:id', async (req, res) => {
+  const applicationId = req.params.id;
+
+  // Fetch main record
+  let application;
+  try {
+    const [rows] = await pool.execute(
+      'SELECT * FROM `application_main` WHERE `id` = ?',
+      [applicationId]
+    );
+    if (rows.length === 0) {
+      return res.status(404).json({ error: 'Application not found' });
+    }
+    application = rows[0];
+  } catch (err) {
+    console.error('DB error fetching application:', err);
+    return res.status(500).json({ error: 'Database error' });
+  }
+
+  // Build response
+  const response = { sections: [] };
+
+  for (const sectionConfig of formConfig) {
+    const section = { section: sectionConfig.title, subsections: [] };
+
+    if (Array.isArray(sectionConfig.subSections)) {
+      for (const subConfig of sectionConfig.subSections) {
+        const subsection = { subsection: subConfig.title };
+
+        // Subsection-level repeatable
+        if (subConfig.type === 'repeatable') {
+          let rows = [];
+          try {
+            [rows] = await pool.execute(
+              `SELECT * FROM \`${subConfig.key}\` WHERE \`application_id\` = ?`,
+              [applicationId]
+            );
+          } catch (_) {
+            rows = [];
+          }
+          if (rows.length === 0) rows = [application];
+
+          subsection.entries = rows.map(row => {
+            const fields = [];
+            for (const fieldConfig of subConfig.fields) {
+              // main field
+              fields.push({
+                question: fieldConfig.label,
+                answer: row[fieldConfig.key] != null ? row[fieldConfig.key] : ''
+              });
+              // ITS field, if specified
+              if (fieldConfig.itsFieldKey) {
+                // Use itsFieldKey or fallback to member_its column
+                const itsKey = fieldConfig.itsFieldKey;
+                const itsValue = row[itsKey] != null && row[itsKey] !== ''
+                  ? row[itsKey]
+                  : (row.member_its != null ? row.member_its : '');
+                fields.push({
+                  question: 'Member ITS',
+                  answer: itsValue
+                });
+              }
+            }
+            return { fields };
+          });
+
+        } else {
+          // Non-repeatable subsection
+          subsection.fields = [];
+
+          for (const fieldConfig of (subConfig.fields || [])) {
+            if (fieldConfig.type === 'repeatable') {
+              // Field-level repeatable
+              let rows = [];
+              try {
+                [rows] = await pool.execute(
+                  `SELECT * FROM \`${fieldConfig.key}\` WHERE \`application_id\` = ?`,
+                  [applicationId]
+                );
+              } catch (_) {
+                rows = [];
+              }
+              subsection.entries = rows.map(row => {
+                const fields = [];
+                for (const nested of (fieldConfig.fields || [])) {
+                  fields.push({
+                    question: nested.label,
+                    answer: row[nested.key] != null ? row[nested.key] : ''
+                  });
+                  if (nested.itsFieldKey) {
+                    fields.push({
+                      question: 'ITS',
+                      answer: row[nested.itsFieldKey] != null ? row[nested.itsFieldKey] : ''
+                    });
+                  }
+                }
+                return { fields };
+              });
+
+            } else {
+              // Simple field
+              subsection.fields.push({
+                question: fieldConfig.label,
+                answer: application[fieldConfig.key] != null ? application[fieldConfig.key] : ''
+              });
+            }
+          }
+        }
+
+        section.subsections.push(subsection);
+      }
+    }
+
+    response.sections.push(section);
+  }
+
+  res.json(response);
+});
+
+app.delete('/delete-draft/:id', async (req, res) => {
+  const draftId = req.params.id;
+
+  if (!draftId) {
+    return res.status(400).json({ success: false, message: 'Draft ID is required' });
+  }
+
+  try {
+    const deletedCount = await StudentApplicationDraft.destroy({
+      where: { id: draftId },
+    });
+
+    if (deletedCount === 0) {
+      return res.status(404).json({ success: false, message: 'Draft not found' });
+    }
+
+    return res.status(200).json({ success: true, message: 'Draft deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting draft:', error);
+    return res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+  });

@@ -54,7 +54,7 @@
             "type": "dropdown",
             "label": "Are you intending to be a part of any of the following khidmat avenues?",
             "key": "khidmat_intent",
-            "itemsKey": "khidmatOptions",
+            "itemsKey": "khidmatIntentOptions",
             "parent_key": "khidmat_current",
             "enable_child_on": "5"
           }
@@ -97,7 +97,7 @@
             "key": "height",
             "validator": "amount",
             "hasUnitDropdown": true,
-            "unitKey": "heightUnit",
+            "unitKey": "height_unit",
             "unitOptions": [
               "cm",
               "feet",
@@ -109,7 +109,7 @@
             "type": "text",
             "label": "Weight (in KG)",
             "key": "weight",
-            "validator": "number"
+            "validator": "amount"
           },
           {
             "type": "radio",
@@ -338,7 +338,7 @@
         "fields": [
           {
             "label": "Types of Income",
-            "key": "incomeTypes",
+            "key": "income_types",
             "type": "repeatable",
             "fields": [
               {
@@ -350,13 +350,13 @@
               },
               {
                 "label": "Income Type",
-                "key": "incomeType",
+                "key": "income_type",
                 "type": "dropdown",
                 "itemsKey": "incomeTypeOptions"
               },
               {
                 "label": "Amount",
-                "key": "incomeTypeAmount",
+                "key": "amount",
                 "type": "text",
                 "validator": "amount"
               }
@@ -655,7 +655,7 @@
           {
             "type": "dropdown",
             "label": "Dependent",
-            "key": "dependent_name",
+            "key": "member_name",
             "itemsKey": "familyMembers",
             "itsFieldKey": "its"
           },
@@ -707,7 +707,7 @@
           },
           {
             "label": "Jewelry",
-            "key": "jewelry_Assets",
+            "key": "jewelry_assets",
             "type": "text",
             "validator": "amount",
             "hint": "Enter 0 if not applicable"
