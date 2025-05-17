@@ -1710,17 +1710,25 @@ app.delete('/delete-draft/:id', async (req, res) => {
   }
 
   try {
-    const deletedCount = await StudentApplicationDraft.destroy({
-      where: { id: draftId },
-    });
+    const conn = await pool.getConnection();
+    try {
+      const [result] = await conn.execute(
+        'DELETE FROM student_application_draft WHERE id = ?',
+        [draftId]
+      );
+      conn.release();
 
-    if (deletedCount === 0) {
-      return res.status(404).json({ success: false, message: 'Draft not found' });
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ success: false, message: 'Draft not found' });
+      }
+
+      return res.status(200).json({ success: true, message: 'Draft deleted successfully' });
+    } catch (err) {
+      conn.release();
+      throw err;
     }
-
-    return res.status(200).json({ success: true, message: 'Draft deleted successfully' });
   } catch (error) {
     console.error('Error deleting draft:', error);
     return res.status(500).json({ success: false, message: 'Internal server error' });
   }
-  });
+});
