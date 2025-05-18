@@ -399,7 +399,7 @@ app.post(
         message: "Request Form submitted successfully.",
         data: {
           reqId: newRequest.reqId,
-          draft_id: draftId 
+          draft_id: draftId
         }
       });
 
@@ -1753,5 +1753,43 @@ app.get("/api/request-form/:its", async (req, res) => {
   } catch (err) {
     console.error("🚨 Error fetching request form:", err);
     return res.status(500).json({ success: false, message: "Server Error" });
+  }
+});
+
+app.get("/api/create-draft/:reqId", async (req, res) => {
+  const { reqId } = req.params;
+
+  const transaction = await sequelize.transaction(); // ensure atomicity
+
+  try {
+    // Step 1: Create empty draft
+    const draft = await StudentApplicationDraft.create({}, { transaction });
+    const draftId = draft.id;
+    console.log("✅ Empty draft created with ID:", draftId);
+
+    // Step 2: Find corresponding request form
+    const requestForm = await OwsReqForm.findOne({ where: { reqId }, transaction });
+
+    if (!requestForm) {
+      await transaction.rollback();
+      return res.status(404).json({ success: false, message: "Request form not found for the given reqId" });
+    }
+
+    // Step 3: Update request form with draft ID
+    await requestForm.update({ draft_id: draftId }, { transaction });
+
+    await transaction.commit();
+
+    return res.status(200).json({
+      success: true,
+      message: "Draft created and linked to request successfully.",
+      draftId,
+      reqId: requestForm.reqId
+    });
+
+  } catch (err) {
+    await transaction.rollback();
+    console.error("🚨 Error in create-draft:", err);
+    return res.status(500).json({ success: false, message: "Server Error", error: err.message });
   }
 });
