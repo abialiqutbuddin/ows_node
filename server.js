@@ -30,7 +30,7 @@ const app = express();
 const { body, validationResult } = require("express-validator");
 const sequelize = require("./config/db");
 app.use(cors());
-const xml2js  = require('xml2js');
+const xml2js = require('xml2js');
 app.use(bodyParser.json());
 const mysql = require('mysql2/promise');
 
@@ -47,7 +47,7 @@ const PORT = 3001;
 // https.createServer(options, app).listen(PORT, () => {
 //     console.log(`HTTPS Server running on https://dev.imadiinnovations.com:${PORT}`);
 // });
-app.listen(PORT,'0.0.0.0', () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, '0.0.0.0', () => console.log(`Server running on port ${PORT}`));
 const uploadRoutes = require("./utils/upload");
 //app.use("/upload", uploadRoutes);
 
@@ -56,1115 +56,1124 @@ app.use("/auth", authRoutes);
 app.use("/", moduleRoutes, permissionRoutes, userRoutes);
 
 app.get("/get-last-req", async (req, res) => {
-    try {
-        const lastReq = await OwsReqForm.findOne({
-            attributes: ["reqId"],
-            order: [["reqId", "DESC"]],
-        });
+  try {
+    const lastReq = await OwsReqForm.findOne({
+      attributes: ["reqId"],
+      order: [["reqId", "DESC"]],
+    });
 
-        const lastReqFormId = lastReq ? lastReq.reqId : 0;
-        const nextReqFormId = lastReqFormId + 1;
+    const lastReqFormId = lastReq ? lastReq.reqId : 0;
+    const nextReqFormId = lastReqFormId + 1;
 
-        console.log("Next reqId:", nextReqFormId);
+    console.log("Next reqId:", nextReqFormId);
 
-        return res.status(200).json({ nextReqFormId });
+    return res.status(200).json({ nextReqFormId });
 
-    } catch (error) {
-        console.error("Failed to fetch last reqId:", error);
-        return res.status(500).json({
-            error: "Failed to fetch last reqId",
-            details: error.message,
-        });
-    }
+  } catch (error) {
+    console.error("Failed to fetch last reqId:", error);
+    return res.status(500).json({
+      error: "Failed to fetch last reqId",
+      details: error.message,
+    });
+  }
 });
 
 app.get('/fetch-image', async (req, res) => {
-    try {
-        const { url } = req.query;
-        if (!url) {
-            return res.status(400).send('Image URL is required');
-        }
-
-        const response = await axios.get(url, { responseType: 'arraybuffer' });
-
-        res.setHeader('Content-Type', response.headers['content-type']);
-        res.setHeader('Content-Length', response.headers['content-length']);
-
-        res.send(response.data);
-    } catch (error) {
-        console.error('Error fetching image:', error.message);
-        res.status(500).send('Failed to fetch image');
+  try {
+    const { url } = req.query;
+    if (!url) {
+      return res.status(400).send('Image URL is required');
     }
+
+    const response = await axios.get(url, { responseType: 'arraybuffer' });
+
+    res.setHeader('Content-Type', response.headers['content-type']);
+    res.setHeader('Content-Length', response.headers['content-length']);
+
+    res.send(response.data);
+  } catch (error) {
+    console.error('Error fetching image:', error.message);
+    res.status(500).send('Failed to fetch image');
+  }
 });
 
 app.post("/get-profile", async (req, res) => {
-    try {
-        const { its_id } = req.body;
+  try {
+    const { its_id } = req.body;
 
-        if (!its_id) {
-            return res.status(400).json({ error: "Missing 'its_id' in request body" });
-        }
-        if (typeof its_id !== "string" || its_id.trim().length === 0) {
-            return res.status(400).json({ error: "'its_id' must be a non-empty string" });
-        }
-
-        console.log("Fetching profile for ITS ID:", its_id);
-
-        const url = `https://paktalim.com/admin/ws_app/GetProfileEducation/${its_id}?access_key=8803c22b50548c9d5b1401e3ab5854812c4dcacb&username=40459629&password=1107865253`;
-        const response = await axios.get(url);
-
-        return res.status(200).json(response.data);
-
-    } catch (error) {
-        console.error("Error fetching profile data:", error.message);
-
-        if (error.response) {
-            return res.status(error.response.status).json({ error: "Failed to fetch profile data", details: error.response.data });
-        }
-
-        return res.status(500).json({ error: "Server error", details: error.message });
+    if (!its_id) {
+      return res.status(400).json({ error: "Missing 'its_id' in request body" });
     }
+    if (typeof its_id !== "string" || its_id.trim().length === 0) {
+      return res.status(400).json({ error: "'its_id' must be a non-empty string" });
+    }
+
+    console.log("Fetching profile for ITS ID:", its_id);
+
+    const url = `https://paktalim.com/admin/ws_app/GetProfileEducation/${its_id}?access_key=8803c22b50548c9d5b1401e3ab5854812c4dcacb&username=40459629&password=1107865253`;
+    const response = await axios.get(url);
+
+    return res.status(200).json(response.data);
+
+  } catch (error) {
+    console.error("Error fetching profile data:", error.message);
+
+    if (error.response) {
+      return res.status(error.response.status).json({ error: "Failed to fetch profile data", details: error.response.data });
+    }
+
+    return res.status(500).json({ error: "Server error", details: error.message });
+  }
 });
 
 
 // NEW FAMILY API
 app.post("/get-family-profile", async (req, res) => {
-    try {
-        const { its_id } = req.body;
+  try {
+    const { its_id } = req.body;
 
-        if (!its_id) {
-            return res.status(400).json({ error: "Missing 'its_id' in request body" });
-        }
-        if (typeof its_id !== "string" || its_id.trim().length === 0) {
-            return res.status(400).json({ error: "'its_id' must be a non-empty string" });
-        }
-
-        const url = `http://182.188.38.224:8083/crc_live/backend/dist/mumineen/getFamilyDetails.php?user_name=umoor_talimiyah&password=UTalim2025&token=1242621ebdaac37b03d88310abc26f9aaee505f7e5654a47421fb39ec6ece94f&its_id=${its_id}`;
-        const response = await axios.get(url);
-        return res.status(200).json(response.data);
-
-    } catch (error) {
-        console.error("Error fetching family data:", error.message);
-
-        if (error.response) {
-            return res.status(error.response.status).json({ error: "Failed to fetch family data", details: error.response.data });
-        }
-
-        return res.status(500).json({ error: "Server error", details: error.message });
+    if (!its_id) {
+      return res.status(400).json({ error: "Missing 'its_id' in request body" });
     }
+    if (typeof its_id !== "string" || its_id.trim().length === 0) {
+      return res.status(400).json({ error: "'its_id' must be a non-empty string" });
+    }
+
+    const url = `http://182.188.38.224:8083/crc_live/backend/dist/mumineen/getFamilyDetails.php?user_name=umoor_talimiyah&password=UTalim2025&token=1242621ebdaac37b03d88310abc26f9aaee505f7e5654a47421fb39ec6ece94f&its_id=${its_id}`;
+    const response = await axios.get(url);
+    return res.status(200).json(response.data);
+
+  } catch (error) {
+    console.error("Error fetching family data:", error.message);
+
+    if (error.response) {
+      return res.status(error.response.status).json({ error: "Failed to fetch family data", details: error.response.data });
+    }
+
+    return res.status(500).json({ error: "Server error", details: error.message });
+  }
 });
 
 // Endpoint to fetch family profile data
 app.post("/get-family-profile-old", async (req, res) => {
-    const { itsId } = req.body;
+  const { itsId } = req.body;
 
-    const url = `https://paktalim.com/admin/ws_app/GetProfileFamily/${itsId}?access_key=c197364bbcef92456a31b1773941964a728e2c33&username=40459629&password=1107865253`;
+  const url = `https://paktalim.com/admin/ws_app/GetProfileFamily/${itsId}?access_key=c197364bbcef92456a31b1773941964a728e2c33&username=40459629&password=1107865253`;
 
-    try {
-        const response = await axios.get(url);
-        if (response.data) {
-            res.status(200).json(response.data);
-        } else {
-            res.status(404).json({ message: "Family profile not found." });
-        }
-    } catch (error) {
-        console.error("Error fetching family profile data:", error.message);
-        res.status(500).json({ error: "Failed to fetch family profile data" });
+  try {
+    const response = await axios.get(url);
+    if (response.data) {
+      res.status(200).json(response.data);
+    } else {
+      res.status(404).json({ message: "Family profile not found." });
     }
+  } catch (error) {
+    console.error("Error fetching family profile data:", error.message);
+    res.status(500).json({ error: "Failed to fetch family profile data" });
+  }
 });
 
 app.post("/fetch-pdf", async (req, res) => {
-    try {
-        const { its } = req.body;
+  try {
+    const { its } = req.body;
 
-        if (!its) {
-            return res.status(400).json({ error: "Missing 'its' in request body" });
-        }
-        if (typeof its !== "string" || its.trim().length === 0) {
-            return res.status(400).json({ error: "'its' must be a non-empty string" });
-        }
-
-        const pdfUrl = `https://paktalim.com/admin/ws_app/GetProfilePDF/${its}?access_key=2f1d0195f15f9e527665b4a87e958586a4da8de1&username=40459629`;
-
-        const response = await axios.get(pdfUrl, { responseType: "arraybuffer" });
-
-        res.setHeader("Content-Type", "application/pdf");
-        res.setHeader("Content-Disposition", 'inline; filename="profile.pdf"');
-
-        res.send(response.data);
-    } catch (error) {
-        console.error("Error fetching the PDF file:", error.message);
-
-        if (error.response) {
-            return res.status(error.response.status).json({
-                error: "Failed to fetch PDF file",
-                details: error.response.data,
-            });
-        }
-
-        res.status(500).json({ error: "Server error", details: error.message });
+    if (!its) {
+      return res.status(400).json({ error: "Missing 'its' in request body" });
     }
+    if (typeof its !== "string" || its.trim().length === 0) {
+      return res.status(400).json({ error: "'its' must be a non-empty string" });
+    }
+
+    const pdfUrl = `https://paktalim.com/admin/ws_app/GetProfilePDF/${its}?access_key=2f1d0195f15f9e527665b4a87e958586a4da8de1&username=40459629`;
+
+    const response = await axios.get(pdfUrl, { responseType: "arraybuffer" });
+
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", 'inline; filename="profile.pdf"');
+
+    res.send(response.data);
+  } catch (error) {
+    console.error("Error fetching the PDF file:", error.message);
+
+    if (error.response) {
+      return res.status(error.response.status).json({
+        error: "Failed to fetch PDF file",
+        details: error.response.data,
+      });
+    }
+
+    res.status(500).json({ error: "Server error", details: error.message });
+  }
 });
 
 // API Route to Send Email
 app.post("/send-email", async (req, res) => {
-    const { to, subject, text, html } = req.body;
+  const { to, subject, text, html } = req.body;
 
-    if (!to || !subject || (!text && !html)) {
-        return res.status(400).json({ success: false, message: "Missing required fields" });
-    }
+  if (!to || !subject || (!text && !html)) {
+    return res.status(400).json({ success: false, message: "Missing required fields" });
+  }
 
-    const response = await sendMail(to, subject, text, html);
+  const response = await sendMail(to, subject, text, html);
 
-    if (response.success) {
-        res.status(200).json(response);
-    } else {
-        res.status(500).json(response);
-    }
+  if (response.success) {
+    res.status(200).json(response);
+  } else {
+    res.status(500).json(response);
+  }
 });
 
 //GET FROM URL
 app.post("/get-url", async (req, res) => {
-    try {
-        const { url } = req.body;
-        if (!url) {
-            return res.status(400).json({ error: "URL parameter is required" });
-        }
-
-        // Validate URL
-        if (!/^https?:\/\//i.test(url)) {
-            return res.status(400).json({ error: "Invalid URL format" });
-        }
-        const response = await axios.get(url);
-        res.json(response.data);
-    } catch (error) {
-        console.log("error");
-        res.status(500).json({ error: error.message });
+  try {
+    const { url } = req.body;
+    if (!url) {
+      return res.status(400).json({ error: "URL parameter is required" });
     }
+
+    // Validate URL
+    if (!/^https?:\/\//i.test(url)) {
+      return res.status(400).json({ error: "Invalid URL format" });
+    }
+    const response = await axios.get(url);
+    res.json(response.data);
+  } catch (error) {
+    console.log("error");
+    res.status(500).json({ error: error.message });
+  }
 });
 
 app.post("/post-url", async (req, res) => {
-    try {
-        const { url, data } = req.body;
+  try {
+    const { url, data } = req.body;
 
-        if (!url) {
-            return res.status(400).json({ error: "URL parameter is required" });
-        }
-
-        // Validate URL
-        if (!/^https?:\/\//i.test(url)) {
-            return res.status(400).json({ error: "Invalid URL format" });
-        }
-
-        // Send POST request with form data
-        const response = await axios.post(url, data, {
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-        });
-
-        res.json(response.data);
-    } catch (error) {
-        console.error("Error:", error.message);
-        res.status(500).json({ error: error.message });
+    if (!url) {
+      return res.status(400).json({ error: "URL parameter is required" });
     }
+
+    // Validate URL
+    if (!/^https?:\/\//i.test(url)) {
+      return res.status(400).json({ error: "Invalid URL format" });
+    }
+
+    // Send POST request with form data
+    const response = await axios.post(url, data, {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
+
+    res.json(response.data);
+  } catch (error) {
+    console.error("Error:", error.message);
+    res.status(500).json({ error: error.message });
+  }
 });
 
 /////////////////
 
 // ✅ POST: Submit Request Form (With ITS Check)
 app.post(
-    "/submit-request-form",
-    [
-        body("ITS").isLength({ min: 8, max: 8 }).withMessage("ITS must be 8 characters."),
-        body("reqByITS").isLength({ min: 8, max: 8 }).withMessage("Requestor ITS must be 8 characters."),
-        body("reqByName").notEmpty().withMessage("Requestor name is required."),
-        body("email").optional().isEmail().withMessage("Invalid email format."),
-        body("fundAsking").optional().isFloat({ min: 0 }).withMessage("Fund must be a positive number."),
-        body("organization").notEmpty().withMessage("Organization is required."), // ✅ Ensure organization is not empty
-    ],
-    async (req, res) => {
-        console.log("📥 Incoming Request Data:", req.body);
+  "/submit-request-form",
+  [
+    body("ITS").isLength({ min: 8, max: 8 }).withMessage("ITS must be 8 characters."),
+    body("reqByITS").isLength({ min: 8, max: 8 }).withMessage("Requestor ITS must be 8 characters."),
+    body("reqByName").notEmpty().withMessage("Requestor name is required."),
+    body("email").optional().isEmail().withMessage("Invalid email format."),
+    body("fundAsking").optional().isFloat({ min: 0 }).withMessage("Fund must be a positive number."),
+    body("organization").notEmpty().withMessage("Organization is required."), // ✅ Ensure organization is not empty
+  ],
+  async (req, res) => {
+    console.log("📥 Incoming Request Data:", req.body);
 
-        // ❌ Handle Validation Errors
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            console.log("❌ Validation Errors:", errors.array());
-            return res.status(400).json({ success: false, errors: errors.array() });
-        }
-
-        const transaction = await OwsReqMas.sequelize.transaction();
-
-        try {
-            const {
-                ITS, studentFirstName, studentFullName, reqByITS, reqByName, city, institution, class_degree, fieldOfStudy, subject_course,
-                yearOfStart, grade, email, contactNo, whatsappNo, purpose, fundAsking, classification,
-                organization, description, currentStatus, created_by, updated_by, mohalla, address, dob
-            } = req.body;
-
-            console.log(`🔎 Checking if ITS (${ITS}) exists in owsReqMas...`);
-            let existingUser = await OwsReqMas.findOne({ where: { ITS }, transaction });
-
-            // ✅ Step 2: If ITS not found, insert into `owsReqMas`
-            if (!existingUser) {
-                console.log(`⚠️ ITS (${ITS}) not found! Inserting into owsReqMas...`);
-
-                existingUser = await OwsReqMas.create(
-                    {
-                        ITS,
-                        name: studentFirstName,
-                        fullName: studentFullName,
-                        email,
-                        mobile: contactNo,
-                        whatsapp: whatsappNo,
-                        address: address, // Default empty, modify if needed
-                        mohalla: mohalla, // Default empty
-                        dob: dob, // Default null
-                        reqDt: new Date(), // Request Date
-                    },
-                    { transaction }
-                );
-
-                console.log("✅ ITS inserted into owsReqMas successfully:", existingUser.toJSON());
-            } else {
-                console.log("✅ ITS already exists in owsReqMas:", existingUser.toJSON());
-            }
-
-            // ✅ Check for existing application
-            console.log(`🔍 Checking for existing application for ITS: ${ITS}, Organization: ${organization}, Year of Start: ${yearOfStart}...`);
-            const existingApplication = await OwsReqForm.findOne({
-                where: {
-                    ITS,
-                    organization,
-                    yearOfStart
-                },
-                transaction
-            });
-
-            if (existingApplication) {
-                await transaction.rollback();
-                return res.status(200).json({
-                    success: false,
-                    message: "An application already exists for this ITS, organization, and year of start.",
-                });
-            }
-
-            console.log("📝 Creating empty student_application_draft record...");
-            const draft = await StudentApplicationDraft.create({}, { transaction });
-            const draftId = draft.id;
-            console.log("✅ Empty draft created with ID:", draftId);
-
-            // ✅ Step 3: Insert into `owsReqForm`
-            console.log(`📌 Inserting request form for ITS: ${ITS}...`);
-            const newRequest = await OwsReqForm.create(
-                {
-                    ITS,
-                    reqByITS,
-                    reqByName,
-                    city,
-                    institution,
-                    class_degree,
-                    fieldOfStudy,
-                    subject_course,
-                    yearOfStart,
-                    grade,
-                    email,
-                    contactNo,
-                    whatsappNo,
-                    purpose,
-                    fundAsking,
-                    classification,
-                    organization,
-                    description,
-                    currentStatus: "Request Generated",
-                    draft_id: draftId,
-                    created_by,
-                    updated_by,
-                    mohalla,
-                    studentName: studentFullName,
-                },
-                { transaction }
-            );
-
-            await transaction.commit();
-
-            return res.status(201).json({
-                success: true,
-                message: "Request Form submitted successfully.",
-                data: newRequest,
-            });
-
-        } catch (error) {
-            await transaction.rollback();
-            console.error("🚨 Error submitting request form:", error);
-            return res.status(500).json({ success: false, message: "Internal Server Error", error: error.message });
-        }
+    // ❌ Handle Validation Errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      console.log("❌ Validation Errors:", errors.array());
+      return res.status(400).json({ success: false, errors: errors.array() });
     }
+
+    const transaction = await OwsReqMas.sequelize.transaction();
+
+    try {
+      const {
+        ITS, studentFirstName, studentFullName, reqByITS, reqByName, city, institution, class_degree, fieldOfStudy, subject_course,
+        yearOfStart, grade, email, contactNo, whatsappNo, purpose, fundAsking, classification, cnic,
+        organization, description, currentStatus, created_by, updated_by, mohalla, address, dob, gender, hasGuardian, fatherCnic, motherCnic
+      } = req.body;
+
+      console.log(`🔎 Checking if ITS (${ITS}) exists in owsReqMas...`);
+      let existingUser = await OwsReqMas.findOne({ where: { ITS }, transaction });
+
+      // ✅ Step 2: If ITS not found, insert into `owsReqMas`
+      if (!existingUser) {
+        console.log(`⚠️ ITS (${ITS}) not found! Inserting into owsReqMas...`);
+
+        existingUser = await OwsReqMas.create(
+          {
+            ITS,
+            name: studentFirstName,
+            fullName: studentFullName,
+            email,
+            mobile: contactNo,
+            whatsapp: whatsappNo,
+            address: address, // Default empty, modify if needed
+            mohalla: mohalla, // Default empty
+            dob: dob, // Default null
+            reqDt: new Date(), // Request Date
+          },
+          { transaction }
+        );
+
+        console.log("✅ ITS inserted into owsReqMas successfully:", existingUser.toJSON());
+      } else {
+        console.log("✅ ITS already exists in owsReqMas:", existingUser.toJSON());
+      }
+
+      // ✅ Check for existing application
+      console.log(`🔍 Checking for existing application for ITS: ${ITS}, Organization: ${organization}, Year of Start: ${yearOfStart}...`);
+      const existingApplication = await OwsReqForm.findOne({
+        where: {
+          ITS,
+          organization,
+          yearOfStart
+        },
+        transaction
+      });
+
+      if (existingApplication) {
+        await transaction.rollback();
+        return res.status(200).json({
+          success: false,
+          message: "An application already exists for this ITS, organization, and year of start.",
+        });
+      }
+
+      //CREATE DRAFT APPLICATION
+      console.log("📝 Creating empty student_application_draft record...");
+      const draft = await StudentApplicationDraft.create({}, { transaction });
+      const draftId = draft.id;
+      console.log("✅ Empty draft created with ID:", draftId);
+
+      // ✅ Step 3: Insert into `owsReqForm`
+      console.log(`📌 Inserting request form for ITS: ${ITS}...`);
+      const newRequest = await OwsReqForm.create(
+        {
+          ITS,
+          reqByITS,
+          reqByName,
+          city,
+          institution,
+          class_degree,
+          fieldOfStudy,
+          subject_course,
+          yearOfStart,
+          grade,
+          email,
+          contactNo,
+          whatsappNo,
+          purpose,
+          fundAsking,
+          classification,
+          organization,
+          description,
+          currentStatus: "Request Generated",
+          draft_id: draftId,
+          created_by,
+          updated_by,
+          mohalla,
+          studentName: studentFullName,
+          gender: gender,
+          hasGuardian: hasGuardian,
+          fatherCnic: fatherCnic,
+          motherCnic: motherCnic,
+          cnic: cnic,
+        },
+        { transaction }
+      );
+
+      await transaction.commit();
+
+      return res.status(201).json({
+        success: true,
+        message: "Request Form submitted successfully.",
+        data: {
+          reqId: newRequest.reqId,
+          draft_id: draftId 
+        }
+      });
+
+    } catch (error) {
+      await transaction.rollback();
+      console.error("🚨 Error submitting request form:", error);
+      return res.status(500).json({ success: false, message: "Internal Server Error", error: error.message });
+    }
+  }
 );
 
 // POST /create-draft
 app.post("/create-draft-application", async (req, res) => {
-    try {
-        const draft = await StudentApplicationDraft.create({}); // create empty draft
-        return res.status(201).json({
-            success: true,
-            message: "Draft created successfully.",
-            draftId: draft.id
-        });
-    } catch (error) {
-        console.error("🚨 Error creating draft:", error);
-        return res.status(500).json({
-            success: false,
-            message: "Failed to create draft.",
-            error: error.message
-        });
-    }
+  try {
+    const draft = await StudentApplicationDraft.create({}); // create empty draft
+    return res.status(201).json({
+      success: true,
+      message: "Draft created successfully.",
+      draftId: draft.id
+    });
+  } catch (error) {
+    console.error("🚨 Error creating draft:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to create draft.",
+      error: error.message
+    });
+  }
 });
 
 app.post("/users-by-mohalla", async (req, res) => {
-    try {
-        const { mohalla, org, userRole, ITS } = req.body; // Extract ITS for user filtering
+  try {
+    const { mohalla, org, userRole, ITS } = req.body; // Extract ITS for user filtering
 
-        if (!userRole) {
-            return res.status(400).json({
-                success: false,
-                message: "User role is required",
-            });
-        }
-
-        let users;
-
-        if (userRole === "admin") {
-            // ✅ Admins: Fetch all requests
-            console.log("Admin: Fetching all requests...");
-            users = await OwsReqForm.findAll();
-        } else if (userRole === "user") {
-            // ✅ Users: Fetch only their own requests (ITS matching)
-            console.log(`User: Fetching requests for ITS: '${ITS}'...`);
-            users = await OwsReqForm.findAll({
-                where: { ITS },
-            });
-        } else if (userRole === "mini-admin") {
-            if (!mohalla) {
-                return res.status(400).json({
-                    success: false,
-                    message: "Mohalla name is required for Mini-Admin",
-                });
-            }
-
-            if (mohalla === "Unknown") {
-                // ✅ Mini-Admin + Mohalla is "Unknown" → Fetch based on organization
-                if (!org) {
-                    return res.status(400).json({
-                        success: false,
-                        message: "Organization is required when Mohalla is Unknown",
-                    });
-                }
-                console.log(`Mini-Admin: Fetching requests for organization: '${org}'...`);
-                users = await OwsReqForm.findAll({
-                    where: { organization: org },
-                });
-            } else if (mohalla === "ALL") {
-                console.log("mohalla: Fetching all requests...");
-                users = await OwsReqForm.findAll();
-            }
-            else {
-                // ✅ Mini-Admin + Mohalla Provided → Fetch based on Mohalla
-                console.log(`Mini-Admin: Fetching requests for mohalla: '${mohalla}'...`);
-                users = await OwsReqForm.findAll({
-                    where: { mohalla },
-                });
-            }
-        } else {
-            return res.status(403).json({
-                success: false,
-                message: "Unauthorized: Invalid user role",
-            });
-        }
-
-        // ✅ If no users found, return a 404 response
-        if (!users || users.length === 0) {
-            return res.status(404).json({
-                success: false,
-                message: "No requests found for the specified criteria",
-            });
-        }
-
-        return res.status(200).json({
-            success: true,
-            data: users,
-        });
-
-    } catch (error) {
-        console.error("Error fetching users by Mohalla:", error);
-        return res.status(500).json({
-            success: false,
-            message: "Internal Server Error",
-        });
+    if (!userRole) {
+      return res.status(400).json({
+        success: false,
+        message: "User role is required",
+      });
     }
+
+    let users;
+
+    if (userRole === "admin") {
+      // ✅ Admins: Fetch all requests
+      console.log("Admin: Fetching all requests...");
+      users = await OwsReqForm.findAll();
+    } else if (userRole === "user") {
+      // ✅ Users: Fetch only their own requests (ITS matching)
+      console.log(`User: Fetching requests for ITS: '${ITS}'...`);
+      users = await OwsReqForm.findAll({
+        where: { ITS },
+      });
+    } else if (userRole === "mini-admin") {
+      if (!mohalla) {
+        return res.status(400).json({
+          success: false,
+          message: "Mohalla name is required for Mini-Admin",
+        });
+      }
+
+      if (mohalla === "Unknown") {
+        // ✅ Mini-Admin + Mohalla is "Unknown" → Fetch based on organization
+        if (!org) {
+          return res.status(400).json({
+            success: false,
+            message: "Organization is required when Mohalla is Unknown",
+          });
+        }
+        console.log(`Mini-Admin: Fetching requests for organization: '${org}'...`);
+        users = await OwsReqForm.findAll({
+          where: { organization: org },
+        });
+      } else if (mohalla === "ALL") {
+        console.log("mohalla: Fetching all requests...");
+        users = await OwsReqForm.findAll();
+      }
+      else {
+        // ✅ Mini-Admin + Mohalla Provided → Fetch based on Mohalla
+        console.log(`Mini-Admin: Fetching requests for mohalla: '${mohalla}'...`);
+        users = await OwsReqForm.findAll({
+          where: { mohalla },
+        });
+      }
+    } else {
+      return res.status(403).json({
+        success: false,
+        message: "Unauthorized: Invalid user role",
+      });
+    }
+
+    // ✅ If no users found, return a 404 response
+    if (!users || users.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No requests found for the specified criteria",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: users,
+    });
+
+  } catch (error) {
+    console.error("Error fetching users by Mohalla:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
 });
 
 const validStatuses = [
-    "Request Generated",
-    "Request Received",
-    "Request Denied",
-    "Request Pending",
-    "Request Approved",
-    "Application Applied",
-    "Application Denied",
-    "Application Pending",
-    "Application Approved",
-    "Payment in Process",
-    "First Payment Done"
+  "Request Generated",
+  "Request Received",
+  "Request Denied",
+  "Request Pending",
+  "Request Approved",
+  "Application Applied",
+  "Application Denied",
+  "Application Pending",
+  "Application Approved",
+  "Payment in Process",
+  "First Payment Done"
 ];
 
 // ✅ API: Update Request Status (POST)
 app.post("/update-request-status", async (req, res) => {
-    try {
-        console.log("HERE");
-        const { reqId, newStatus } = req.body;
+  try {
+    console.log("HERE");
+    const { reqId, newStatus } = req.body;
 
-        // ❌ Validate input
-        if (!reqId || !newStatus) {
-            return res.status(400).json({
-                success: false,
-                message: "Request ID and new status are required",
-            });
-        }
-
-        // ❌ Validate status
-        if (!validStatuses.includes(newStatus)) {
-            return res.status(400).json({
-                success: false,
-                message: "Invalid status value. Allowed values are: " + validStatuses.join(", "),
-            });
-        }
-
-        // ✅ Find the request by ID
-        const request = await OwsReqForm.findOne({ where: { reqId } });
-
-        if (!request) {
-            return res.status(404).json({
-                success: false,
-                message: "Request not found",
-            });
-        }
-
-        // ✅ Update status
-        request.currentStatus = newStatus;
-        await request.save();
-
-        return res.status(200).json({
-            success: true,
-            message: `Request status updated to '${newStatus}' successfully.`,
-            data: request,
-        });
-
-    } catch (error) {
-        console.error("Error updating request status:", error);
-        return res.status(500).json({
-            success: false,
-            message: "Internal Server Error",
-        });
+    // ❌ Validate input
+    if (!reqId || !newStatus) {
+      return res.status(400).json({
+        success: false,
+        message: "Request ID and new status are required",
+      });
     }
+
+    // ❌ Validate status
+    if (!validStatuses.includes(newStatus)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid status value. Allowed values are: " + validStatuses.join(", "),
+      });
+    }
+
+    // ✅ Find the request by ID
+    const request = await OwsReqForm.findOne({ where: { reqId } });
+
+    if (!request) {
+      return res.status(404).json({
+        success: false,
+        message: "Request not found",
+      });
+    }
+
+    // ✅ Update status
+    request.currentStatus = newStatus;
+    await request.save();
+
+    return res.status(200).json({
+      success: true,
+      message: `Request status updated to '${newStatus}' successfully.`,
+      data: request,
+    });
+
+  } catch (error) {
+    console.error("Error updating request status:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
 });
 
 app.post("/all-requests", async (req, res) => {
-    try {
-        const requests = await OwsReqForm.findAll();
+  try {
+    const requests = await OwsReqForm.findAll();
 
-        if (requests.length === 0) {
-            return res.status(404).json({
-                success: false,
-                message: "No requests found",
-            });
-        }
-
-        return res.status(200).json({
-            success: true,
-            data: requests,
-        });
-
-    } catch (error) {
-        console.error("Error fetching all requests:", error);
-        return res.status(500).json({
-            success: false,
-            message: "Internal Server Error",
-        });
+    if (requests.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No requests found",
+      });
     }
+
+    return res.status(200).json({
+      success: true,
+      data: requests,
+    });
+
+  } catch (error) {
+    console.error("Error fetching all requests:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
 });
 
 app.post("/requests-by-organization", async (req, res) => {
-    try {
-        const { organization } = req.body;
+  try {
+    const { organization } = req.body;
 
-        if (!organization) {
-            return res.status(400).json({
-                success: false,
-                message: "Organization name is required",
-            });
-        }
-
-        const requests = await OwsReqForm.findAll({
-            where: { organization },
-        });
-
-        if (requests.length === 0) {
-            return res.status(404).json({
-                success: false,
-                message: "No requests found for the specified organization",
-            });
-        }
-
-        return res.status(200).json({
-            success: true,
-            data: requests,
-        });
-
-    } catch (error) {
-        console.error("Error fetching requests by organization:", error);
-        return res.status(500).json({
-            success: false,
-            message: "Internal Server Error",
-        });
+    if (!organization) {
+      return res.status(400).json({
+        success: false,
+        message: "Organization name is required",
+      });
     }
+
+    const requests = await OwsReqForm.findAll({
+      where: { organization },
+    });
+
+    if (requests.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No requests found for the specified organization",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: requests,
+    });
+
+  } catch (error) {
+    console.error("Error fetching requests by organization:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
 });
 
 app.post("/run-query", async (req, res) => {
-    const { query } = req.body;
+  const { query } = req.body;
 
-    if (!query) {
-        return res.status(400).json({ success: false, message: "SQL query is required" });
-    }
+  if (!query) {
+    return res.status(400).json({ success: false, message: "SQL query is required" });
+  }
 
-    try {
-        console.log(`Executing SQL Query: ${query}`);
-        const results = await sequelize.query(query, { type: sequelize.QueryTypes.SELECT });
+  try {
+    console.log(`Executing SQL Query: ${query}`);
+    const results = await sequelize.query(query, { type: sequelize.QueryTypes.SELECT });
 
-        return res.status(200).json({ success: true, data: results });
-    } catch (error) {
-        console.error("Error executing SQL query:", error);
-        return res.status(500).json({ success: false, message: "Database query failed", error: error.message });
-    }
+    return res.status(200).json({ success: true, data: results });
+  } catch (error) {
+    console.error("Error executing SQL query:", error);
+    return res.status(500).json({ success: false, message: "Database query failed", error: error.message });
+  }
 });
 
 // POST /api/aiut-records (Create a new AiutRecord)
 app.post("/create-aiut-record", async (req, res) => {
-    try {
-        const { org, mohalla, its, sf, student, father, school, parents_p, org_p } = req.body;
+  try {
+    const { org, mohalla, its, sf, student, father, school, parents_p, org_p } = req.body;
 
-        // Validate required fields
-        if (!org || !student || !father || !school) {
-            return res.status(400).json({ error: "Missing required fields (org, student, father, school)" });
-        }
-
-        // Create a new record
-        const newRecord = await AiutRecord.create({
-            org,
-            mohalla,
-            its,
-            sf,
-            student,
-            father,
-            school,
-            parents_p: parents_p || 0,
-            org_p: org_p || 0
-        });
-
-        res.status(201).json({ message: "Record created successfully", record: newRecord });
-    } catch (error) {
-        console.error("Error creating record:", error);
-        res.status(500).json({ error: "Internal Server Error" });
+    // Validate required fields
+    if (!org || !student || !father || !school) {
+      return res.status(400).json({ error: "Missing required fields (org, student, father, school)" });
     }
+
+    // Create a new record
+    const newRecord = await AiutRecord.create({
+      org,
+      mohalla,
+      its,
+      sf,
+      student,
+      father,
+      school,
+      parents_p: parents_p || 0,
+      org_p: org_p || 0
+    });
+
+    res.status(201).json({ message: "Record created successfully", record: newRecord });
+  } catch (error) {
+    console.error("Error creating record:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 app.post("/fetch-aiut-records", async (req, res) => {
-    try {
-        const { its } = req.body;
+  try {
+    const { its } = req.body;
 
-        if (!its) {
-            return res.status(400).json({ error: "ITS parameter is required in the request body" });
-        }
-
-        const records = await AiutRecord.findAll({ where: { its } });
-
-        if (records.length === 0) {
-            return res.status(404).json({ message: "No records found for this ITS" });
-        }
-
-        res.status(200).json(records);
-    } catch (error) {
-        console.error("Error fetching records:", error);
-        res.status(500).json({ error: "Internal Server Error" });
+    if (!its) {
+      return res.status(400).json({ error: "ITS parameter is required in the request body" });
     }
+
+    const records = await AiutRecord.findAll({ where: { its } });
+
+    if (records.length === 0) {
+      return res.status(404).json({ message: "No records found for this ITS" });
+    }
+
+    res.status(200).json(records);
+  } catch (error) {
+    console.error("Error fetching records:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 app.post("/fetch-records", async (req, res) => {
-    try {
-        const { its } = req.body;
+  try {
+    const { its } = req.body;
 
-        if (!its) {
-            return res.status(400).json({ error: "ITS parameter is required in the request body" });
-        }
-
-        // Fetch records from both AiutRecord & AmbtRecord tables
-        const aiutRecords = await AiutRecord.findAll({ where: { its } });
-        const ambtRecords = await AmbtRecord.findAll({ where: { its } });
-        const stsmfRecords = await StsmfRecord.findAll({ where: { its } });
-
-
-        // Convert database objects to plain JSON
-        const aiutData = aiutRecords.map(record => ({
-            id: record.id || "",
-            org: record.org || "",
-            mohalla: record.mohalla || "",
-            its: record.its || "",
-            sf: record.sf || "",
-            student: record.student || "",
-            father: record.father || "",
-            school: record.school || "",
-            parents_p: record.parents_p || "",
-            date: "",
-            org_p: record.org_p || "",
-            amount: "",  // Amount field will be empty for Aiut records
-            created_at: record.created_at || "",
-            updated_at: record.updated_at || ""
-        }));
-
-        const ambtData = ambtRecords.map(record => ({
-            id: record.id || "",
-            org: record.org || "",
-            mohalla: record.mohalla || "",
-            its: record.its || "",
-            sf: record.sf || "",
-            student: record.student || "",
-            father: "",  // AmbtRecord doesn't have 'father', so keep empty
-            school: record.school || "",
-            date: record.date || "",
-            parents_p: "", // No parents_p in AmbtRecord
-            org_p: "", // No org_p in AmbtRecord
-            amount: record.amount || "", // Amount field present in AmbtRecord
-            created_at: record.created_at || "",
-            updated_at: record.updated_at || ""
-        }));
-
-        const stsmfData = stsmfRecords.map(record => ({
-            id: record.id || "",
-            org: record.org || "",
-            mohalla: record.mohalla || "",
-            its: record.its || "",
-            sf: record.sf || "",
-            student: "",
-            father: "",
-            school: "",
-            parents_p: "",
-            date: "",
-            org_p: "",
-            amount: record.amount || "", // Amount field present in AmbtRecord
-            created_at: record.created_at || "",
-            updated_at: record.updated_at || ""
-        }));
-
-        // Merge both datasets into one array
-        const combinedData = [...aiutData, ...ambtData, ...stsmfData];
-
-        console.log(combinedData);
-
-        if (combinedData.length === 0) {
-            return res.status(404).json({ message: "No records found for this ITS" });
-        }
-
-        res.status(200).json(combinedData);
-    } catch (error) {
-        console.error("Error fetching records:", error);
-        res.status(500).json({ error: "Internal Server Error" });
+    if (!its) {
+      return res.status(400).json({ error: "ITS parameter is required in the request body" });
     }
+
+    // Fetch records from both AiutRecord & AmbtRecord tables
+    const aiutRecords = await AiutRecord.findAll({ where: { its } });
+    const ambtRecords = await AmbtRecord.findAll({ where: { its } });
+    const stsmfRecords = await StsmfRecord.findAll({ where: { its } });
+
+
+    // Convert database objects to plain JSON
+    const aiutData = aiutRecords.map(record => ({
+      id: record.id || "",
+      org: record.org || "",
+      mohalla: record.mohalla || "",
+      its: record.its || "",
+      sf: record.sf || "",
+      student: record.student || "",
+      father: record.father || "",
+      school: record.school || "",
+      parents_p: record.parents_p || "",
+      date: "",
+      org_p: record.org_p || "",
+      amount: "",  // Amount field will be empty for Aiut records
+      created_at: record.created_at || "",
+      updated_at: record.updated_at || ""
+    }));
+
+    const ambtData = ambtRecords.map(record => ({
+      id: record.id || "",
+      org: record.org || "",
+      mohalla: record.mohalla || "",
+      its: record.its || "",
+      sf: record.sf || "",
+      student: record.student || "",
+      father: "",  // AmbtRecord doesn't have 'father', so keep empty
+      school: record.school || "",
+      date: record.date || "",
+      parents_p: "", // No parents_p in AmbtRecord
+      org_p: "", // No org_p in AmbtRecord
+      amount: record.amount || "", // Amount field present in AmbtRecord
+      created_at: record.created_at || "",
+      updated_at: record.updated_at || ""
+    }));
+
+    const stsmfData = stsmfRecords.map(record => ({
+      id: record.id || "",
+      org: record.org || "",
+      mohalla: record.mohalla || "",
+      its: record.its || "",
+      sf: record.sf || "",
+      student: "",
+      father: "",
+      school: "",
+      parents_p: "",
+      date: "",
+      org_p: "",
+      amount: record.amount || "", // Amount field present in AmbtRecord
+      created_at: record.created_at || "",
+      updated_at: record.updated_at || ""
+    }));
+
+    // Merge both datasets into one array
+    const combinedData = [...aiutData, ...ambtData, ...stsmfData];
+
+    console.log(combinedData);
+
+    if (combinedData.length === 0) {
+      return res.status(404).json({ message: "No records found for this ITS" });
+    }
+
+    res.status(200).json(combinedData);
+  } catch (error) {
+    console.error("Error fetching records:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 app.get("/api-version", (req, res) => {
-    res.status(200).json({ version: API_VERSION });
+  res.status(200).json({ version: API_VERSION });
 });
 
 app.get("/fetch-goods", (req, res) => {
-    console.log("FETCHING");
-    const sql = "SELECT * FROM goods";
-    db2.query(sql, (err, result) => {
-        if (err) {
-            console.error("Error executing query:", err);
-            return res.status(500).json({ error: err.message });
-        }
-        res.json(result);
-    });
+  console.log("FETCHING");
+  const sql = "SELECT * FROM goods";
+  db2.query(sql, (err, result) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      return res.status(500).json({ error: err.message });
+    }
+    res.json(result);
+  });
 });
 
 //////////////////////////
 // Storage configuration for multer
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      const studentId = req.body.studentId;
-      const reqId = req.body.reqId;
-      const folderPath = `./uploads/${studentId}_${reqId}`;
-  
-      if (!studentId || !reqId) {
-        return cb(new Error('Missing studentId or reqId'));
-      }
-  
-      console.log(`Uploading to folder: ${folderPath}`);
-  
-      fs.mkdirSync(folderPath, { recursive: true });
-      cb(null, folderPath);
-    },
-  
-    filename: (req, file, cb) => {
-      const docType = file.fieldname;
-  
-      if (!docType) {
-        return cb(new Error('Document type is undefined'));
-      }
-  
-      // Get extension from mimetype
-      let extname = '';
-      switch (file.mimetype) {
-        case 'application/pdf':
-          extname = '.pdf';
-          break;
-        case 'image/jpeg':
-          extname = '.jpg';
-          break;
-        case 'image/png':
-          extname = '.png';
-          break;
-        case 'application/msword':
-          extname = '.doc';
-          break;
-        case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
-          extname = '.docx';
-          break;
-        default:
-          extname = path.extname(file.originalname); // fallback
-      }
-  
-      const fileName = `${docType}${extname}`; // e.g., cnic_front.pdf
-      cb(null, fileName);
+  destination: (req, file, cb) => {
+    const studentId = req.body.studentId;
+    const reqId = req.body.reqId;
+    const folderPath = `./uploads/${studentId}_${reqId}`;
+
+    if (!studentId || !reqId) {
+      return cb(new Error('Missing studentId or reqId'));
     }
-  });
-  
+
+    console.log(`Uploading to folder: ${folderPath}`);
+
+    fs.mkdirSync(folderPath, { recursive: true });
+    cb(null, folderPath);
+  },
+
+  filename: (req, file, cb) => {
+    const docType = file.fieldname;
+
+    if (!docType) {
+      return cb(new Error('Document type is undefined'));
+    }
+
+    // Get extension from mimetype
+    let extname = '';
+    switch (file.mimetype) {
+      case 'application/pdf':
+        extname = '.pdf';
+        break;
+      case 'image/jpeg':
+        extname = '.jpg';
+        break;
+      case 'image/png':
+        extname = '.png';
+        break;
+      case 'application/msword':
+        extname = '.doc';
+        break;
+      case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+        extname = '.docx';
+        break;
+      default:
+        extname = path.extname(file.originalname); // fallback
+    }
+
+    const fileName = `${docType}${extname}`; // e.g., cnic_front.pdf
+    cb(null, fileName);
+  }
+});
+
 // Initialize multer with the storage configuration
 const upload = multer({ storage: storage });
 
 // Endpoint to upload a single document of any type
 app.post('/upload', upload.any(), (req, res) => {
-    if (!req.files || req.files.length === 0) {
-      return res.status(400).send('No file uploaded.');
+  if (!req.files || req.files.length === 0) {
+    return res.status(400).send('No file uploaded.');
+  }
+
+  const uploadedFile = req.files[0];
+
+  res.status(200).send({
+    message: 'File uploaded successfully',
+    file: {
+      docType: uploadedFile.fieldname,
+      filePath: uploadedFile.path,
     }
-  
-    const uploadedFile = req.files[0];
-  
-    res.status(200).send({
-      message: 'File uploaded successfully',
-      file: {
-        docType: uploadedFile.fieldname,
-        filePath: uploadedFile.path,
-      }
-    });
   });
+});
 
 // DELETE endpoint for removing a document
 app.delete('/delete', (req, res) => {
-    const { studentId, docType, filePath } = req.query;  // Get filePath, studentId, and docType from the query
+  const { studentId, docType, filePath } = req.query;  // Get filePath, studentId, and docType from the query
 
-    console.log('Received request to delete:', { studentId, docType, filePath });
+  console.log('Received request to delete:', { studentId, docType, filePath });
 
-    // Validate that all required parameters are provided
-    if (!studentId || !docType || !filePath) {
-        return res.status(400).send({ message: 'Missing required parameters.' });
+  // Validate that all required parameters are provided
+  if (!studentId || !docType || !filePath) {
+    return res.status(400).send({ message: 'Missing required parameters.' });
+  }
+
+  // Resolve the full file path from the `filePath` query and ensure no additional prefixes are included
+  const resolvedFilePath = path.join(__dirname, filePath);
+
+  console.log(`Attempting to delete: ${resolvedFilePath}`);
+
+  // Delete the file from the file system
+  fs.unlink(resolvedFilePath, (err) => {
+    if (err) {
+      console.error('Error deleting file:', err);
+      return res.status(500).send({ message: 'Error deleting file.' });
     }
-
-    // Resolve the full file path from the `filePath` query and ensure no additional prefixes are included
-    const resolvedFilePath = path.join(__dirname, filePath);
-
-    console.log(`Attempting to delete: ${resolvedFilePath}`);
-
-    // Delete the file from the file system
-    fs.unlink(resolvedFilePath, (err) => {
-        if (err) {
-            console.error('Error deleting file:', err);
-            return res.status(500).send({ message: 'Error deleting file.' });
-        }
-        // Successfully deleted the file
-        res.status(200).send({ message: 'File deleted successfully.' });
-    });
+    // Successfully deleted the file
+    res.status(200).send({ message: 'File deleted successfully.' });
+  });
 });
 
 const upload_paktalim = multer();
 
 app.post('/get-student-documents', async (req, res) => {
-    const { studentId, reqId } = req.body;
-  
-    if (!studentId || !reqId) {
-      return res.status(400).json({ message: 'Missing studentId or reqId in request body' });
+  const { studentId, reqId } = req.body;
+
+  if (!studentId || !reqId) {
+    return res.status(400).json({ message: 'Missing studentId or reqId in request body' });
+  }
+
+  const folderName = `${studentId}_${reqId}`;
+  const folderPath = path.join(__dirname, 'uploads', folderName);
+
+  try {
+    if (!fs.existsSync(folderPath)) {
+      return res.status(404).json({ message: 'No documents found for this student & reqId.' });
     }
-  
-    const folderName = `${studentId}_${reqId}`;
-    const folderPath = path.join(__dirname, 'uploads', folderName);
-  
-    try {
-      if (!fs.existsSync(folderPath)) {
-        return res.status(404).json({ message: 'No documents found for this student & reqId.' });
-      }
-  
-      const files = fs.readdirSync(folderPath);
-      const documents = files.map(file => {
-        const docType = path.parse(file).name; // filename without extension
-        return {
-          docType,
-          fileName: file,
-          filePath: path.join('uploads', folderName, file),
-        };
-      });
-  
-      return res.status(200).json({
-        studentId,
-        reqId,
-        documents,
-      });
-    } catch (err) {
-      console.error('❌ Error reading documents:', err);
-      return res.status(500).json({ message: 'Server error fetching documents.' });
-    }
-  });
+
+    const files = fs.readdirSync(folderPath);
+    const documents = files.map(file => {
+      const docType = path.parse(file).name; // filename without extension
+      return {
+        docType,
+        fileName: file,
+        filePath: path.join('uploads', folderName, file),
+      };
+    });
+
+    return res.status(200).json({
+      studentId,
+      reqId,
+      documents,
+    });
+  } catch (err) {
+    console.error('❌ Error reading documents:', err);
+    return res.status(500).json({ message: 'Server error fetching documents.' });
+  }
+});
 
 app.post("/update-paktalim-profile", upload_paktalim.none(), async (req, res) => {
-    try {
-        const {
-            m_id,
-            p_id,
-            j_id,
-            its_id,
-            c_id,
-            city_id,
-            imani,
-            i_id,
-            scholarship_taken,
-            qardan,
-            scholar,
-            class_id,
-            s_id,
-            year_count_dir,
-            edate,
-            duration,
-            sdate
-        } = req.body;
+  try {
+    const {
+      m_id,
+      p_id,
+      j_id,
+      its_id,
+      c_id,
+      city_id,
+      imani,
+      i_id,
+      scholarship_taken,
+      qardan,
+      scholar,
+      class_id,
+      s_id,
+      year_count_dir,
+      edate,
+      duration,
+      sdate
+    } = req.body;
 
-        // Construct FormData (multipart)
-        const formData = new URLSearchParams();
-        formData.append("m_id", m_id);
-        if (p_id) formData.append("p_id", p_id);
-        formData.append("j_id", j_id);
-        formData.append("its_id", its_id);
-        formData.append("c_id", c_id);
-        formData.append("city_id", city_id);
-        formData.append("imani", imani);
-        formData.append("i_id", i_id);
-        formData.append("scholarship_taken", scholarship_taken);
-        formData.append("qardan", qardan);
-        formData.append("scholar", scholar);
-        formData.append("class_id", class_id);
-        formData.append("s_id", s_id);
-        if (year_count_dir) formData.append("year_count_dir", year_count_dir);
-        formData.append("edate", edate);
-        formData.append("duration", duration);
-        formData.append("sdate", sdate);
+    // Construct FormData (multipart)
+    const formData = new URLSearchParams();
+    formData.append("m_id", m_id);
+    if (p_id) formData.append("p_id", p_id);
+    formData.append("j_id", j_id);
+    formData.append("its_id", its_id);
+    formData.append("c_id", c_id);
+    formData.append("city_id", city_id);
+    formData.append("imani", imani);
+    formData.append("i_id", i_id);
+    formData.append("scholarship_taken", scholarship_taken);
+    formData.append("qardan", qardan);
+    formData.append("scholar", scholar);
+    formData.append("class_id", class_id);
+    formData.append("s_id", s_id);
+    if (year_count_dir) formData.append("year_count_dir", year_count_dir);
+    formData.append("edate", edate);
+    formData.append("duration", duration);
+    formData.append("sdate", sdate);
 
-        // Construct API URL
-        const apiUrl = `https://paktalim.com/admin/ws_app/UpdateProfile?access_key=bbb1d493d3c4969f55045326d6e2f4a662b85374&username=40459629`;
+    // Construct API URL
+    const apiUrl = `https://paktalim.com/admin/ws_app/UpdateProfile?access_key=bbb1d493d3c4969f55045326d6e2f4a662b85374&username=40459629`;
 
-        // Send the form-data request using Axios
-        const response = await axios.post(apiUrl, formData, {
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            }
-        });
+    // Send the form-data request using Axios
+    const response = await axios.post(apiUrl, formData, {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      }
+    });
 
-        // Send the API response back to the client
-        res.json(response.data);
-    } catch (error) {
-        console.error("Error:", error.response ? error.response.data : error.message);
-        res.status(500).json({ error: error.response ? error.response.data : "Internal Server Error" });
-    }
+    // Send the API response back to the client
+    res.json(response.data);
+  } catch (error) {
+    console.error("Error:", error.response ? error.response.data : error.message);
+    res.status(500).json({ error: error.response ? error.response.data : "Internal Server Error" });
+  }
 });
 
 
 app.post("/post-url-v2", upload.none(), async (req, res) => {
-    try {
-        const { url, data } = req.body;
+  try {
+    const { url, data } = req.body;
 
-        if (!url) {
-            return res.status(400).json({ error: "URL parameter is required" });
-        }
-
-        // Validate URL format
-        if (!/^https?:\/\//i.test(url)) {
-            return res.status(400).json({ error: "Invalid URL format" });
-        }
-
-        // Convert `data` JSON object to `FormData`
-        const formData = new FormData();
-        for (const key in data) {
-            if (Array.isArray(data[key])) {
-                // Handle arrays (e.g., multiple `sub_id[]` values)
-                data[key].forEach(value => formData.append(`${key}[]`, value));
-            } else {
-                formData.append(key, data[key]);
-            }
-        }
-
-        // Send POST request with multipart/form-data
-        const response = await axios.post(url, formData, {
-            headers: {
-                ...formData.getHeaders(), // Set correct form-data headers
-            },
-        });
-
-        res.json(response.data);
-    } catch (error) {
-        console.error("Error:", error.message);
-        res.status(500).json({ error: error.message });
+    if (!url) {
+      return res.status(400).json({ error: "URL parameter is required" });
     }
+
+    // Validate URL format
+    if (!/^https?:\/\//i.test(url)) {
+      return res.status(400).json({ error: "Invalid URL format" });
+    }
+
+    // Convert `data` JSON object to `FormData`
+    const formData = new FormData();
+    for (const key in data) {
+      if (Array.isArray(data[key])) {
+        // Handle arrays (e.g., multiple `sub_id[]` values)
+        data[key].forEach(value => formData.append(`${key}[]`, value));
+      } else {
+        formData.append(key, data[key]);
+      }
+    }
+
+    // Send POST request with multipart/form-data
+    const response = await axios.post(url, formData, {
+      headers: {
+        ...formData.getHeaders(), // Set correct form-data headers
+      },
+    });
+
+    res.json(response.data);
+  } catch (error) {
+    console.error("Error:", error.message);
+    res.status(500).json({ error: error.message });
+  }
 });
 
 
 app.put("/add-guardian", async (req, res) => {
-    try {
-        const { name, ITS, contact, relation, student_ITS } = req.body;
+  try {
+    const { name, ITS, contact, relation, student_ITS } = req.body;
 
-        // Check if the guardian exists
-        const guardian = await Guardian.findOne({ where: { ITS } });
+    // Check if the guardian exists
+    const guardian = await Guardian.findOne({ where: { ITS } });
 
-        if (!guardian) {
-            return res.status(404).json({ message: "Guardian not found" });
-        }
-
-        // Validate if the student ITS exists (optional check)
-        if (student_ITS) {
-            const student = await OwsReqMas.findOne({ where: { ITS: student_ITS } });
-            if (!student) {
-                return res.status(400).json({ message: "Student ITS not found" });
-            }
-        }
-
-        // Update guardian details
-        await guardian.update({ name, ITS, contact, relation });
-
-        // If student_ITS is provided, update the student's guardian
-        if (student_ITS) {
-            await OwsReqMas.update({ guardian_ITS: ITS }, { where: { ITS: student_ITS } });
-        }
-
-        res.status(200).json({ message: "Guardian updated successfully", guardian });
-    } catch (error) {
-        console.error("Error updating guardian:", error);
-        res.status(500).json({ message: "Internal server error" });
+    if (!guardian) {
+      return res.status(404).json({ message: "Guardian not found" });
     }
+
+    // Validate if the student ITS exists (optional check)
+    if (student_ITS) {
+      const student = await OwsReqMas.findOne({ where: { ITS: student_ITS } });
+      if (!student) {
+        return res.status(400).json({ message: "Student ITS not found" });
+      }
+    }
+
+    // Update guardian details
+    await guardian.update({ name, ITS, contact, relation });
+
+    // If student_ITS is provided, update the student's guardian
+    if (student_ITS) {
+      await OwsReqMas.update({ guardian_ITS: ITS }, { where: { ITS: student_ITS } });
+    }
+
+    res.status(200).json({ message: "Guardian updated successfully", guardian });
+  } catch (error) {
+    console.error("Error updating guardian:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
 
 
 app.post('/save-draft', async (req, res) => {
-    const { application_id, draft_data } = req.body;
+  const { application_id, draft_data } = req.body;
 
-    console.log("📥 Received draft data for application_id:", application_id);
-    console.log("📝 Draft data content:", draft_data);
+  console.log("📥 Received draft data for application_id:", application_id);
+  console.log("📝 Draft data content:", draft_data);
 
-    if (!application_id || !draft_data) {
-        console.error("❌ Missing application_id or draft_data");
-        return res.status(400).json({ error: 'Missing application_id or draft_data' });
+  if (!application_id || !draft_data) {
+    console.error("❌ Missing application_id or draft_data");
+    return res.status(400).json({ error: 'Missing application_id or draft_data' });
+  }
+
+  try {
+    const existing = await StudentApplicationDraft.findByPk(application_id);
+
+    if (existing) {
+      console.log("🔁 Existing draft found. Updating...");
+      await StudentApplicationDraft.update(draft_data, {
+        where: { id: application_id },
+      });
+      console.log("✅ Draft updated successfully for:", application_id);
+    } else {
+      console.log("🆕 No existing draft. Creating new entry...");
+      await StudentApplicationDraft.create({
+        id: application_id,
+        ...draft_data,
+      });
+      console.log("✅ Draft created successfully for:", application_id);
     }
 
-    try {
-        const existing = await StudentApplicationDraft.findByPk(application_id);
-
-        if (existing) {
-            console.log("🔁 Existing draft found. Updating...");
-            await StudentApplicationDraft.update(draft_data, {
-                where: { id: application_id },
-            });
-            console.log("✅ Draft updated successfully for:", application_id);
-        } else {
-            console.log("🆕 No existing draft. Creating new entry...");
-            await StudentApplicationDraft.create({
-                id: application_id,
-                ...draft_data,
-            });
-            console.log("✅ Draft created successfully for:", application_id);
-        }
-
-        res.status(200).json({ message: '✅ Draft saved successfully' });
-    } catch (error) {
-        console.error('❌ Error saving draft:', error.message);
-        res.status(500).json({ error: 'Internal server error', details: error.message });
-    }
+    res.status(200).json({ message: '✅ Draft saved successfully' });
+  } catch (error) {
+    console.error('❌ Error saving draft:', error.message);
+    res.status(500).json({ error: 'Internal server error', details: error.message });
+  }
 });
 
 app.get('/load-draft/:application_id', async (req, res) => {
-    const { application_id } = req.params;
+  const { application_id } = req.params;
 
-    try {
-        const draft = await StudentApplicationDraft.findByPk(application_id);
-        if (!draft) {
-            return res.status(404).json({ error: 'Draft not found' });
-        }
-
-        res.status(200).json(draft);
-    } catch (error) {
-        console.error('❌ Error loading draft:', error);
-        res.status(500).json({ error: 'Internal server error' });
+  try {
+    const draft = await StudentApplicationDraft.findByPk(application_id);
+    if (!draft) {
+      return res.status(404).json({ error: 'Draft not found' });
     }
+
+    res.status(200).json(draft);
+  } catch (error) {
+    console.error('❌ Error loading draft:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 app.post("/submit-draft/:id", async (req, res) => {
-    const draftId = req.params.id;
+  const draftId = req.params.id;
 
-    try {
-        const result = await transferDraftToApplication(draftId);
-        res.status(200).json({
-            message: "Draft submitted successfully.",
-            applicationId: result.applicationId
-        });
-    } catch (err) {
-        console.error("Submission error:", err);
-        res.status(500).json({
-            message: "Failed to submit application.",
-            error: err.message
-        });
-    }
+  try {
+    const result = await transferDraftToApplication(draftId);
+    res.status(200).json({
+      message: "Draft submitted successfully.",
+      applicationId: result.applicationId
+    });
+  } catch (err) {
+    console.error("Submission error:", err);
+    res.status(500).json({
+      message: "Failed to submit application.",
+      error: err.message
+    });
+  }
 });
 
 app.post('/code-by-group', async (req, res) => {
-    try {
-        const { codGroup } = req.body;
+  try {
+    const { codGroup } = req.body;
 
-        if (!codGroup) {
-            return res.status(400).json({ error: "codGroup is required" });
-        }
-
-        const codes = await OwsCodeFile.findAll({
-            where: { codGroup }
-        });
-
-        res.status(200).json(codes);
-    } catch (error) {
-        console.error("Error fetching code group:", error);
-        res.status(500).json({ error: "Failed to fetch data" });
+    if (!codGroup) {
+      return res.status(400).json({ error: "codGroup is required" });
     }
+
+    const codes = await OwsCodeFile.findAll({
+      where: { codGroup }
+    });
+
+    res.status(200).json(codes);
+  } catch (error) {
+    console.error("Error fetching code group:", error);
+    res.status(500).json({ error: "Failed to fetch data" });
+  }
 });
 
-const SOAP_URL  = 'https://qardanhasana.pk/BQHT_App_WS/BQHTAPP.asmx';
+const SOAP_URL = 'https://qardanhasana.pk/BQHT_App_WS/BQHTAPP.asmx';
 const NAMESPACE = 'http://test.qardanhasana.pk/BQHT_App_WS';
 
 
 async function callSoap(action, bodyXml) {
-    // 1) Build the full SOAP envelope
-    const envelope = `<?xml version="1.0" encoding="utf-8"?>
+  // 1) Build the full SOAP envelope
+  const envelope = `<?xml version="1.0" encoding="utf-8"?>
   <soap:Envelope 
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
       xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
@@ -1173,46 +1182,46 @@ async function callSoap(action, bodyXml) {
       ${bodyXml}
     </soap:Body>
   </soap:Envelope>`;
-  
-    // 2) Send it
-    const response = await axios.post(SOAP_URL, envelope, {
-      headers: {
-        'Content-Type': 'text/xml; charset=utf-8',
-        'SOAPAction':   `"${NAMESPACE}/${action}"`
-      },
-      timeout: 10000, // 10s timeout for debugging
-    });
-  
-    // 3) Parse XML → JS object
-    let parsed;
-    try {
-      parsed = await xml2js.parseStringPromise(response.data, {
-        explicitArray: false,
-        ignoreAttrs:   true
-      });
-    } catch (xmlErr) {
-      throw xmlErr;
-    }
 
-    return parsed;
+  // 2) Send it
+  const response = await axios.post(SOAP_URL, envelope, {
+    headers: {
+      'Content-Type': 'text/xml; charset=utf-8',
+      'SOAPAction': `"${NAMESPACE}/${action}"`
+    },
+    timeout: 10000, // 10s timeout for debugging
+  });
+
+  // 3) Parse XML → JS object
+  let parsed;
+  try {
+    parsed = await xml2js.parseStringPromise(response.data, {
+      explicitArray: false,
+      ignoreAttrs: true
+    });
+  } catch (xmlErr) {
+    throw xmlErr;
   }
-  
-  // ─────────────────────────────────────────────────────────────────────────────
-  // Route: POST /occupationDetails
-  //  - Reads ITS credentials from JSON body
-  //  - Calls AuthenticateFundReport → gets token
-  //  - Calls Get_WorkProfile_BasicDetail → gets JSON blob
-  //  - Logs DataTable to console & returns it
-  // ─────────────────────────────────────────────────────────────────────────────
-  app.post('/occupationDetails', async (req, res) => {
-    const { ITSID, Password, CountryID='1', DeviceDetail='0', IPAddress='' } = req.body;
-    if (!ITSID) {
-      return res.status(400).json({ error: 'ITSID and Password are required.' });
-    }
-  
-    try {
-      // 1) AuthenticateFundReport
-      const authXml = `
+
+  return parsed;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Route: POST /occupationDetails
+//  - Reads ITS credentials from JSON body
+//  - Calls AuthenticateFundReport → gets token
+//  - Calls Get_WorkProfile_BasicDetail → gets JSON blob
+//  - Logs DataTable to console & returns it
+// ─────────────────────────────────────────────────────────────────────────────
+app.post('/occupationDetails', async (req, res) => {
+  const { ITSID, Password, CountryID = '1', DeviceDetail = '0', IPAddress = '' } = req.body;
+  if (!ITSID) {
+    return res.status(400).json({ error: 'ITSID and Password are required.' });
+  }
+
+  try {
+    // 1) AuthenticateFundReport
+    const authXml = `
         <AuthenticateFundReport xmlns="${NAMESPACE}">
           <ITSID>33693369</ITSID>
           <Password>Beyond@2468</Password>
@@ -1220,67 +1229,67 @@ async function callSoap(action, bodyXml) {
           <DeviceDetail>${DeviceDetail}</DeviceDetail>
           <IPAddress>72.255.0.187</IPAddress>
         </AuthenticateFundReport>`;
-      const authResp = await callSoap('AuthenticateFundReport', authXml);
-  
-      // rawAuth is a string containing JSON array:
-      const rawAuth = authResp['soap:Envelope']
-                            ['soap:Body']
-                            ['AuthenticateFundReportResponse']
-                            ['AuthenticateFundReportResult'];
-      let authJson;
-      try {
-        authJson = JSON.parse(rawAuth);
-      } catch (e) {
-        return res.status(500).json({ error: 'Invalid JSON in authenticate response.', detail: rawAuth });
-      }
-      if (!Array.isArray(authJson) || authJson.length === 0 || !authJson[0].Token) {
-        return res.status(500).json({ error: 'No token returned.', detail: authJson });
-      }
-      const token = authJson[0].Token;
-  
-      // 2) Get_WorkProfile_BasicDetail
-      const workXml = `
+    const authResp = await callSoap('AuthenticateFundReport', authXml);
+
+    // rawAuth is a string containing JSON array:
+    const rawAuth = authResp['soap:Envelope']
+    ['soap:Body']
+    ['AuthenticateFundReportResponse']
+    ['AuthenticateFundReportResult'];
+    let authJson;
+    try {
+      authJson = JSON.parse(rawAuth);
+    } catch (e) {
+      return res.status(500).json({ error: 'Invalid JSON in authenticate response.', detail: rawAuth });
+    }
+    if (!Array.isArray(authJson) || authJson.length === 0 || !authJson[0].Token) {
+      return res.status(500).json({ error: 'No token returned.', detail: authJson });
+    }
+    const token = authJson[0].Token;
+
+    // 2) Get_WorkProfile_BasicDetail
+    const workXml = `
         <Get_WorkProfile_BasicDetail xmlns="${NAMESPACE}">
           <Token>${token}</Token>
           <ITSID>${ITSID}</ITSID>
         </Get_WorkProfile_BasicDetail>`;
-      const workResp = await callSoap('Get_WorkProfile_BasicDetail', workXml);
-  
-      const rawWork = workResp['soap:Envelope']
-                           ['soap:Body']
-                           ['Get_WorkProfile_BasicDetailResponse']
-                           ['Get_WorkProfile_BasicDetailResult'];
-      let workJson;
-      try {
-        workJson = JSON.parse(rawWork);
-      } catch (e) {
-        return res.status(500).json({ error: 'Invalid JSON in workprofile response.', detail: rawWork });
-      }
-  
-      // Normalize to an object with ExcStatus / DataTable
-      let resultObj = Array.isArray(workJson) ? workJson[0] : workJson;
-      if (resultObj.ExcStatus !== 'Success') {
-        return res.status(500).json({ error: resultObj.ExcMessage || 'Unknown error', detail: resultObj });
-      }
-  
-      // Return DataTable (could be array or single object)
-      return res.json(resultObj.DataTable);
-    } catch (err) {
-      console.error('Error in /occupationDetails:', err);
-      return res.status(500).json({ error: err.message || err.toString() });
+    const workResp = await callSoap('Get_WorkProfile_BasicDetail', workXml);
+
+    const rawWork = workResp['soap:Envelope']
+    ['soap:Body']
+    ['Get_WorkProfile_BasicDetailResponse']
+    ['Get_WorkProfile_BasicDetailResult'];
+    let workJson;
+    try {
+      workJson = JSON.parse(rawWork);
+    } catch (e) {
+      return res.status(500).json({ error: 'Invalid JSON in workprofile response.', detail: rawWork });
     }
-  });
 
-  // Configure MySQL pool
-  const pool = mysql.createPool({
-    host: "ls-71e245ea4a0374b94a685ec89d871c50a32f80c2.cotk02keuuc1.us-east-1.rds.amazonaws.com",
-    port: "3306",
-    user: "ows_user",
-    password: "20250507.Osw*", 
-    database: "ows_db",
-  });
+    // Normalize to an object with ExcStatus / DataTable
+    let resultObj = Array.isArray(workJson) ? workJson[0] : workJson;
+    if (resultObj.ExcStatus !== 'Success') {
+      return res.status(500).json({ error: resultObj.ExcMessage || 'Unknown error', detail: resultObj });
+    }
 
-  // Load form config JSON
+    // Return DataTable (could be array or single object)
+    return res.json(resultObj.DataTable);
+  } catch (err) {
+    console.error('Error in /occupationDetails:', err);
+    return res.status(500).json({ error: err.message || err.toString() });
+  }
+});
+
+// Configure MySQL pool
+const pool = mysql.createPool({
+  host: "ls-71e245ea4a0374b94a685ec89d871c50a32f80c2.cotk02keuuc1.us-east-1.rds.amazonaws.com",
+  port: "3306",
+  user: "ows_user",
+  password: "20250507.Osw*",
+  database: "ows_db",
+});
+
+// Load form config JSON
 const formConfig = JSON.parse(fs.readFileSync('./form_config.json', 'utf-8'));
 
 // Helper to fetch main form data
@@ -1388,7 +1397,7 @@ app.get('/api/application/:id', async (req, res) => {
 
 app.post('/api/submit-application', async (req, res) => {
   const { application, repeatables } = req.body;
- const conn = await pool.getConnection(); 
+  const conn = await pool.getConnection();
 
   try {
     await conn.beginTransaction();
@@ -1586,7 +1595,7 @@ app.get('/api/get-application/:id', async (req, res) => {
 app.get('/api/keys-applications/:id', async (req, res) => {
   const applicationId = req.params.id;
 
-  // Fetch main record
+  // Fetch main application record
   let application;
   try {
     const [rows] = await pool.execute(
@@ -1612,7 +1621,6 @@ app.get('/api/keys-applications/:id', async (req, res) => {
       for (const subConfig of sectionConfig.subSections) {
         const subsection = { subsection: subConfig.title };
 
-        // Subsection-level repeatable
         if (subConfig.type === 'repeatable') {
           let rows = [];
           try {
@@ -1623,23 +1631,19 @@ app.get('/api/keys-applications/:id', async (req, res) => {
           } catch (_) {
             rows = [];
           }
+
           if (rows.length === 0) rows = [application];
 
           subsection.entries = rows.map(row => {
             const fields = [];
             for (const fieldConfig of subConfig.fields) {
-              // main field
               fields.push({
                 question: fieldConfig.label,
                 answer: row[fieldConfig.key] != null ? row[fieldConfig.key] : ''
               });
-              // ITS field, if specified
+
               if (fieldConfig.itsFieldKey) {
-                // Use itsFieldKey or fallback to member_its column
-                const itsKey = fieldConfig.itsFieldKey;
-                const itsValue = row[itsKey] != null && row[itsKey] !== ''
-                  ? row[itsKey]
-                  : (row.member_its != null ? row.member_its : '');
+                const itsValue = row[fieldConfig.itsFieldKey] || row.member_its || '';
                 fields.push({
                   question: 'Member ITS',
                   answer: itsValue
@@ -1650,12 +1654,10 @@ app.get('/api/keys-applications/:id', async (req, res) => {
           });
 
         } else {
-          // Non-repeatable subsection
           subsection.fields = [];
 
           for (const fieldConfig of (subConfig.fields || [])) {
             if (fieldConfig.type === 'repeatable') {
-              // Field-level repeatable
               let rows = [];
               try {
                 [rows] = await pool.execute(
@@ -1665,6 +1667,7 @@ app.get('/api/keys-applications/:id', async (req, res) => {
               } catch (_) {
                 rows = [];
               }
+
               subsection.entries = rows.map(row => {
                 const fields = [];
                 for (const nested of (fieldConfig.fields || [])) {
@@ -1672,6 +1675,7 @@ app.get('/api/keys-applications/:id', async (req, res) => {
                     question: nested.label,
                     answer: row[nested.key] != null ? row[nested.key] : ''
                   });
+
                   if (nested.itsFieldKey) {
                     fields.push({
                       question: 'ITS',
@@ -1683,7 +1687,6 @@ app.get('/api/keys-applications/:id', async (req, res) => {
               });
 
             } else {
-              // Simple field
               subsection.fields.push({
                 question: fieldConfig.label,
                 answer: application[fieldConfig.key] != null ? application[fieldConfig.key] : ''
@@ -1730,5 +1733,25 @@ app.delete('/delete-draft/:id', async (req, res) => {
   } catch (error) {
     console.error('Error deleting draft:', error);
     return res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+});
+
+// GET request form by ITS
+app.get("/api/request-form/:its", async (req, res) => {
+  try {
+    const its = req.params.its;
+
+    const records = await OwsReqForm.findAll({
+      where: { ITS: its },
+      order: [['created_at', 'DESC']] // Optional: newest first
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: records,
+    });
+  } catch (err) {
+    console.error("🚨 Error fetching request form:", err);
+    return res.status(500).json({ success: false, message: "Server Error" });
   }
 });

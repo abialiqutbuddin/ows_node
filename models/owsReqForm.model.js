@@ -136,6 +136,39 @@ const OwsReqForm = sequelize.define("owsReqForm", {
     type: DataTypes.DATE,
     allowNull: false,
     defaultValue: DataTypes.NOW
+  },
+  cnic: {
+    type: DataTypes.STRING(20),
+    allowNull: true
+  },
+  fatherCnic: {
+    type: DataTypes.STRING(50),
+    allowNull: true
+  },
+  motherCnic: {
+    type: DataTypes.STRING(50),
+    allowNull: true
+  },
+  hasGuardian: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false
+  },
+  gender: {
+    type: DataTypes.STRING(10),
+    allowNull: true
+  },
+  address: {
+    type: DataTypes.STRING(500),
+    allowNull: true
+  },
+  dob: {
+    type: DataTypes.DATEONLY,
+    allowNull: true
+  },
+  applyDate: {
+    type: DataTypes.DATEONLY,
+    allowNull: true
   }
 }, {
   tableName: "owsReqForm",
