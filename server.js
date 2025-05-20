@@ -127,30 +127,46 @@ app.post("/get-profile", async (req, res) => {
 });
 
 
-// NEW FAMILY API
+// CRC FAMILY API
 app.post("/get-family-profile", async (req, res) => {
   try {
     const { its_id } = req.body;
 
-    if (!its_id) {
-      return res.status(400).json({ error: "Missing 'its_id' in request body" });
-    }
-    if (typeof its_id !== "string" || its_id.trim().length === 0) {
+    if (!its_id || typeof its_id !== "string" || its_id.trim().length === 0) {
       return res.status(400).json({ error: "'its_id' must be a non-empty string" });
     }
 
-    const url = `http://182.188.38.224:8083/crc_live/backend/dist/mumineen/getFamilyDetails.php?user_name=umoor_talimiyah&password=UTalim2025&token=1242621ebdaac37b03d88310abc26f9aaee505f7e5654a47421fb39ec6ece94f&its_id=${its_id}`;
-    const response = await axios.get(url);
+    const apiUrl = "http://182.188.38.224:8083/crc_live/Q1JDTXVtaW5NZW1iZXJQcm9maWxl";
+
+    const requestBody = {
+      user_name: "umoor_talimiyah",
+      password: "UTalim2025",
+      token: "1242621ebdaac37b03d88310abc26f9aaee505f7e5654a47421fb39ec6ece94f",
+      its_id: its_id
+    };
+
+    const response = await axios.post(apiUrl, requestBody, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+
     return res.status(200).json(response.data);
 
   } catch (error) {
     console.error("Error fetching family data:", error.message);
 
     if (error.response) {
-      return res.status(error.response.status).json({ error: "Failed to fetch family data", details: error.response.data });
+      return res.status(error.response.status).json({
+        error: "Failed to fetch family data",
+        details: error.response.data
+      });
     }
 
-    return res.status(500).json({ error: "Server error", details: error.message });
+    return res.status(500).json({
+      error: "Server error",
+      details: error.message
+    });
   }
 });
 
