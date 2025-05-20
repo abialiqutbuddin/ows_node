@@ -88,7 +88,7 @@ const StudentApplicationDraft = sequelize.define('student_application_draft', {
   business_assets_base64: DataTypes.TEXT('long'),
   qh_liability_base64: DataTypes.TEXT('long'),
   enayat_liability_base64: DataTypes.TEXT('long'),
-  incomeTypes_base64: DataTypes.TEXT('long'),
+  income_types_base64: DataTypes.TEXT('long'),
 
 }, {
   timestamps: false,
