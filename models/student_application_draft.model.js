@@ -14,6 +14,7 @@ const StudentApplicationDraft = sequelize.define('student_application_draft', {
   area: DataTypes.STRING,
   neighborhood: DataTypes.STRING,
   personalBank: DataTypes.ENUM('Yes', 'No'),
+  goesMadrasa: DataTypes.ENUM('Yes', 'No'),
   khidmat_current: DataTypes.STRING,
   khidmat_intent: DataTypes.STRING,
 
