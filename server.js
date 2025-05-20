@@ -1793,3 +1793,26 @@ app.get("/api/create-draft/:reqId", async (req, res) => {
     return res.status(500).json({ success: false, message: "Server Error", error: err.message });
   }
 });
+
+app.post('/api/getByReqId', async (req, res) => {
+  try {
+    const { reqId } = req.body;
+
+    if (!reqId) {
+      return res.status(400).json({ error: 'reqId is required' });
+    }
+
+    const record = await OwsReqForm.findOne({
+      where: { reqId: reqId }
+    });
+
+    if (!record) {
+      return res.status(404).json({ error: 'Record not found' });
+    }
+
+    return res.json(record);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Server error' });
+  }
+});
