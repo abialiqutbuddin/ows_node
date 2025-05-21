@@ -543,6 +543,10 @@ const validStatuses = [
   "First Payment Done"
 ];
 
+app.get('/api/get-all-status', (req, res) => {
+  res.json(validStatuses);
+});
+
 // ✅ API: Update Request Status (POST)
 app.post("/update-request-status", async (req, res) => {
   try {
