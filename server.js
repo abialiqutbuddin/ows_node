@@ -1886,3 +1886,73 @@ app.post('/api/getByReqId', async (req, res) => {
     return res.status(500).json({ error: 'Server error' });
   }
 });
+
+app.get('/api/user-permissions/:its', async (req, res) => {
+  const its = req.params.its;
+
+  try {
+    const conn = await pool.getConnection();
+
+    // Fetch user details
+    const [users] = await conn.execute(
+      'SELECT id, Name, email_address, role FROM users_new WHERE ITS = ?',
+      [its]
+    );
+
+    if (users.length === 0) {
+      conn.release();
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    const user = users[0];
+
+    let data = {
+      id: user.id,
+      name: user.Name,
+      email: user.email_address,
+      role: user.role,
+    };
+
+    if (user.role === 'trust_admin') {
+      // Return trusts where user is trust person (trust_person = ITS)
+      const [trusts] = await conn.execute(
+        'SELECT id, trustid, trustname FROM trust WHERE trust_person = ?',
+        [its]
+      );
+      data.trusts = trusts; // trusts managed by trust admin
+    } else if (user.role === 'coordinator') {
+      // Return trusts assigned with permissions from user_trust
+      const [trusts] = await conn.execute(
+        `SELECT t.id, t.trustid, t.trustname, ut.can_view, ut.can_update
+         FROM trust t
+         JOIN user_trust ut ON t.id = ut.trust_id
+         WHERE ut.user_id = ?`,
+        [user.id]
+      );
+      data.assigned_trusts = trusts.map(trust => ({
+        id: trust.id,
+        trustid: trust.trustid,
+        trustname: trust.trustname,
+        permissions: {
+          can_view: !!trust.can_view,
+          can_update: !!trust.can_update
+        }
+      }));
+    }
+
+    conn.release();
+    res.json({ success: true, data });
+
+  } catch (err) {
+    console.error('Error fetching user permissions:', err);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+});
+
+// Serve Flutter web build static files at /ows/testing
+app.use('/ows/testing', express.static(path.join(__dirname, 'testing')));
+
+// SPA fallback to index.html for client-side routing
+app.get('/ows/testing/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'testing', 'index.html'));
+});
