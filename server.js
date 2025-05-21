@@ -1772,6 +1772,20 @@ app.get("/api/request-form/:its", async (req, res) => {
   }
 });
 
+app.get("/api/request-form-all/", async (req, res) => {
+  try {
+    const records = await OwsReqForm.findAll();
+
+    return res.status(200).json({
+      success: true,
+      data: records,
+    });
+  } catch (err) {
+    console.error("🚨 Error fetching request form:", err);
+    return res.status(500).json({ success: false, message: "Server Error" });
+  }
+});
+
 app.get("/api/create-draft/:reqId", async (req, res) => {
   const { reqId } = req.params;
 
