@@ -1950,9 +1950,9 @@ app.get('/api/user-permissions/:its', async (req, res) => {
 });
 
 // Serve Flutter web build static files at /ows/testing
-app.use('/ows/testing', express.static(path.join(__dirname, 'testing')));
+app.use('/testing', express.static(path.join(__dirname, 'testing')));
 
 // SPA fallback to index.html for client-side routing
-app.get('/ows/testing/*', (req, res) => {
+app.get('/testing/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'testing', 'index.html'));
 });
