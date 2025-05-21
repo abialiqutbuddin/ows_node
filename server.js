@@ -1445,7 +1445,7 @@ app.post('/api/submit-application', async (req, res) => {
   }
 });
 
-app.use('/ows/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.get('/api/form-config', async (req, res) => {
   try {
