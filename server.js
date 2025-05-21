@@ -36,7 +36,7 @@ const mysql = require('mysql2/promise');
 
 const API_VERSION = "1.3.0"; // Change this based on your version
 
-const PORT = 3001;
+const PORT = 3005;
 
 //Load SSL Certificates
 // const options = {
@@ -550,7 +550,6 @@ app.get('/api/get-all-status', (req, res) => {
 // ✅ API: Update Request Status (POST)
 app.post("/update-request-status", async (req, res) => {
   try {
-    console.log("HERE");
     const { reqId, newStatus } = req.body;
 
     // ❌ Validate input
@@ -616,6 +615,43 @@ app.post("/all-requests", async (req, res) => {
 
   } catch (error) {
     console.error("Error fetching all requests:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+});
+
+const { Op } = require('sequelize');
+
+app.get("/api/completed-requests", async (req, res) => {
+  try {
+    console.log("Fetching requests where application_id is NOT NULL");
+
+    const requests = await OwsReqForm.findAll({
+      where: {
+        application_id: {
+          [Op.ne]: null
+        }
+      }
+    });
+
+    console.log(`Found ${requests.length} requests`);
+
+    if (requests.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No requests found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: requests,
+    });
+
+  } catch (error) {
+    console.error("Error fetching completed requests:", error);
     return res.status(500).json({
       success: false,
       message: "Internal Server Error",
