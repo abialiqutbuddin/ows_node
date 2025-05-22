@@ -36,7 +36,12 @@ const mysql = require('mysql2/promise');
 
 const API_VERSION = "1.3.0"; // Change this based on your version
 
-const PORT = 3001;
+const PORT = 3005;
+
+app.use(
+  '/pdfs',
+  express.static(path.join(__dirname, 'uploads', 'application_pdf'))
+);
 
 //Load SSL Certificates
 // const options = {
@@ -1955,4 +1960,88 @@ app.use('/testing', express.static(path.join(__dirname, 'testing')));
 // SPA fallback to index.html for client-side routing
 app.get('/testing/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'testing', 'index.html'));
+});
+
+app.post('/api/submit-future-form', upload.none(), async (req, res) => {
+  const formData = req.body;
+  console.log(formData);
+  try {
+    const response = await axios.post(
+      'https://paktalim.com/admin/ws_app/FutureForm?access_key=9a883f01f08afef40186b935037d67d19232d56c&username=40459629',
+      new URLSearchParams(formData),
+      {
+        headers: {
+          'Authorization': 'Basic cGFrdGFsaW06RzcjdkQhOXBaJng=',
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Cookie': 'DHEducationAdmin=78b8b879e0fdc7d408803363d179c945',
+        },
+      }
+    );
+
+    res.status(200).json({ message: 'Form submitted successfully', data: response.data });
+  } catch (error) {
+    res.status(500).json({ error: error.message, details: error.response?.data });
+  }
+});
+
+const upload2 = multer({ storage: multer.memoryStorage() });
+
+app.post('/api/upload-application-pdf', upload2.single('file'), (req, res) => {
+  try {
+    const { its, reqId } = req.body;
+    if (!its || !reqId) {
+      return res.status(400).json({ error: 'Missing its or reqId' });
+    }
+    if (!req.file) {
+      return res.status(400).json({ error: 'Missing file upload' });
+    }
+
+    // build directory and filename
+    const targetDir = path.join(__dirname, 'uploads', 'application_pdf');
+    fs.mkdirSync(targetDir, { recursive: true });
+
+    const filename = `${its}_${reqId}.pdf`;
+    const outPath  = path.join(targetDir, filename);
+
+    // write the buffer to disk
+    fs.writeFileSync(outPath, req.file.buffer);
+
+    res.json({
+      message: 'Upload successful',
+      path: `uploads/application_pdf/${filename}`
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// app.use(
+//   '/pdfs',
+//   express.static(path.resolve(__dirname, './uploads/application_pdf'))
+// );
+
+app.post('/api/get-application-pdf', (req, res) => {
+  const { its, reqId } = req.body;
+  if (!its || !reqId) {
+    return res.status(400).json({ error: 'Missing its or reqId in request body' });
+  }
+
+  const filename = `${its}_${reqId}.pdf`;
+  const fullPath = path.join(__dirname, 'uploads', 'application_pdf', filename);
+
+  fs.stat(fullPath, (err, stats) => {
+    if (err || !stats.isFile()) {
+      return res.status(404).json({
+        error: `PDF not found for ITS=${its}, reqId=${reqId}`
+      });
+    }
+
+    // this must match your `app.use('/pdfs', ...)` above
+    const baseUrl = 'https://one-login.attalimiyah.com.pk/ows';
+    const fileUrl = `${baseUrl}/pdfs/${encodeURIComponent(filename)}`;
+
+    res.json({ url: fileUrl });
+  });
 });
