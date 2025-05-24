@@ -36,7 +36,7 @@ const mysql = require('mysql2/promise');
 
 const API_VERSION = "1.3.0"; // Change this based on your version
 
-const PORT = 3005;
+const PORT = 3001;
 
 app.use(
   '/pdfs',
