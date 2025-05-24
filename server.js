@@ -36,7 +36,7 @@ const mysql = require('mysql2/promise');
 
 const API_VERSION = "1.3.0"; // Change this based on your version
 
-const PORT = 3001;
+const PORT = 3002;
 
 app.use(
   '/pdfs',
@@ -364,7 +364,7 @@ app.post(
 
       if (existingApplication) {
         await transaction.rollback();
-        return res.status(200).json({
+        return res.status(202).json({
           success: false,
           message: "An application already exists for this ITS, organization, and year of start.",
         });
@@ -1982,8 +1982,6 @@ function flattenFormData(formData) {
 }
 
 app.post('/api/submit-future-form', upload.none(), async (req, res) => {
-  console.log('Raw body:', req.body);
-
   // Parse `details` from JSON string (if needed)
   try {
     if (typeof req.body.details === 'string') {
@@ -2076,4 +2074,22 @@ app.post('/api/get-application-pdf', (req, res) => {
 
     res.json({ url: fileUrl });
   });
+});
+
+app.get("/api/get-instructions", async (req, res) => {
+  try {
+    const instructions = await OwsCodeFile.findAll({
+      where: { codType: "instructions" },
+      order: [["codGroup", "ASC"], ["GrpSer", "ASC"]],
+      attributes: ["codId", "shortDesc", "longDesc", "GrpSer"],
+    });
+
+    res.json({
+      success: true,
+      data: instructions,
+    });
+  } catch (error) {
+    console.error("Error fetching instructions:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
 });
