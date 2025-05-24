@@ -36,7 +36,7 @@ const mysql = require('mysql2/promise');
 
 const API_VERSION = "1.3.0"; // Change this based on your version
 
-const PORT = 3001;
+const PORT = 3005;
 
 app.use(
   '/pdfs',
@@ -1962,14 +1962,17 @@ app.get('/testing/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'testing', 'index.html'));
 });
 
+app.use(express.urlencoded({ extended: true }));
+
 app.post('/api/submit-future-form', upload.none(), async (req, res) => {
+  console.log('Raw body:', req.body); // should now log actual form fields
   const formData = req.body;
-  console.log(formData);
+
   try {
     const response = await axios.post(
       'https://paktalim.com/admin/ws_app/FutureForm?access_key=9a883f01f08afef40186b935037d67d19232d56c&username=40459629',
       new URLSearchParams(formData),
-      {
+      { 
         headers: {
           'Authorization': 'Basic cGFrdGFsaW06RzcjdkQhOXBaJng=',
           'Content-Type': 'application/x-www-form-urlencoded',
