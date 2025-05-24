@@ -1964,15 +1964,43 @@ app.get('/testing/*', (req, res) => {
 
 app.use(express.urlencoded({ extended: true }));
 
+
+
+function flattenFormData(formData) {
+  const flatData = { ...formData };
+
+  if (Array.isArray(formData.details)) {
+    formData.details.forEach((item, index) => {
+      for (const key in item) {
+        flatData[`details[${index}][${key}]`] = item[key];
+      }
+    });
+    delete flatData.details;
+  }
+
+  return flatData;
+}
+
 app.post('/api/submit-future-form', upload.none(), async (req, res) => {
-  console.log('Raw body:', req.body); // should now log actual form fields
-  const formData = req.body;
+  console.log('Raw body:', req.body);
+
+  // Parse `details` from JSON string (if needed)
+  try {
+    if (typeof req.body.details === 'string') {
+      req.body.details = JSON.parse(req.body.details);
+    }
+  } catch (e) {
+    console.error('Failed to parse details:', e.message);
+    return res.status(400).json({ error: 'Invalid JSON in `details`' });
+  }
+
+  const formData = flattenFormData(req.body);
 
   try {
     const response = await axios.post(
       'https://paktalim.com/admin/ws_app/FutureForm?access_key=9a883f01f08afef40186b935037d67d19232d56c&username=40459629',
       new URLSearchParams(formData),
-      { 
+      {
         headers: {
           'Authorization': 'Basic cGFrdGFsaW06RzcjdkQhOXBaJng=',
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -1983,6 +2011,7 @@ app.post('/api/submit-future-form', upload.none(), async (req, res) => {
 
     res.status(200).json({ message: 'Form submitted successfully', data: response.data });
   } catch (error) {
+    console.error('Submission error:', error.message);
     res.status(500).json({ error: error.message, details: error.response?.data });
   }
 });
