@@ -1964,9 +1964,6 @@ app.get('/testing/*', (req, res) => {
 
 app.use(express.urlencoded({ extended: true }));
 
-const FormData = require('form-data');
-
-
 function flattenFormData(formData) {
   const flatData = { ...formData };
 
