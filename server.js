@@ -1457,7 +1457,7 @@ app.get('/api/application/:id', async (req, res) => {
 
 
 app.post('/api/submit-application', async (req, res) => {
-  const { application, repeatables } = req.body;
+  const { application, repeatables, reqId } = req.body;
   const conn = await pool.getConnection();
 
   try {
@@ -1470,6 +1470,13 @@ app.post('/api/submit-application', async (req, res) => {
     );
 
     const appId = result.insertId;
+
+    if (reqId) {
+      await conn.query(
+        `UPDATE owsReqForm SET application_id = ? WHERE reqId = ?`,
+        [appId, reqId]
+      );
+    }
 
     // Insert each repeatable table entries
     for (const [tableKey, entries] of Object.entries(repeatables)) {
