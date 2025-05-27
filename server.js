@@ -1964,6 +1964,7 @@ app.get('/testing/*', (req, res) => {
 
 app.use(express.urlencoded({ extended: true }));
 
+const FormData = require('form-data');
 
 
 function flattenFormData(formData) {
@@ -1982,7 +1983,6 @@ function flattenFormData(formData) {
 }
 
 app.post('/api/submit-future-form', upload.none(), async (req, res) => {
-  // Parse `details` from JSON string (if needed)
   try {
     if (typeof req.body.details === 'string') {
       req.body.details = JSON.parse(req.body.details);
@@ -1992,16 +1992,21 @@ app.post('/api/submit-future-form', upload.none(), async (req, res) => {
     return res.status(400).json({ error: 'Invalid JSON in `details`' });
   }
 
-  const formData = flattenFormData(req.body);
+  const flatData = flattenFormData(req.body);
+  const form = new FormData();
+
+  for (const key in flatData) {
+    form.append(key, flatData[key]);
+  }
 
   try {
     const response = await axios.post(
       'https://paktalim.com/admin/ws_app/FutureForm?access_key=9a883f01f08afef40186b935037d67d19232d56c&username=40459629',
-      new URLSearchParams(formData),
+      form,
       {
         headers: {
+          ...form.getHeaders(),
           'Authorization': 'Basic cGFrdGFsaW06RzcjdkQhOXBaJng=',
-          'Content-Type': 'application/x-www-form-urlencoded',
           'Cookie': 'DHEducationAdmin=78b8b879e0fdc7d408803363d179c945',
         },
       }
