@@ -2040,12 +2040,11 @@ app.post('/api/upload-application-pdf', upload2.single('file'), async (req, res)
     fs.mkdirSync(targetDir, { recursive: true });
 
     const filename = `${its}_${reqId}.pdf`;
+    const fileUrl = `https://one-login.attalimiyah.com.pk/ows/pdfs/${filename}`; // .pdf is already here
     const outPath  = path.join(targetDir, filename);
 
     // write the buffer to disk
     fs.writeFileSync(outPath, req.file.buffer);
-
-    const fileUrl = `https://one-login.attalimiyah.com.pk/ows/pdfs/${encodeURIComponent(filename)}`;
 
     // 🔄 Update pdf_url in owsReqForm
     const updated = await OwsReqForm.update(
