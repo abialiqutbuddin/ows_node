@@ -169,7 +169,11 @@ const OwsReqForm = sequelize.define("owsReqForm", {
   applyDate: {
     type: DataTypes.DATEONLY,
     allowNull: true
-  }
+  },
+  pdf_url: {
+    type: DataTypes.STRING(500),
+    allowNull: true
+  },
 }, {
   tableName: "owsReqForm",
   timestamps: true,

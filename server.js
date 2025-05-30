@@ -2025,7 +2025,7 @@ app.post('/api/submit-future-form', upload.none(), async (req, res) => {
 
 const upload2 = multer({ storage: multer.memoryStorage() });
 
-app.post('/api/upload-application-pdf', upload2.single('file'), (req, res) => {
+app.post('/api/upload-application-pdf', upload2.single('file'), async (req, res) => {
   try {
     const { its, reqId } = req.body;
     if (!its || !reqId) {
@@ -2044,6 +2044,18 @@ app.post('/api/upload-application-pdf', upload2.single('file'), (req, res) => {
 
     // write the buffer to disk
     fs.writeFileSync(outPath, req.file.buffer);
+
+    const fileUrl = `https://one-login.attalimiyah.com.pk/ows/pdfs/${encodeURIComponent(filename)}`;
+
+    // 🔄 Update pdf_url in owsReqForm
+    const updated = await OwsReqForm.update(
+      { pdf_url: fileUrl },
+      { where: { reqId } }
+    );
+
+    if (updated[0] === 0) {
+      return res.status(404).json({ error: 'No matching request found to update PDF URL' });
+    }
 
     res.json({
       message: 'Upload successful',
