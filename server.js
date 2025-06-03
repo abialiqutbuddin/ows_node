@@ -2220,7 +2220,7 @@ app.get('/api/objects', async (req, res) => {
 app.get('/api/role-assignments', async (req, res) => {
   try {
     const [rows] = await pool.query(`
-      SELECT RId, ObjID, o.ObjTitle
+      SELECT r.RId, r.ObjID, o.ObjTitle
       FROM owsadmRoleMas r
       LEFT JOIN owsadmObjMas o ON r.ObjID = o.ObjID
     `);
@@ -2230,7 +2230,7 @@ app.get('/api/role-assignments', async (req, res) => {
       if (!grouped[row.RId]) grouped[row.RId] = [];
       grouped[row.RId].push({
         id: row.ObjID,
-        title: row.ObjTitle ?? '' // prevent nulls
+        title: row.ObjTitle ?? ''
       });
     }
 
