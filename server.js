@@ -34,7 +34,7 @@ const xml2js = require('xml2js');
 app.use(bodyParser.json());
 const mysql = require('mysql2/promise');
 
-const API_VERSION = "1.3.0"; // Change this based on your version
+const API_VERSION = "1.4.0"; // Change this based on your version
 
 const PORT = 3001;
 
@@ -2048,9 +2048,9 @@ app.post('/api/upload-application-pdf', upload2.single('file'), async (req, res)
 
     // 🔄 Update pdf_url in owsReqForm
     const updated = await OwsReqForm.update(
-      { pdf_url: fileUrl },
-      { where: { reqId } }
-    );
+  { pdf_url: fileUrl },
+  { where: { application_id: reqId } }
+);
 
     if (updated[0] === 0) {
       return res.status(404).json({ error: 'No matching request found to update PDF URL' });
@@ -2111,5 +2111,94 @@ app.get("/api/get-instructions", async (req, res) => {
   } catch (error) {
     console.error("Error fetching instructions:", error);
     res.status(500).json({ success: false, message: "Server error" });
+  }
+});
+
+///---------
+
+app.post('/api/login-v2', async (req, res) => {
+  const { login, password } = req.body;
+  if (!login || !password) {
+    return res.status(400).json({ error: 'login & password required' });
+  }
+
+  try {
+    // 1) Look up user by UsrLogin
+    const [userRows] = await pool.query(
+      `SELECT Id, UsrID, UsrName, UsrLogin, UsrPwd, UsrMobile, UsrMohalla, UsrDesig
+       FROM owsadmUsrProfil
+       WHERE UsrLogin = ?
+       LIMIT 1`,
+      [login]
+    );
+    if (userRows.length === 0) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const user = userRows[0];
+    // 2) Compare password (plaintext). In production: bcrypt.compare(...)
+    if (user.UsrPwd !== password) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const usrID = user.UsrID;
+
+    // 3) Fetch all roles assigned to this user, join in object + company
+    const [permRows] = await pool.query(
+      `SELECT
+         r.RId                AS roleID,
+         r.RTitle             AS roleTitle,
+         r.Add, r.Edit, r.Delete, r.View, r.Cancel, r.Close, r.\`Update\`,
+         o.ObjID              AS objID,
+         o.ObjTitle           AS objTitle,
+         c.Comp               AS compID,
+         c.CompName           AS compName,
+         c.CompAddress        AS compAddress,
+         c.ContactPerson      AS contactPerson,
+         c.ContactMobile      AS contactMobile,
+         c.cEmail             AS cEmail
+       FROM owsadmUsrRole ur
+       JOIN owsadmRoleMas r    ON ur.RID = r.RId
+       JOIN owsadmObjMas o     ON r.ObjID = o.ObjID
+       JOIN owsadmComp c       ON ur.CompID = c.Comp
+       WHERE ur.UsrID = ?`,
+      [usrID]
+    );
+
+    // 4) Build response
+    const userInfo = {
+      usrID: user.UsrID,
+      usrName: user.UsrName,
+      usrMobile: user.UsrMobile,
+      usrMohalla: user.UsrMohalla,
+      usrDesig: user.UsrDesig,
+    };
+
+    const permissions = permRows.map((row) => ({
+      objID: row.objID,
+      objTitle: row.objTitle,
+      roleID: row.roleID,
+      roleTitle: row.roleTitle,
+      canAdd: row.Add === 1,
+      canEdit: row.Edit === 1,
+      canDelete: row.Delete === 1,
+      canView: row.View === 1,
+      canCancel: row.Cancel === 1,
+      canClose: row.Close === 1,
+      canUpdate: row.Update === 1,
+      company: {
+        compID:        row.compID,
+        compName:      row.compName,
+        compAddress:   row.compAddress,
+        contactPerson: row.contactPerson,
+        contactMobile: row.contactMobile,
+        cEmail:        row.cEmail,
+      }
+    }));
+
+    return res.json({ user: userInfo, permissions });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: 'Server error' });
   }
 });
