@@ -2244,29 +2244,51 @@ app.get('/api/role-assignments', async (req, res) => {
   }
 });
 
-// POST /assign-role
+///POST ASSIGNEMNT
 app.post('/api/assign-role', async (req, res) => {
   const { RId, RTitle, assignments } = req.body;
 
   try {
-    await pool.query('DELETE FROM owsadmRoleMas WHERE RId = ?', [RId]);
+    // 1. Get current assigned ObjIDs for this RId
+    const [existingRows] = await pool.query(
+      'SELECT ObjID FROM owsadmRoleMas WHERE RId = ?',
+      [RId]
+    );
+    const existingObjIDs = existingRows.map(row => row.ObjID);
 
-    for (const obj of assignments) {
+    // 2. Extract ObjIDs from incoming request
+    const incomingObjIDs = assignments.map(a => a.ObjID);
+
+    // 3. Determine which ObjIDs to DELETE
+    const toDelete = existingObjIDs.filter(id => !incomingObjIDs.includes(id));
+    for (const objId of toDelete) {
+      await pool.query('DELETE FROM owsadmRoleMas WHERE RId = ? AND ObjID = ?', [RId, objId]);
+    }
+
+    // 4. Determine which ObjIDs to INSERT
+    const toInsert = assignments.filter(a => !existingObjIDs.includes(a.ObjID));
+
+    for (const obj of toInsert) {
       const {
         ObjID, RSNo = 1, Add = 1, Edit = 1, View = 1,
         Delete = 1, Cancel = 1, Close = 1, Update = 1
       } = obj;
 
       await pool.query(`
-  INSERT INTO owsadmRoleMas 
-  (RId, RTitle, RSNo, ObjID, \`Add\`, \`Edit\`, \`View\`, \`Delete\`, \`Cancel\`, \`Close\`, \`Update\`)
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-`, [RId, RTitle, RSNo, ObjID, Add, Edit, View, Delete, Cancel, Close, Update]);
+        INSERT INTO owsadmRoleMas 
+        (RId, RTitle, RSNo, ObjID, \`Add\`, \`Edit\`, \`View\`, \`Delete\`, \`Cancel\`, \`Close\`, \`Update\`)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [RId, RTitle, RSNo, ObjID, Add, Edit, View, Delete, Cancel, Close, Update]
+      );
     }
 
-    res.json({ success: true, count: assignments.length });
+    res.json({
+      success: true,
+      deleted: toDelete.length,
+      inserted: toInsert.length
+    });
   } catch (err) {
-    console.error(err);
+    console.error('Assign role failed:', err);
     res.status(500).json({ error: 'Failed to assign role' });
   }
 });
