@@ -2202,3 +2202,64 @@ app.post('/api/login-v2', async (req, res) => {
     return res.status(500).json({ error: 'Server error' });
   }
 });
+
+///-----------------------
+// GET /roles
+app.get('/api/roles', async (req, res) => {
+  const [rows] = await pool.query('SELECT Id, RId, RTitle FROM owsadmRoleMas GROUP BY RId');
+  res.json(rows);
+});
+
+// GET /objects
+app.get('/api/objects', async (req, res) => {
+  const [rows] = await pool.query('SELECT Id, ObjID, ObjTitle FROM owsadmObjMas');
+  res.json(rows);
+});
+
+// GET /role-assignments
+app.get('/api/role-assignments', async (req, res) => {
+  const [rows] = await pool.query(`
+    SELECT RId, ObjID, o.ObjTitle
+    FROM owsadmRoleMas r
+    JOIN owsadmObjMas o ON r.ObjID = o.ObjID
+  `);
+
+  const grouped = {};
+  for (const row of rows) {
+    if (!grouped[row.RId]) grouped[row.RId] = [];
+    grouped[row.RId].push({
+      id: row.ObjID,
+      title: row.ObjTitle
+    });
+  }
+
+  res.json(grouped);
+});
+
+// POST /assign-role
+app.post('/api/assign-role', async (req, res) => {
+  const { RId, RTitle, assignments } = req.body; // assignments = [{ ObjID, Add, Edit, View, ... }]
+
+  try {
+    // Delete previous role assignments
+    await pool.query('DELETE FROM owsadmRoleMas WHERE RId = ?', [RId]);
+
+    // Insert new ones
+    for (const obj of assignments) {
+      const {
+        ObjID, RSNo = 1, Add = 1, Edit = 1, View = 1, Delete = 1,
+        Cancel = 1, Close = 1, Update = 1
+      } = obj;
+
+      await pool.query(`
+        INSERT INTO owsadmRoleMas (RId, RTitle, RSNo, ObjID, Add, Edit, View, Delete, Cancel, Close, Update)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `, [RId, RTitle, RSNo, ObjID, Add, Edit, View, Delete, Cancel, Close, Update]);
+    }
+
+    res.json({ success: true, count: assignments.length });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to assign role' });
+  }
+});
