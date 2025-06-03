@@ -2206,13 +2206,19 @@ app.post('/api/login-v2', async (req, res) => {
 ///-----------------------
 // GET /roles
 app.get('/api/roles', async (req, res) => {
-  const [rows] = await pool.query('SELECT Id, RId, RTitle FROM owsadmRoleMas GROUP BY RId');
+  const [rows] = await pool.query(`
+    SELECT MIN(Id) as Id, RId, RTitle
+    FROM owsadmRoleMas
+    GROUP BY RId, RTitle
+  `);
   res.json(rows);
 });
 
 // GET /objects
 app.get('/api/objects', async (req, res) => {
-  const [rows] = await pool.query('SELECT Id, ObjID, ObjTitle FROM owsadmObjMas');
+  const [rows] = await pool.query(`
+    SELECT ObjID AS id, ObjTitle AS title FROM owsadmObjMas
+  `);
   res.json(rows);
 });
 
@@ -2220,7 +2226,7 @@ app.get('/api/objects', async (req, res) => {
 app.get('/api/role-assignments', async (req, res) => {
   try {
     const [rows] = await pool.query(`
-      SELECT r.RId, r.ObjID, o.ObjTitle
+      SELECT r.RId, r.ObjID AS id, o.ObjTitle AS title
       FROM owsadmRoleMas r
       LEFT JOIN owsadmObjMas o ON r.ObjID = o.ObjID
     `);
@@ -2228,10 +2234,7 @@ app.get('/api/role-assignments', async (req, res) => {
     const grouped = {};
     for (const row of rows) {
       if (!grouped[row.RId]) grouped[row.RId] = [];
-      grouped[row.RId].push({
-        id: row.ObjID,
-        title: row.ObjTitle ?? ''
-      });
+      grouped[row.RId].push({ id: row.id, title: row.title ?? '' });
     }
 
     res.json(grouped);
@@ -2243,21 +2246,20 @@ app.get('/api/role-assignments', async (req, res) => {
 
 // POST /assign-role
 app.post('/api/assign-role', async (req, res) => {
-  const { RId, RTitle, assignments } = req.body; // assignments = [{ ObjID, Add, Edit, View, ... }]
+  const { RId, RTitle, assignments } = req.body;
 
   try {
-    // Delete previous role assignments
     await pool.query('DELETE FROM owsadmRoleMas WHERE RId = ?', [RId]);
 
-    // Insert new ones
     for (const obj of assignments) {
       const {
-        ObjID, RSNo = 1, Add = 1, Edit = 1, View = 1, Delete = 1,
-        Cancel = 1, Close = 1, Update = 1
+        ObjID, RSNo = 1, Add = 1, Edit = 1, View = 1,
+        Delete = 1, Cancel = 1, Close = 1, Update = 1
       } = obj;
 
       await pool.query(`
-        INSERT INTO owsadmRoleMas (RId, RTitle, RSNo, ObjID, Add, Edit, View, Delete, Cancel, Close, Update)
+        INSERT INTO owsadmRoleMas 
+        (RId, RTitle, RSNo, ObjID, Add, Edit, View, Delete, Cancel, Close, Update)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `, [RId, RTitle, RSNo, ObjID, Add, Edit, View, Delete, Cancel, Close, Update]);
     }
