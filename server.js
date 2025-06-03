@@ -2041,16 +2041,16 @@ app.post('/api/upload-application-pdf', upload2.single('file'), async (req, res)
 
     const filename = `${its}_${reqId}.pdf`;
     const fileUrl = `https://one-login.attalimiyah.com.pk/ows/pdfs/${filename}`; // .pdf is already here
-    const outPath  = path.join(targetDir, filename);
+    const outPath = path.join(targetDir, filename);
 
     // write the buffer to disk
     fs.writeFileSync(outPath, req.file.buffer);
 
     // 🔄 Update pdf_url in owsReqForm
     const updated = await OwsReqForm.update(
-  { pdf_url: fileUrl },
-  { where: { application_id: reqId } }
-);
+      { pdf_url: fileUrl },
+      { where: { application_id: reqId } }
+    );
 
     if (updated[0] === 0) {
       return res.status(404).json({ error: 'No matching request found to update PDF URL' });
@@ -2187,12 +2187,12 @@ app.post('/api/login-v2', async (req, res) => {
       canClose: row.Close === 1,
       canUpdate: row.Update === 1,
       company: {
-        compID:        row.compID,
-        compName:      row.compName,
-        compAddress:   row.compAddress,
+        compID: row.compID,
+        compName: row.compName,
+        compAddress: row.compAddress,
         contactPerson: row.contactPerson,
         contactMobile: row.contactMobile,
-        cEmail:        row.cEmail,
+        cEmail: row.cEmail,
       }
     }));
 
@@ -2258,10 +2258,10 @@ app.post('/api/assign-role', async (req, res) => {
       } = obj;
 
       await pool.query(`
-        INSERT INTO owsadmRoleMas 
-        (RId, RTitle, RSNo, ObjID, Add, Edit, View, Delete, Cancel, Close, Update)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `, [RId, RTitle, RSNo, ObjID, Add, Edit, View, Delete, Cancel, Close, Update]);
+  INSERT INTO owsadmRoleMas 
+  (RId, RTitle, RSNo, ObjID, \`Add\`, \`Edit\`, \`View\`, \`Delete\`, \`Cancel\`, \`Close\`, \`Update\`)
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+`, [RId, RTitle, RSNo, ObjID, Add, Edit, View, Delete, Cancel, Close, Update]);
     }
 
     res.json({ success: true, count: assignments.length });
