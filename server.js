@@ -2218,22 +2218,27 @@ app.get('/api/objects', async (req, res) => {
 
 // GET /role-assignments
 app.get('/api/role-assignments', async (req, res) => {
-  const [rows] = await pool.query(`
-    SELECT RId, ObjID, o.ObjTitle
-    FROM owsadmRoleMas r
-    JOIN owsadmObjMas o ON r.ObjID = o.ObjID
-  `);
+  try {
+    const [rows] = await pool.query(`
+      SELECT RId, ObjID, o.ObjTitle
+      FROM owsadmRoleMas r
+      LEFT JOIN owsadmObjMas o ON r.ObjID = o.ObjID
+    `);
 
-  const grouped = {};
-  for (const row of rows) {
-    if (!grouped[row.RId]) grouped[row.RId] = [];
-    grouped[row.RId].push({
-      id: row.ObjID,
-      title: row.ObjTitle
-    });
+    const grouped = {};
+    for (const row of rows) {
+      if (!grouped[row.RId]) grouped[row.RId] = [];
+      grouped[row.RId].push({
+        id: row.ObjID,
+        title: row.ObjTitle ?? '' // prevent nulls
+      });
+    }
+
+    res.json(grouped);
+  } catch (err) {
+    console.error("Failed /api/role-assignments:", err);
+    res.status(500).json({ error: 'Query failed', details: err.message });
   }
-
-  res.json(grouped);
 });
 
 // POST /assign-role
