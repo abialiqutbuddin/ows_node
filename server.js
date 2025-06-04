@@ -33,6 +33,7 @@ app.use(cors());
 const xml2js = require('xml2js');
 app.use(bodyParser.json());
 const mysql = require('mysql2/promise');
+const nodemailer = require("nodemailer");
 
 const API_VERSION = "1.4.0"; // Change this based on your version
 
