@@ -546,7 +546,7 @@ app.post("/users-by-mohalla", async (req, res) => {
 const validStatuses = [
   "Request Submitted",
   "Request Received",
-  "Partial fill",
+  "Partially filled",
   "Reupload",
   "Resubmitted",
   "Rejected by Evaluator",
