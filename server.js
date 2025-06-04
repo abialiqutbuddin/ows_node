@@ -544,17 +544,16 @@ app.post("/users-by-mohalla", async (req, res) => {
 });
 
 const validStatuses = [
-  "Request Generated",
+  "Request Submitted",
   "Request Received",
-  "Request Denied",
-  "Request Pending",
-  "Request Approved",
-  "Application Applied",
-  "Application Denied",
-  "Application Pending",
-  "Application Approved",
-  "Payment in Process",
-  "First Payment Done"
+  "Partial fill",
+  "Reupload",
+  "Resubmitted",
+  "Rejected by Evaluator",
+  "Sent for Approval",
+  "Request Rejected",
+  "In-Hold",
+  "Approved",
 ];
 
 app.get('/api/get-all-status', (req, res) => {
