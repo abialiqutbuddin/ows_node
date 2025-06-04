@@ -118,6 +118,14 @@ app.post("/get-profile", async (req, res) => {
     const url = `https://paktalim.com/admin/ws_app/GetProfileEducation/${its_id}?access_key=8803c22b50548c9d5b1401e3ab5854812c4dcacb&username=40459629&password=1107865253`;
     const response = await axios.get(url);
 
+     await transporter.sendMail({
+        from: '"OWS" <abialigadi@gmail.com>',
+        //to: "alaqmar11@gmail.com",
+        to: "abialigadi@gmail.com",
+        subject: "Profile Update Successful",
+        text: `The profile update was successful.\n\nResponse: ${JSON.stringify(response.data)}`
+      });
+
     return res.status(200).json(response.data);
 
   } catch (error) {
@@ -1004,6 +1012,14 @@ app.post('/get-student-documents', async (req, res) => {
   }
 });
 
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'abialigadi@gmail.com',
+    pass: 'wxyo ylqm hrok vmxx'  // use App Password if 2FA is enabled
+  }
+});
+
 app.post("/update-paktalim-profile", upload_paktalim.none(), async (req, res) => {
   try {
     const {
@@ -1055,6 +1071,17 @@ app.post("/update-paktalim-profile", upload_paktalim.none(), async (req, res) =>
         "Content-Type": "application/x-www-form-urlencoded"
       }
     });
+
+    // ✅ Only email if response.data contains "success"
+    if (response.data?.success === true || response.data?.status === "success") {
+      await transporter.sendMail({
+        from: '"OWS" <abialigadi@gmail.com>',
+        //to: "alaqmar11@gmail.com",
+        to: "abialigadi@gmail.com",
+        subject: "Profile Update Successful",
+        text: `The profile update was successful.\n\nResponse: ${JSON.stringify(response.data)}`
+      });
+    }
 
     // Send the API response back to the client
     res.json(response.data);
