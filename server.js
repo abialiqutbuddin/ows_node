@@ -119,13 +119,13 @@ app.post("/get-profile", async (req, res) => {
     const url = `https://paktalim.com/admin/ws_app/GetProfileEducation/${its_id}?access_key=8803c22b50548c9d5b1401e3ab5854812c4dcacb&username=40459629&password=1107865253`;
     const response = await axios.get(url);
 
-     await transporter.sendMail({
-        from: '"OWS" <abialigadi@gmail.com>',
-        //to: "alaqmar11@gmail.com",
-        to: "abialigadi@gmail.com",
-        subject: "Profile Update Successful",
-        text: `The profile update was successful.\n\nResponse: ${JSON.stringify(response.data)}`
-      });
+    //  await transporter.sendMail({
+    //     from: '"OWS" <abialigadi@gmail.com>',
+    //     //to: "alaqmar11@gmail.com",
+    //     to: "abialigadi@gmail.com",
+    //     subject: "Profile Update Successful",
+    //     text: `The profile update was successful.\n\nResponse: ${JSON.stringify(response.data)}`
+    //   });
 
     return res.status(200).json(response.data);
 
@@ -1077,10 +1077,10 @@ app.post("/update-paktalim-profile", upload_paktalim.none(), async (req, res) =>
     if (response.data?.success === true || response.data?.status === "success") {
       await transporter.sendMail({
         from: '"OWS" <abialigadi@gmail.com>',
-        //to: "alaqmar11@gmail.com",
-        to: "abialigadi@gmail.com",
+        to: "alaqmar11@gmail.com",
+        //to: "abialigadi@gmail.com",
         subject: "Profile Update Successful",
-        text: `The profile update was successful.\n\nResponse: ${JSON.stringify(response.data)}`
+        text: `Request to check given ITS # ${its_id}, profile update done by himself/family and if its completed then mark Status 'Complete'.`
       });
     }
 
