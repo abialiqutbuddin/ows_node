@@ -2319,3 +2319,239 @@ app.post('/api/assign-role', async (req, res) => {
     res.status(500).json({ error: 'Failed to assign role' });
   }
 });
+
+
+///---- User Profile & Assign Role
+
+//Get User Profile
+app.get('/api/get-user-profile', async (req, res) => {
+  try {
+    const [rows] = await pool.query('SELECT * FROM owsadmUsrProfil');
+    res.json(rows);
+  } catch (err) {
+    console.error('Fetch users error:', err);
+    res.status(500).send({ error: 'Failed to fetch users' });
+  }
+
+});
+
+//Create User Profile
+app.post('/api/create-user-profile', async (req, res) => {
+  const {
+    UsrID, UsrITS, UsrName, UsrLogin, UsrPwd,
+    UsrMobile, UsrMohalla, UsrDesig, CoordinatorMohalla,
+    CreatedBy
+  } = req.body;
+
+  const now = new Date();
+
+  try {
+
+    const [rows] = await pool.query(`SELECT MAX(UsrID) AS maxId FROM owsadmUsrProfil`);
+    const nextUsrID = (rows[0].maxId || 0) + 1;
+
+    await pool.query(`
+      INSERT INTO owsadmUsrProfil (
+        UsrID, UsrITS, UsrName, UsrLogin, UsrPwd,
+        UsrMobile, UsrMohalla, UsrDesig, CoordinatorMohalla,
+        CrBy, CrOn, EditBy, EditOn
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `, [
+      nextUsrID, UsrITS, UsrName, UsrLogin, UsrPwd,
+      UsrMobile, UsrMohalla,
+      UsrDesig || null,            // allow null
+      CoordinatorMohalla || null, // allow null
+      CreatedBy, now, CreatedBy, now,
+    ]);
+
+    res.send({ success: true });
+  } catch (err) {
+    console.error('Create user error:', err);
+    res.status(500).send({ success: false });
+  }
+});
+
+// Assign user a role
+app.post('/api/assign-user-role', async (req, res) => {
+  const {
+    UsrID, RID, CompID,
+    URCrBy
+  } = req.body;
+
+  const now = new Date();
+
+  try {
+    await pool.query(`
+      INSERT INTO owsadmUsrRole (
+        SysTag, UsrID, RID, CompID,
+        URCrBy, URCrOn, UREditBy, UREditOn
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `, [
+      'ows', UsrID, RID, CompID,
+      URCrBy, now, URCrBy, now,
+    ]);
+
+    res.send({ success: true });
+  } catch (err) {
+    console.error('Assign role error:', err);
+    res.status(500).send({ success: false });
+  }
+});
+
+// GET /api/companies
+app.get('/api/get-companies', async (req, res) => {
+  try {
+    const [rows] = await pool.query(`
+      SELECT
+        Comp AS compID,
+        CompName AS compName,
+        CompAddress AS compAddress,
+        ContactPerson AS contactPerson,
+        ContactMobile AS contactMobile,
+        cEmail AS cEmail
+      FROM owsadmComp
+      ORDER BY CompName ASC
+    `);
+    res.json(rows);
+  } catch (err) {
+    console.error('Error fetching companies:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.get('/api/users/:usrId', async (req, res) => {
+  const { usrId } = req.params;
+  try {
+    // 1. Profile
+    const [[profile]] = await pool.query(
+      `SELECT 
+         u.UsrID, u.UsrITS, u.UsrName, u.UsrLogin, u.UsrMobile,
+         u.UsrMohalla, u.UsrDesig, u.CoordinatorMohalla,
+         u.CrBy AS createdBy, u.CrOn AS createdOn,
+         u.EditBy AS editedBy, u.EditOn AS editedOn
+       FROM owsadmUsrProfil u
+       WHERE u.UsrID = ?`,
+      [usrId]
+    );
+    if (!profile) return res.status(404).json({ error: 'User not found' });
+
+    // 2. Role & company assignment
+    const [[assignment]] = await pool.query(
+      `SELECT r.RID AS roleId, rm.RTitle AS roleTitle,
+              c.Comp AS compId, c.CompName AS compName
+       FROM owsadmUsrRole r
+       LEFT JOIN owsadmRoleMas rm ON r.RID = rm.RId
+       LEFT JOIN owsadmComp c ON r.CompID = c.Comp
+       WHERE r.UsrID = ?`,
+      [usrId]
+    );
+
+    res.json({ profile, assignment: assignment || null });
+  } catch (err) {
+    console.error('Fetch single user error:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// PUT /api/users/:usrId
+app.put('/api/users/:usrId', async (req, res) => {
+  const { usrId } = req.params;
+  const {
+    UsrITS, UsrName, UsrLogin, UsrPwd,
+    UsrMobile, UsrMohalla, UsrDesig, CoordinatorMohalla,
+    EditedBy
+  } = req.body;
+
+  const now = new Date();
+  try {
+    // If password is present, hash it
+    let pwdClause = '', params = [];
+    if (UsrPwd) {
+      const hash = await bcrypt.hash(UsrPwd, 12);
+      pwdClause = ', UsrPwd = ?';
+      params.push(hash);
+    }
+
+    // Build and run UPDATE
+    const sql = `
+      UPDATE owsadmUsrProfil
+      SET UsrITS = ?, UsrName = ?, UsrLogin = ?${pwdClause},
+          UsrMobile = ?, UsrMohalla = ?, UsrDesig = ?,
+          CoordinatorMohalla = ?, EditBy = ?, EditOn = ?
+      WHERE UsrID = ?
+    `;
+    params = [
+      UsrITS, UsrName, UsrLogin,
+      ...params,
+      UsrMobile, UsrMohalla, UsrDesig || null,
+      CoordinatorMohalla || null,
+      EditedBy, now,
+      usrId
+    ];
+
+    await pool.query(sql, params);
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Update user profile error:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// PUT /api/users/:usrId/role
+app.put('/api/users/:usrId/role', async (req, res) => {
+  const { usrId } = req.params;
+  const { RID, CompID, EditedBy } = req.body;
+  const now = new Date();
+
+  try {
+    // Check if an assignment exists
+    const [[existing]] = await pool.query(
+      `SELECT Id FROM owsadmUsrRole WHERE UsrID = ?`,
+      [usrId]
+    );
+
+    if (existing) {
+      // Update
+      await pool.query(
+        `UPDATE owsadmUsrRole
+         SET RID = ?, CompID = ?, UREditBy = ?, UREditOn = ?
+         WHERE UsrID = ?`,
+        [RID, CompID || null, EditedBy, now, usrId]
+      );
+    } else {
+      // Insert fresh
+      await pool.query(
+        `INSERT INTO owsadmUsrRole
+         (SysTag, UsrID, RID, CompID, URCrBy, URCrOn, UREditBy, UREditOn)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        ['ows', usrId, RID, CompID || null, EditedBy, now, EditedBy, now]
+      );
+    }
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Change user role error:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// DELETE /api/users/:usrId
+app.delete('/api/users/:usrId', async (req, res) => {
+  const { usrId } = req.params;
+  try {
+    // Delete role first (foreign key safety)
+    await pool.query(
+      `DELETE FROM owsadmUsrRole WHERE UsrID = ?`,
+      [usrId]
+    );
+    // Then profile
+    await pool.query(
+      `DELETE FROM owsadmUsrProfil WHERE UsrID = ?`,
+      [usrId]
+    );
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Delete user error:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
