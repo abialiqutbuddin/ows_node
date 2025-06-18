@@ -2571,7 +2571,7 @@ app.get('/users-by-role-company', async (req, res) => {
   `;
 
   try {
-    const [rows] = await db.execute(query, [compId, roleId]);
+    const [rows] = await pool.execute(query, [compId, roleId]);
     res.json(rows);
   } catch (err) {
     console.error('Error fetching users:', err);
