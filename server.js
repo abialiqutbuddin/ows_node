@@ -2645,6 +2645,8 @@ app.post('/update-assigned', async (req, res) => {
     //   assignedOn: new Date(),
     // });
 
+    console.log('Assignment updated:', { reqId, assignedTo, assignedBy });
+
     res.status(200).json({ message: 'Assignment updated and logged.' });
   } catch (error) {
     console.error('Error updating assignment:', error);
