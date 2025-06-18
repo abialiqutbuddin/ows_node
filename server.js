@@ -2556,8 +2556,8 @@ app.delete('/api/users/:usrId', async (req, res) => {
   }
 });
 
-app.get('/users-by-role-company', async (req, res) => {
-  const { compId, roleId } = req.query;
+app.post('/users-by-role-company', async (req, res) => {
+  const { compId, roleId } = req.body;
 
   if (!compId || !roleId) {
     return res.status(400).json({ message: 'Missing compId or roleId' });
