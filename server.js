@@ -2626,7 +2626,7 @@ app.post('/users-by-role-company', async (req, res) => {
 app.post('/update-assigned', async (req, res) => {
   const { reqId, assignedTo, assignedBy } = req.body;
 
-  if (!reqId || !assignedTo || !assignedBy) {
+  if (!reqId || !assignedTo ) {
     return res.status(400).json({ message: 'Missing required fields' });
   }
 
