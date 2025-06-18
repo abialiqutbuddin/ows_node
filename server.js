@@ -2555,3 +2555,26 @@ app.delete('/api/users/:usrId', async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 });
+
+app.get('/users-by-role-company', async (req, res) => {
+  const { compId, roleId } = req.query;
+
+  if (!compId || !roleId) {
+    return res.status(400).json({ message: 'Missing compId or roleId' });
+  }
+
+  const query = `
+    SELECT up.Id, up.UsrITS, up.UsrName, up.UsrMobile, up.UsrDesig
+    FROM owsadmUsrProfil up
+    JOIN owsadmUsrRole ur ON up.Id = ur.UsrID
+    WHERE ur.CompID = ? AND ur.RID = ?
+  `;
+
+  try {
+    const [rows] = await db.execute(query, [compId, roleId]);
+    res.json(rows);
+  } catch (err) {
+    console.error('Error fetching users:', err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
