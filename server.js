@@ -2622,3 +2622,32 @@ app.post('/users-by-role-company', async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
+
+app.post('/update-assigned', async (req, res) => {
+  const { reqId, assignedTo, assignedBy } = req.body;
+
+  if (!reqId || !assignedTo || !assignedBy) {
+    return res.status(400).json({ message: 'Missing required fields' });
+  }
+
+  try {
+    // Step 1: Update main request
+    await OwsReqForm.update(
+      { assignedTo },
+      { where: { reqId } }
+    );
+
+    // Step 2: Insert into history
+    // await owsReqAssignHistory.create({
+    //   reqId,
+    //   assignedTo,
+    //   assignedBy,
+    //   assignedOn: new Date(),
+    // });
+
+    res.status(200).json({ message: 'Assignment updated and logged.' });
+  } catch (error) {
+    console.error('Error updating assignment:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
