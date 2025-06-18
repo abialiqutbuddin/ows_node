@@ -635,6 +635,43 @@ app.post("/all-requests", async (req, res) => {
   }
 });
 
+app.post("/all-requests-by-organization", async (req, res) => {
+  const { organization } = req.body;
+
+  try {
+    if (!organization) {
+      return res.status(400).json({
+        success: false,
+        message: "Organization is required",
+      });
+    }
+
+    const requests = await OwsReqForm.findAll({
+      where: { organization },
+      order: [['created_at', 'DESC']],
+    });
+
+    if (requests.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No requests found for the given organization",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: requests,
+    });
+
+  } catch (error) {
+    console.error("Error fetching requests:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+});
+
 const { Op } = require('sequelize');
 
 app.get("/api/completed-requests", async (req, res) => {
