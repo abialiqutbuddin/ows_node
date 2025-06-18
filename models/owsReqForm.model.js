@@ -174,6 +174,10 @@ const OwsReqForm = sequelize.define("owsReqForm", {
     type: DataTypes.STRING(500),
     allowNull: true
   },
+  assignedTo: {
+    type: DataTypes.STRING(8),
+    allowNull: true
+  },
 }, {
   tableName: "owsReqForm",
   timestamps: true,
