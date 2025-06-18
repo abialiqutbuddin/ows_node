@@ -2564,7 +2564,7 @@ app.post('/users-by-role-company', async (req, res) => {
   }
 
   const query = `
-    SELECT up.Id, up.UsrITS, up.UsrName, up.UsrMobile, up.UsrDesig
+    SELECT up.Id AS userId, up.UsrITS, up.UsrName
     FROM owsadmUsrProfil up
     JOIN owsadmUsrRole ur ON up.Id = ur.UsrID
     WHERE ur.CompID = ? AND ur.RID = ?
@@ -2572,9 +2572,14 @@ app.post('/users-by-role-company', async (req, res) => {
 
   try {
     const [rows] = await pool.execute(query, [compId, roleId]);
+
+    if (rows.length === 0) {
+      return res.status(404).json({ message: 'No users found for given role and company.' });
+    }
+
     res.json(rows);
-  } catch (err) {
-    console.error('Error fetching users:', err);
+  } catch (error) {
+    console.error('Error fetching users by role & company:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 });
