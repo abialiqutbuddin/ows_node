@@ -2373,6 +2373,8 @@ app.post('/api/create-user-profile', async (req, res) => {
 
 // Assign user a role
 app.post('/api/assign-user-role', async (req, res) => {
+
+  print('Assigning user role:', req.body);
   const {
     UsrID, RID, CompID,
     URCrBy
