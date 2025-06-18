@@ -2568,7 +2568,7 @@ app.post('/users-by-role-company', async (req, res) => {
   const query = `
     SELECT up.Id AS userId, up.UsrITS, up.UsrName
     FROM owsadmUsrProfil up
-    JOIN owsadmUsrRole ur ON up.Id = ur.UsrID
+    JOIN owsadmUsrRole ur ON up.UsrId = ur.UsrID
     WHERE ur.CompID = ? AND ur.RID = ?
   `;
 
