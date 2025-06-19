@@ -1203,7 +1203,8 @@ app.put("/add-guardian", async (req, res) => {
 });
 
 
-import { DECIMAL } from 'sequelize';
+const { DECIMAL } = require('sequelize');
+
 
 app.post('/save-draft', async (req, res) => {
   const { application_id, draft_data } = req.body;
