@@ -1220,19 +1220,24 @@ app.post('/save-draft', async (req, res) => {
   try {
     const existing = await StudentApplicationDraft.findByPk(application_id);
 
-    // 1) Get the model's attributes (new API replacing rawAttributes)
-    const attributes = StudentApplicationDraft.getAttributes();
+  // 1) Grab the model's attributes map
+  const attributes = StudentApplicationDraft.getAttributes();
 
-    // 2) Normalize: for DECIMAL fields, convert '' → null
-    const normalizedData = Object.entries(draft_data).reduce((acc, [key, val]) => {
-      const attr = attributes[key];
-      if (attr && attr.type instanceof DECIMAL && val === '') {
-        acc[key] = null;
-      } else {
-        acc[key] = val;
-      }
-      return acc;
-    }, {});
+  // 2) Build a set of all DECIMAL columns by checking .type.key === 'DECIMAL'
+  const decimalFields = Object.entries(attributes)
+    .filter(([name, def]) => def.type && def.type.key === 'DECIMAL')
+    .map(([name]) => name);
+
+  // 3) Normalize only those fields:
+  //    if key is a decimal column AND val is '', convert to null
+  const normalizedData = Object.entries(draft_data).reduce((acc, [key, val]) => {
+    if (decimalFields.includes(key) && val === '') {
+      acc[key] = null;
+    } else {
+      acc[key] = val;
+    }
+    return acc;
+  }, {});
 
 
     if (existing) {
