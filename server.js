@@ -150,7 +150,7 @@ app.post("/get-family-profile", async (req, res) => {
       return res.status(400).json({ error: "'its_id' must be a non-empty string" });
     }
 
-    const apiUrl = "http://182.188.38.224:8083/crc_live/Q1JDTXVtaW5NZW1iZXJQcm9maWxl";
+    const apiUrl = "http://36.50.12.171:8083/crc_live/Q1JDTXVtaW5NZW1iZXJQcm9maWxl";
 
     const requestBody = {
       user_name: "umoor_talimiyah",
