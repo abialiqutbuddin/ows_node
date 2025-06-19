@@ -1203,6 +1203,8 @@ app.put("/add-guardian", async (req, res) => {
 });
 
 
+import { DECIMAL } from 'sequelize';
+
 app.post('/save-draft', async (req, res) => {
   const { application_id, draft_data } = req.body;
 
@@ -1217,12 +1219,20 @@ app.post('/save-draft', async (req, res) => {
   try {
     const existing = await StudentApplicationDraft.findByPk(application_id);
 
-      // 1) Normalize draft_data: '' → null
-  const normalizedData = Object.fromEntries(
-    Object.entries(draft_data).map(([key, val]) =>
-      val === '' ? [key, null] : [key, val]
-    )
-  );
+    // 1) Get the model's attributes (new API replacing rawAttributes)
+    const attributes = StudentApplicationDraft.getAttributes();
+
+    // 2) Normalize: for DECIMAL fields, convert '' → null
+    const normalizedData = Object.entries(draft_data).reduce((acc, [key, val]) => {
+      const attr = attributes[key];
+      if (attr && attr.type instanceof DECIMAL && val === '') {
+        acc[key] = null;
+      } else {
+        acc[key] = val;
+      }
+      return acc;
+    }, {});
+
 
     if (existing) {
       console.log("🔁 Existing draft found. Updating...");
@@ -2633,7 +2643,7 @@ app.post('/users-by-role-company', async (req, res) => {
 app.post('/update-assigned', async (req, res) => {
   const { reqId, assignedTo, assignedBy } = req.body;
 
-  if (!reqId || !assignedTo ) {
+  if (!reqId || !assignedTo) {
     return res.status(400).json({ message: 'Missing required fields' });
   }
 
