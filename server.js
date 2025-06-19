@@ -1217,6 +1217,13 @@ app.post('/save-draft', async (req, res) => {
   try {
     const existing = await StudentApplicationDraft.findByPk(application_id);
 
+      // 1) Normalize draft_data: '' → null
+  const normalizedData = Object.fromEntries(
+    Object.entries(draft_data).map(([key, val]) =>
+      val === '' ? [key, null] : [key, val]
+    )
+  );
+
     if (existing) {
       console.log("🔁 Existing draft found. Updating...");
       await StudentApplicationDraft.update(draft_data, {
@@ -1227,7 +1234,7 @@ app.post('/save-draft', async (req, res) => {
       console.log("🆕 No existing draft. Creating new entry...");
       await StudentApplicationDraft.create({
         id: application_id,
-        ...draft_data,
+        ...normalizedData,
       });
       console.log("✅ Draft created successfully for:", application_id);
     }
