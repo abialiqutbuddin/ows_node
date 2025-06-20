@@ -10,7 +10,7 @@ const db2 = mysql.createConnection({
 });
 
 const db3 = mysql.createConnection({
-  host: '182.188.38.224',
+  host: '36.50.12.171',
   user: 'aak',
   password: 'Aak@110.',
   port: 3308,
