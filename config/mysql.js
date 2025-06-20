@@ -12,7 +12,7 @@ const db2 = mysql.createConnection({
 const db3 = mysql.createConnection({
   host: '36.50.12.171',
   user: 'aak',
-  password: 'Aak@110.',
+  password: 'Aak@110*',
   port: 3308,
   database: "test_aiut",
 });
@@ -25,16 +25,6 @@ db2.connect(err => {
   }
   console.log("✅ MySQL Connected...");
 });
-
-
-//Database Connection
-// const db2 = mysql.createConnection({
-//     host: "localhost",
-//     port: "3306",
-//     user: "aak",
-//     password: "aak110", 
-//     database: "aiut_records",
-// });
 
 // Connect to the database.
 db3.connect(err => {
