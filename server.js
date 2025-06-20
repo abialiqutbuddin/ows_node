@@ -2742,7 +2742,7 @@ app.post('/latest-remarks', async (req, res) => {
   }
 });
 
-app.post('/status-update', async (req, res) => {
+app.post('/api/status-update', async (req, res) => {
   const { reqId, newStatus, changedByITS, remarks, requiredDocuments = [] } = req.body;
 
   if (!reqId || !newStatus || !changedByITS) {
