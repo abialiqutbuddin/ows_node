@@ -2793,3 +2793,18 @@ app.post('/status-update', async (req, res) => {
     return res.status(500).json({ message: 'Server error' });
   }
 });
+
+// Define associations AFTER models are loaded
+OwsReqFormStatusHistory.hasMany(OwsStatusRequiredDocs, {
+  foreignKey: 'statusHistoryId',
+  as: 'requiredDocuments'
+});
+
+OwsStatusRequiredDocs.belongsTo(OwsReqFormStatusHistory, {
+  foreignKey: 'statusHistoryId'
+});
+
+module.exports = {
+  OwsReqFormStatusHistory,
+  OwsStatusRequiredDocs,
+};
