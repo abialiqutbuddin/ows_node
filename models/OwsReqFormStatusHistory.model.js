@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
+const OwsStatusRequiredDocs = require('../models/OwsStatusRequiredDocs.model.js');
 
 const OwsReqFormStatusHistory = sequelize.define('owsReqFormStatusHistory', {
   id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
