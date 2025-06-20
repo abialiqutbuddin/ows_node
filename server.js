@@ -1898,12 +1898,36 @@ app.get("/api/request-form/:its", async (req, res) => {
 
     const records = await OwsReqForm.findAll({
       where: { ITS: its },
-      order: [['created_at', 'DESC']] // Optional: newest first
+      order: [['created_at', 'DESC']]
     });
+
+    // Map over each record to fetch latest remarks and documents
+    const enrichedData = await Promise.all(
+      records.map(async (record) => {
+        const statusHistory = await OwsReqFormStatusHistory.findOne({
+          where: { reqId: record.reqId },
+        
+          order: [['changedAt', 'DESC']],
+          include: [
+            {
+              model: OwsStatusRequiredDocs,
+              as: 'requiredDocuments',
+              attributes: ['documentName']
+            }
+          ]
+        });
+
+        return {
+          ...record.toJSON(),
+          latestRemarks: statusHistory?.remarks ?? null,
+          requiredDocuments: statusHistory?.requiredDocuments?.map(doc => doc.documentName) ?? []
+        };
+      })
+    );
 
     return res.status(200).json({
       success: true,
-      data: records,
+      data: enrichedData,
     });
   } catch (err) {
     console.error("🚨 Error fetching request form:", err);
@@ -2674,5 +2698,98 @@ app.post('/update-assigned', async (req, res) => {
   } catch (error) {
     console.error('Error updating assignment:', error);
     res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+const OwsReqFormStatusHistory = require('./models/OwsReqFormStatusHistory.model.js');
+const OwsStatusRequiredDocs = require('./models/OwsStatusRequiredDocs.model.js');
+
+// POST /status/latest-remarks
+app.post('/latest-remarks', async (req, res) => {
+  try {
+    const { reqId } = req.body;
+
+    if (!reqId) {
+      return res.status(400).json({ message: 'Missing reqId in request body.' });
+    }
+
+    const latestStatus = await OwsReqFormStatusHistory.findOne({
+      where: { reqId },
+      order: [['changedAt', 'DESC']],
+      include: [
+        {
+          model: OwsStatusRequiredDocs,
+          as: 'requiredDocuments',
+          attributes: ['documentName']
+        }
+      ]
+    });
+
+    if (!latestStatus) {
+      return res.status(404).json({ message: 'No status found for this request.' });
+    }
+
+    res.json({
+      reqId: latestStatus.reqId,
+      currentStatus: latestStatus.newStatus,
+      updatedAt: latestStatus.changedAt,
+      remarks: latestStatus.remarks,
+      requiredDocuments: latestStatus.requiredDocuments.map(doc => doc.documentName)
+    });
+  } catch (err) {
+    console.error('Error fetching latest status:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+app.post('/status-update', async (req, res) => {
+  const { reqId, newStatus, changedByITS, remarks, requiredDocuments = [] } = req.body;
+
+  if (!reqId || !newStatus || !changedByITS) {
+    return res.status(400).json({ message: 'Missing required fields: reqId, newStatus, or changedByITS' });
+  }
+
+  try {
+    // Step 1: Get old status from latest history
+    const lastStatus = await OwsReqFormStatusHistory.findOne({
+      where: { reqId },
+      order: [['changedAt', 'DESC']]
+    });
+
+    const oldStatus = lastStatus ? lastStatus.newStatus : null;
+
+    // Step 2: Create new status history entry
+    const newStatusEntry = await OwsReqFormStatusHistory.create({
+      reqId,
+      oldStatus,
+      newStatus,
+      changedByITS,
+      remarks
+    });
+
+    // Step 3: Add required documents (if any)
+    if (requiredDocuments.length > 0) {
+      const docsToInsert = requiredDocuments.map(doc => ({
+        statusHistoryId: newStatusEntry.id,
+        documentName: doc
+      }));
+
+      await OwsStatusRequiredDocs.bulkCreate(docsToInsert);
+    }
+
+    //Optional: Update the current status in main owsReqForm table
+    const form = await OwsReqForm.findByPk(reqId);
+    if (form) {
+      form.currentStatus = newStatus;
+      await form.save();
+    }
+
+    return res.status(201).json({
+      message: 'Status updated and history recorded successfully.',
+      statusHistoryId: newStatusEntry.id
+    });
+  } catch (err) {
+    console.error('Error updating status:', err);
+    return res.status(500).json({ message: 'Server error' });
   }
 });
