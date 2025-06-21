@@ -1583,16 +1583,27 @@ app.post('/api/submit-application', async (req, res) => {
 
     const aiut = await aiutpool.getConnection();
 
+    const genderMap = { 'M': 'Male', 'F': 'Female' };
 
-        // ✅ Insert into aiut_student → `student` table
-    if (aiut_student) {
-      await aiut.query(`INSERT INTO student SET ?`, aiut_student);
-    }
+// 🔁 Normalize gender for student
+if (aiut_student?.gender) {
+  aiut_student.gender = genderMap[aiut_student.gender] || 'Other';
+}
 
-    // ✅ Insert into aiut_survey → `survey` table
-    if (aiut_survey) {
-      await aiut.query(`INSERT INTO survey SET ?`, aiut_survey);
-    }
+// ✅ Insert into `student` table
+if (aiut_student) {
+  await aiut.query(`INSERT INTO student SET ?`, aiut_student);
+}
+
+// 🔁 Normalize gender for survey
+if (aiut_survey?.gender) {
+  aiut_survey.gender = genderMap[aiut_survey.gender] || 'Other';
+}
+
+// ✅ Insert into `survey` table
+if (aiut_survey) {
+  await aiut.query(`INSERT INTO survey SET ?`, aiut_survey);
+}
 
     await conn.commit();
     res.json({ success: true, id: appId });
