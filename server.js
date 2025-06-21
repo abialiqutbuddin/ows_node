@@ -1621,11 +1621,21 @@ app.post('/api/submit-application', async (req, res) => {
         }
       }
 
+      const [maxRows] = await aiutConn.query(
+        `SELECT MAX(student_no) AS max_no FROM student`
+      );
+
+      const nextStudentNo = (maxRows[0].max_no || 0) + 1;
+
+
       // Inject calculated values into student object
       if (aiut_student) {
+        aiut_student.student_no = nextStudentNo;
         aiut_student.dependents = rows[0].dependent_count;
         aiut_student.earning_members = rows[0].income_count;
         aiut_student.monthly_income = totalIncome;
+        aiut_student.created_at = toMySQLDatetime();
+        aiut_student.updated_at = toMySQLDatetime();
 
         await aiutConn.query(`INSERT INTO student SET ?`, aiut_student);
       }
@@ -1647,6 +1657,10 @@ app.post('/api/submit-application', async (req, res) => {
     await conn.release(); // 🔁 Use release() not end() for pooled connection
   }
 });
+
+function toMySQLDatetime(date = new Date()) {
+  return date.toISOString().slice(0, 19).replace('T', ' ');
+}
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
