@@ -1586,12 +1586,12 @@ app.post('/api/submit-application', async (req, res) => {
 
         // ✅ Insert into aiut_student → `student` table
     if (aiut_student) {
-      await aiut.query(`INSERT INTO student SET ?`, student);
+      await aiut.query(`INSERT INTO student SET ?`, aiut_student);
     }
 
     // ✅ Insert into aiut_survey → `survey` table
     if (aiut_survey) {
-      await aiut.query(`INSERT INTO survey SET ?`, survey);
+      await aiut.query(`INSERT INTO survey SET ?`, aiut_survey);
     }
 
     await conn.commit();
