@@ -1632,6 +1632,7 @@ app.post('/api/submit-application', async (req, res) => {
 
       // Inject calculated values into student object
       if (aiut_student) {
+        console.log(aiut_student.student_id);
         aiut_student.student_no = nextStudentNo;
         aiut_student.dependents = rows[0].dependent_count;
         aiut_student.earning_members = rows[0].income_count;
