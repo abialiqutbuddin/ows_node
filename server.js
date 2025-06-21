@@ -1603,7 +1603,7 @@ app.post('/api/submit-application', async (req, res) => {
         `SELECT SUM(amount) AS total_income
          FROM income_types
          WHERE application_id = ? AND member_its = ?`,
-        [appId, aiut_student.fatherItsNo]
+        [appId, [String(aiut_student.fatherItsNo)]]
       );
 
       if (rowsFather[0].total_income !== null) {
@@ -1613,7 +1613,7 @@ app.post('/api/submit-application', async (req, res) => {
           `SELECT SUM(amount) AS total_income
            FROM income_types
            WHERE application_id = ? AND member_its = ?`,
-          [appId, aiut_student.motherItsNo]
+          [appId, [String(aiut_student.motherItsNo)]]
         );
 
         if (rowsMother[0].total_income !== null) {
