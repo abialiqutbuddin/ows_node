@@ -1442,7 +1442,7 @@ const aiutpool = mysql.createPool({
   user: 'aak',
   password: 'Aak@110*',
   port: 3308,
-  database: "test_aiut",
+  database: "aiut",
 });
 
 // Load form config JSON
