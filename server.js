@@ -1220,24 +1220,24 @@ app.post('/save-draft', async (req, res) => {
   try {
     const existing = await StudentApplicationDraft.findByPk(application_id);
 
-  // 1) Grab the model's attributes map
-  const attributes = StudentApplicationDraft.getAttributes();
+    // 1) Grab the model's attributes map
+    const attributes = StudentApplicationDraft.getAttributes();
 
-  // 2) Build a set of all DECIMAL columns by checking .type.key === 'DECIMAL'
-  const decimalFields = Object.entries(attributes)
-    .filter(([name, def]) => def.type && def.type.key === 'DECIMAL')
-    .map(([name]) => name);
+    // 2) Build a set of all DECIMAL columns by checking .type.key === 'DECIMAL'
+    const decimalFields = Object.entries(attributes)
+      .filter(([name, def]) => def.type && def.type.key === 'DECIMAL')
+      .map(([name]) => name);
 
-  // 3) Normalize only those fields:
-  //    if key is a decimal column AND val is '', convert to null
-  const normalizedData = Object.entries(draft_data).reduce((acc, [key, val]) => {
-    if (decimalFields.includes(key) && val === '') {
-      acc[key] = null;
-    } else {
-      acc[key] = val;
-    }
-    return acc;
-  }, {});
+    // 3) Normalize only those fields:
+    //    if key is a decimal column AND val is '', convert to null
+    const normalizedData = Object.entries(draft_data).reduce((acc, [key, val]) => {
+      if (decimalFields.includes(key) && val === '') {
+        acc[key] = null;
+      } else {
+        acc[key] = val;
+      }
+      return acc;
+    }, {});
 
 
     if (existing) {
@@ -1552,13 +1552,13 @@ app.get('/api/application/:id', async (req, res) => {
 
 
 app.post('/api/submit-application', async (req, res) => {
-  const { application, repeatables, reqId,aiut_student, aiut_survey } = req.body;
+  const { application, repeatables, reqId, aiut_student, aiut_survey } = req.body;
   const conn = await pool.getConnection();
 
   try {
     await conn.beginTransaction();
 
-    // Insert main application
+    // Insert into main application table
     const [result] = await conn.query(
       `INSERT INTO application_main SET ?`,
       application
@@ -1566,6 +1566,7 @@ app.post('/api/submit-application', async (req, res) => {
 
     const appId = result.insertId;
 
+    // Link to request if reqId provided
     if (reqId) {
       await conn.query(
         `UPDATE owsReqForm SET application_id = ? WHERE reqId = ?`,
@@ -1573,46 +1574,77 @@ app.post('/api/submit-application', async (req, res) => {
       );
     }
 
-    // Insert each repeatable table entries
+    // Insert repeatable entries into corresponding tables
     for (const [tableKey, entries] of Object.entries(repeatables)) {
       for (const entry of entries) {
-        entry.application_id = appId; // Ensure app_id is linked
+        entry.application_id = appId;
         await conn.query(`INSERT INTO ${tableKey} SET ?`, entry);
       }
     }
 
-    const aiut = await aiutpool.getConnection();
-
-    const genderMap = { 'M': 'Male', 'F': 'Female' };
-
-// 🔁 Normalize gender for student
-if (aiut_student?.gender) {
-  aiut_student.gender = genderMap[aiut_student.gender] || 'Other';
-}
-
-// ✅ Insert into `student` table
-if (aiut_student) {
-  await aiut.query(`INSERT INTO student SET ?`, aiut_student);
-}
-
-// 🔁 Normalize gender for survey
-if (aiut_survey?.gender) {
-  aiut_survey.gender = genderMap[aiut_survey.gender] || 'Other';
-}
-
-// ✅ Insert into `survey` table
-if (aiut_survey) {
-  await aiut.query(`INSERT INTO survey SET ?`, aiut_survey);
-}
-
     await conn.commit();
+
+    // ✅ Handle Aiut-specific logic if provided
+    if (aiut_student || aiut_survey) {
+      const aiutConn = await aiutpool.getConnection(); // Use a different name to avoid conflict
+
+      // Get dependent + earning member count
+      const [rows] = await conn.query(
+        `SELECT
+          (SELECT COUNT(*) FROM dependents WHERE application_id = ?) AS dependent_count,
+          (SELECT COUNT(*) FROM income_types WHERE application_id = ?) AS income_count`,
+        [appId, appId]
+      );
+
+      let totalIncome = 0;
+
+      // Fallback logic: try father_its, then mother_its
+      const [rowsFather] = await conn.query(
+        `SELECT SUM(amount) AS total_income
+         FROM income_types
+         WHERE application_id = ? AND member_its = ?`,
+        [appId, aiut_student.fatherItsNo]
+      );
+
+      if (rowsFather[0].total_income !== null) {
+        totalIncome = rowsFather[0].total_income;
+      } else {
+        const [rowsMother] = await conn.query(
+          `SELECT SUM(amount) AS total_income
+           FROM income_types
+           WHERE application_id = ? AND member_its = ?`,
+          [appId, aiut_student.motherItsNo]
+        );
+
+        if (rowsMother[0].total_income !== null) {
+          totalIncome = rowsMother[0].total_income;
+        }
+      }
+
+      // Inject calculated values into student object
+      if (aiut_student) {
+        aiut_student.dependents = rows[0].dependent_count;
+        aiut_student.earning_members = rows[0].income_count;
+        aiut_student.monthly_income = totalIncome;
+
+        await aiutConn.query(`INSERT INTO student SET ?`, aiut_student);
+      }
+
+      // if (aiut_survey) {
+      //   await aiutConn.query(`INSERT INTO survey SET ?`, aiut_survey);
+      // }
+
+      aiutConn.release();
+    }
+
     res.json({ success: true, id: appId });
+
   } catch (err) {
     await conn.rollback();
     console.error(err);
     res.status(500).json({ success: false, error: 'Failed to submit application' });
   } finally {
-    await conn.end();
+    await conn.release(); // 🔁 Use release() not end() for pooled connection
   }
 });
 
@@ -1938,7 +1970,7 @@ app.get("/api/request-form/:its", async (req, res) => {
       records.map(async (record) => {
         const statusHistory = await OwsReqFormStatusHistory.findOne({
           where: { reqId: record.reqId },
-        
+
           order: [['changedAt', 'DESC']],
           include: [
             {
