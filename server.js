@@ -1437,6 +1437,14 @@ const pool = mysql.createPool({
   database: "ows_db",
 });
 
+const aiutpool = mysql.createPool({
+  host: '182.188.38.224',
+  user: 'aak',
+  password: 'Aak@110*',
+  port: 3308,
+  database: "test_aiut",
+});
+
 // Load form config JSON
 const formConfig = JSON.parse(fs.readFileSync('./form_config.json', 'utf-8'));
 
@@ -1544,7 +1552,7 @@ app.get('/api/application/:id', async (req, res) => {
 
 
 app.post('/api/submit-application', async (req, res) => {
-  const { application, repeatables, reqId } = req.body;
+  const { application, repeatables, reqId,aiut_student, aiut_survey } = req.body;
   const conn = await pool.getConnection();
 
   try {
@@ -1571,6 +1579,19 @@ app.post('/api/submit-application', async (req, res) => {
         entry.application_id = appId; // Ensure app_id is linked
         await conn.query(`INSERT INTO ${tableKey} SET ?`, entry);
       }
+    }
+
+    const aiut = await aiutpool.getConnection();
+
+
+        // ✅ Insert into aiut_student → `student` table
+    if (aiut_student) {
+      await aiut.query(`INSERT INTO student SET ?`, student);
+    }
+
+    // ✅ Insert into aiut_survey → `survey` table
+    if (aiut_survey) {
+      await aiut.query(`INSERT INTO survey SET ?`, survey);
     }
 
     await conn.commit();
