@@ -1635,7 +1635,7 @@ app.post('/api/submit-application', async (req, res) => {
         aiut_student.earning_members = rows[0].income_count;
         aiut_student.monthly_income = totalIncome;
         aiut_student.created_at = toMySQLDatetime();
-        //aiut_student.updated_at = toMySQLDatetime();
+        aiut_student.modified_at = toMySQLDatetime();
 
         await aiutConn.query(`INSERT INTO student SET ?`, aiut_student);
       }
