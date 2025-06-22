@@ -1629,19 +1629,50 @@ app.post('/api/submit-application', async (req, res) => {
 
       const nextStudentNo = (maxRows[0].max_no || 0) + 1;
 
+      // ✅ Check if student already exists by ITS number
+      if (aiut_survey?.its_no) {
+        const [existingStudents] = await aiutConn.query(
+          `SELECT student_id, student_no FROM student WHERE its = ?`,
+          [aiut_student.its_no]
+        );
+        if (existingStudents.length > 0) {
+          studentRecord = existingStudents[0];
+        }
+      }
+
+      // ✅ Always insert survey if provided
+      if (aiut_survey) {
+        // const surveyToInsert = {
+        //   surveyId: uuidv4(),
+        //   student_id: studentRecord ? studentRecord.student_id : null,
+        //   student_no: studentRecord ? studentRecord.student_no : null,
+        //   created_at: toMySQLDatetime(),
+        //   modified_at: toMySQLDatetime()
+        // };
+          aiut_survey.student_id =studentRecord ? studentRecord.student_id : null,
+          aiut_survey.student_no = studentRecord ? studentRecord.student_no : null,
+        aiut_survey.dependents = rows[0].dependent_count;
+        aiut_survey.earning_members = rows[0].income_count;
+        aiut_survey.monthly_income = totalIncome;
+        aiut_survey.created_at = toMySQLDatetime();
+        aiut_survey.modified_at = null;
+
+        await aiutConn.query(`INSERT INTO survey SET ?`, surveyToInsert);
+      }
+
 
       // Inject calculated values into student object
-      if (aiut_student) {
-        console.log(aiut_student.student_id);
-        aiut_student.student_no = nextStudentNo;
-        aiut_student.dependents = rows[0].dependent_count;
-        aiut_student.earning_members = rows[0].income_count;
-        aiut_student.monthly_income = totalIncome;
-        aiut_student.created_at = toMySQLDatetime();
-        aiut_student.modified_at = toMySQLDatetime();
+      // if (aiut_student) {
+      //   console.log(aiut_student.student_id);
+      //   aiut_student.student_no = nextStudentNo;
+      //   aiut_student.dependents = rows[0].dependent_count;
+      //   aiut_student.earning_members = rows[0].income_count;
+      //   aiut_student.monthly_income = totalIncome;
+      //   aiut_student.created_at = toMySQLDatetime();
+      //   aiut_student.modified_at = toMySQLDatetime();
 
-        await aiutConn.query(`INSERT INTO student SET ?`, aiut_student);
-      }
+      //   await aiutConn.query(`INSERT INTO student SET ?`, aiut_student);
+      // }
 
       // if (aiut_survey) {
       //   await aiutConn.query(`INSERT INTO survey SET ?`, aiut_survey);
