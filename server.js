@@ -1627,7 +1627,7 @@ app.post('/api/submit-application', async (req, res) => {
       if (aiut_survey?.its_no) {
         const [existingStudents] = await aiutConn.query(
           `SELECT student_id, student_no FROM student WHERE its_no = ?`,
-          [aiut_student.its_no]
+          [aiut_survey.its_no]
         );
         if (existingStudents.length > 0) {
           studentRecord = existingStudents[0];
@@ -1636,9 +1636,9 @@ app.post('/api/submit-application', async (req, res) => {
 
       // ✅ Always insert survey if provided
       if (aiut_survey) {
-          aiut_survey.student_id =studentRecord ? studentRecord.student_id : null,
+        aiut_survey.student_id = studentRecord ? studentRecord.student_id : null,
           aiut_survey.student_no = studentRecord ? studentRecord.student_no : null,
-        aiut_survey.dependents = rows[0].dependent_count;
+          aiut_survey.dependents = rows[0].dependent_count;
         aiut_survey.earning_members = rows[0].income_count;
         aiut_survey.monthly_income = totalIncome;
         aiut_survey.created_at = toMySQLDatetime();
