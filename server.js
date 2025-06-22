@@ -1632,7 +1632,7 @@ app.post('/api/submit-application', async (req, res) => {
         );
         if (existingStudents.length > 0) {
           studentRecord = existingStudents[0];
-          console.log(studentRecord);
+          //console.log(studentRecord);
         }
       }
 
