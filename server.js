@@ -1615,7 +1615,7 @@ app.post('/api/submit-application', async (req, res) => {
           `SELECT SUM(amount) AS total_income
            FROM income_types
            WHERE application_id = ? AND member_its = ?`,
-          [appId, aiut_student.motherItsNo]
+          [appId, aiut_survey.motherItsNo]
         );
 
         if (rowsMother[0].total_income !== null) {
