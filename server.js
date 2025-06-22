@@ -1644,7 +1644,7 @@ app.post('/api/submit-application', async (req, res) => {
         aiut_survey.created_at = toMySQLDatetime();
         aiut_survey.modified_at = null;
 
-        await aiutConn.query(`INSERT INTO survey SET ?`, surveyToInsert);
+        await aiutConn.query(`INSERT INTO survey SET ?`, aiut_survey);
       }
 
       aiutConn.release();
