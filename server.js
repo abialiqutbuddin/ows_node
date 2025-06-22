@@ -1696,6 +1696,20 @@ function toMySQLDatetime(date = new Date()) {
   return date.toISOString().slice(0, 19).replace('T', ' ');
 }
 
+app.get('/api/aiut_surveys', async (req, res) => {
+  const conn = await aiutpool.getConnection(); // use correct pool
+
+  try {
+    const [rows] = await conn.query(`SELECT * FROM survey ORDER BY created_at DESC`);
+    res.json({ success: true, data: rows });
+  } catch (err) {
+    console.error('Error fetching surveys:', err);
+    res.status(500).json({ success: false, error: 'Failed to fetch survey records' });
+  } finally {
+    await conn.release();
+  }
+});
+
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.get('/api/form-config', async (req, res) => {
