@@ -1603,7 +1603,7 @@ app.post('/api/submit-application', async (req, res) => {
         `SELECT SUM(amount) AS total_income
          FROM income_types
          WHERE application_id = ? AND member_its = ?`,
-        [appId, aiut_student.fatherItsNo]
+        [appId, aiut_survey.fatherItsNo]
       );
 
       console.log("Father Income Rows:", rowsFather);
