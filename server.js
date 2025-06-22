@@ -1597,6 +1597,7 @@ app.post('/api/submit-application', async (req, res) => {
       );
 
       let totalIncome = 0;
+            let studentRecord = null;
 
       // Fallback logic: try father_its, then mother_its
       const [rowsFather] = await conn.query(
