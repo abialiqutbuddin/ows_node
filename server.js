@@ -1638,9 +1638,6 @@ app.post('/api/submit-application', async (req, res) => {
       if (aiut_survey) {
         aiut_survey.student_id = studentRecord ? studentRecord.student_id : null,
           aiut_survey.student_no = studentRecord ? studentRecord.student_no : null,
-          aiut_survey.dependents = rows[0].dependent_count;
-        aiut_survey.earning_members = rows[0].income_count;
-        aiut_survey.monthly_income = totalIncome;
         aiut_survey.created_at = toMySQLDatetime();
         aiut_survey.modified_at = null;
 
