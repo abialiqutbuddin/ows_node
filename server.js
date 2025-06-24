@@ -3212,12 +3212,11 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
     // 5) Insert into survey
     await conn.query(`INSERT INTO survey SET ?`, [{
       ...aiutSurvey,
-      application_id: applicationId,
-      student_id:     studentRecord.student_id,
-      student_no:     studentRecord.student_no,
-      total_income:   totalIncome,
-      created_at:     toMySQLDatetime(),
-      modified_at:    null
+      student_id: studentRecord.student_id,
+      student_no: studentRecord.student_no,
+      total_income: totalIncome,
+      created_at: toMySQLDatetime(),
+      modified_at: null
     }]);
 
     // 6) Create aiut‐schema records
