@@ -34,6 +34,21 @@ const xml2js = require('xml2js');
 app.use(bodyParser.json());
 const mysql = require('mysql2/promise');
 const nodemailer = require("nodemailer");
+const {
+  sequelize: aiut_sequelize,
+  FinancialSurvey,
+  FinancialSurveyFee,
+  FinancialSurveyGoods,
+  FinancialYear,
+  InstituteCategory,
+  Mohallah,
+  StudentInstitute,
+  StudentFee,
+  FeeType,
+  Class,
+  School,
+  Section,
+} = require('./models/aiut_insertion.model.js'); 
 
 const API_VERSION = "1.4.0"; // Change this based on your version
 
@@ -2902,3 +2917,43 @@ module.exports = {
   OwsReqFormStatusHistory,
   OwsStatusRequiredDocs,
 };
+
+const MODEL_MAP = {
+  financial_survey: FinancialSurvey,
+  financial_survey_fee: FinancialSurveyFee,
+  financial_survey_goods: FinancialSurveyGoods,
+  financial_year: FinancialYear,
+  institute_category: InstituteCategory,
+  mohallah: Mohallah,
+  student_institute: StudentInstitute,
+  student_fee: StudentFee,
+  fee_type: FeeType,
+  class: Class,
+  school: School,
+  section: Section,
+};
+
+// generic “get all” endpoint
+app.get('/api/get-aiut-table/:tableName', async (req, res) => {
+  const { tableName } = req.params;
+  const model = MODEL_MAP[tableName];
+  
+  if (!model) {
+    return res.status(400).json({ error: `Unknown table: ${tableName}` });
+  }
+
+  try {
+    const rows = await model.findAll();
+    res.json(rows);
+  } catch (err) {
+    console.error('DB error:', err);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+
+
+
+aiut_sequelize
+  .authenticate()
+  .then(() => console.log('✔️  Database connection established'))
+  .catch(err => console.error('❌  Unable to connect to DB:', err));
