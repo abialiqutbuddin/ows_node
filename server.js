@@ -3107,6 +3107,62 @@ app.get('/api/aiut/:tableName', async (req, res) => {
   }
 });
 
+async function populateStudentGoods(financial_year_id, student_id, assetsOptions, created_by_id) {
+  // 1) Map of known asset names → goods_id
+  const assetsToGoodsId = {
+    "Gas Stove":          null,
+    "TV":                 1,
+    "Radio":              null,
+    "Telephone/Mobile":   10,
+    "Animal Cart":        null,
+    "Bicycle":            11,
+    "Computer/Laptop":    8,
+    "Motorbike":          12,
+    "Refrigerator":       2,
+    "Washing Machine":    4,
+    "Car":                13,
+    "Truck":              14
+  };
+
+  // 2) Normalize helper
+  const normalize = str => str.trim().toLowerCase();
+
+  // 3) Build set of selected goods_ids
+  const selectedGoodsIds = new Set();
+  for (const opt of assetsOptions) {
+    if (!opt.name) continue;
+    const key = normalize(opt.name);
+    // try exact key then normalized key
+    const gid = assetsToGoodsId[opt.name] ?? assetsToGoodsId[ key ];
+    if (gid != null) selectedGoodsIds.add(gid);
+  }
+
+  // 4) Fetch all master goods
+  const masterGoods = await Goods.findAll({ attributes: ['goods_id'] });
+
+  const now = new Date();
+  const inserted = [];
+
+  // 5) Loop and insert
+  for (const g of masterGoods) {
+    const status = selectedGoodsIds.has(g.goods_id) ? 'yes' : 'no';
+    const row = await StudentGoods.create({
+      student_goods_id: uuidv4(),
+      financial_year_id,
+      student_id,
+      goods_id:       g.goods_id,
+      status,
+      comment:        '',
+      created_at:     now,
+      created_by_id
+    });
+    inserted.push(row);
+  }
+
+  return inserted;
+}
+
+
 
 
 aiut_sequelize
