@@ -3112,7 +3112,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
     if (!owsForm) throw new Error(`No form for ITS=${aiutSurvey.its_no}`);
 
     // 2) Get dependent & income counts
-    const [countRows] = await conn.query(
+    const [countRows] = await pool.query(
       `SELECT
          (SELECT COUNT(*) FROM dependents   WHERE application_id = ?) AS dependent_count,
          (SELECT COUNT(*) FROM income_types WHERE application_id = ?) AS income_count`,
@@ -3121,7 +3121,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
     const { dependent_count, income_count } = countRows[0];
 
     // 3) Sum income for father, fallback to mother
-    const [[{ total_income: dadIncome }]] = await conn.query(
+    const [[{ total_income: dadIncome }]] = await pool.query(
       `SELECT SUM(amount) AS total_income
          FROM income_types
         WHERE application_id = ? AND member_its = ?`,
@@ -3129,7 +3129,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
     );
     let totalIncome = dadIncome;
     if (totalIncome == null) {
-      const [[{ total_income: momIncome }]] = await conn.query(
+      const [[{ total_income: momIncome }]] = await pool.query(
         `SELECT SUM(amount) AS total_income
            FROM income_types
           WHERE application_id = ? AND member_its = ?`,
