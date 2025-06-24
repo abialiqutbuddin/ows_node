@@ -3087,7 +3087,7 @@ async function populateStudentGoods(financial_year_id, student_id, assetsOptions
   // 5) Loop and insert
   for (const g of masterGoods) {
     const status = selectedGoodsIds.has(g.goods_id) ? 'yes' : 'no';
-    const row = await StudentGoods.create({
+    const row = await FinancialSurveyGoods.create({
       student_goods_id: uuidv4(),
       financial_year_id,
       student_id,
