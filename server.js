@@ -3102,6 +3102,9 @@ async function populateStudentGoods(financial_year_id, student_id, assetsOptions
   return inserted;
 }
 
+const { v4: uuidv4 } = require('uuid');
+
+
 async function insertAiutSurvey(applicationId, aiutSurvey) {
   const conn = await aiutpool.getConnection();
   console.log(`\n[insertAiutSurvey] Start for applicationId=${applicationId}, its_no=${aiutSurvey.its_no}`);
