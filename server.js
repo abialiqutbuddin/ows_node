@@ -3319,3 +3319,30 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
     console.log('[insertAiutSurvey] Connection released.');
   }
 }
+
+app.delete('/api/aiut/:tableName/:columnName/:value', async (req, res) => {
+  const { tableName, columnName, value } = req.params;
+
+  // ⚠️ Basic validation against SQL-injection for identifiers
+  if (!/^[A-Za-z0-9_]+$/.test(tableName) || !/^[A-Za-z0-9_]+$/.test(columnName)) {
+    return res.status(400).json({ error: 'Invalid table or column name' });
+  }
+
+  try {
+    // Use parameterized identifiers (??) and values (?) 
+    const [result] = await aiutpool.query(
+      'DELETE FROM `??` WHERE `??` = ?',
+      [tableName, columnName, value]
+    );
+
+    return res.json({
+      table: tableName,
+      column: columnName,
+      value,
+      deletedRows: result.affectedRows
+    });
+  } catch (err) {
+    console.error('Error deleting rows:', err);
+    return res.status(500).json({ error: err.message });
+  }
+});
