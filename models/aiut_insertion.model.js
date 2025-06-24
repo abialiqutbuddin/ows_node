@@ -364,6 +364,24 @@ const Section = sequelize.define(
   }
 );
 
+const Goods = sequelize.define(
+  'Goods',
+  {
+    goods_id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true
+    },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
+  },
+  {
+    tableName: 'goods',
+    timestamps: false
+  }
+);
+
 // Associations
 FinancialSurvey.hasMany(FinancialSurveyFee, { foreignKey: 'financial_survey_id' });
 FinancialSurveyFee.belongsTo(FinancialSurvey, { foreignKey: 'financial_survey_id' });
@@ -400,5 +418,6 @@ module.exports = {
   FeeType,
   Class,
   School,
-  Section,
+  Section,  
+  Goods,
 };

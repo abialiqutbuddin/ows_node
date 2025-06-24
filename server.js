@@ -48,6 +48,7 @@ const {
   Class,
   School,
   Section,
+  Goods,
 } = require('./models/aiut_insertion.model.js');
 
 const API_VERSION = "1.4.0"; // Change this based on your version
