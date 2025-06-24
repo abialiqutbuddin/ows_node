@@ -3331,7 +3331,7 @@ app.delete('/api/aiut/:tableName/:columnName/:value', async (req, res) => {
   try {
     // Use parameterized identifiers (??) and values (?) 
     const [result] = await aiutpool.query(
-      'DELETE FROM `??` WHERE `??` = ?',
+       'DELETE FROM ?? WHERE ?? = ?',
       [tableName, columnName, value]
     );
 
