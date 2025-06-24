@@ -3105,150 +3105,183 @@ async function populateStudentGoods(financial_year_id, student_id, assetsOptions
 async function insertAiutSurvey(applicationId, aiutSurvey) {
   const conn = await aiutpool.getConnection();
   try {
+    // 1) Fetch the OWS form first
+    const owsForm = await OwsReqForm.findOne({
+      where: { ITS: aiutSurvey.its_no }
+    });
+    if (!owsForm) throw new Error(`No form for ITS=${aiutSurvey.its_no}`);
 
-    // Get dependent + earning member count
-    const [rows] = await conn.query(
+    // 2) Get dependent & income counts
+    const [countRows] = await conn.query(
       `SELECT
-     (SELECT COUNT(*) FROM dependents    WHERE application_id = ?) AS dependent_count,
-     (SELECT COUNT(*) FROM income_types  WHERE application_id = ?) AS income_count`,
+         (SELECT COUNT(*) FROM dependents   WHERE application_id = ?) AS dependent_count,
+         (SELECT COUNT(*) FROM income_types WHERE application_id = ?) AS income_count`,
       [applicationId, applicationId]
     );
+    const { dependent_count, income_count } = countRows[0];
 
-    const { dependent_count, income_count } = rows[0];
-
-    // 1) Sum income for father or mother
-    const [[fatherRow]] = await conn.query(
+    // 3) Sum income for father, fallback to mother
+    const [[{ total_income: dadIncome }]] = await conn.query(
       `SELECT SUM(amount) AS total_income
          FROM income_types
-         WHERE application_id = ? AND member_its = ?`,
+        WHERE application_id = ? AND member_its = ?`,
       [applicationId, aiutSurvey.father_its_no]
     );
-
-    let totalIncome = fatherRow.total_income;
+    let totalIncome = dadIncome;
     if (totalIncome == null) {
-      const [[motherRow]] = await conn.query(
+      const [[{ total_income: momIncome }]] = await conn.query(
         `SELECT SUM(amount) AS total_income
            FROM income_types
-           WHERE application_id = ? AND member_its = ?`,
+          WHERE application_id = ? AND member_its = ?`,
         [applicationId, aiutSurvey.mother_its_no]
       );
-      totalIncome = motherRow.total_income || 0;
+      totalIncome = momIncome || 0;
     }
 
-    // 2) Optionally look up existing student by ITS
-    let studentRecord = null;
+    // 4) Find or insert student
+    let studentRecord;
     if (aiutSurvey.its_no) {
-      const [rows] = await conn.query(
-        `SELECT student_id, student_no 
-           FROM student 
-           WHERE its_no = ?`,
+      // look up existing
+      let [studentRows] = await conn.query(
+        `SELECT student_id, student_no
+           FROM student
+          WHERE its_no = ?`,
         [aiutSurvey.its_no]
       );
-      if (rows.length) studentRecord = rows[0];
+
+      if (studentRows.length === 0) {
+        // not found → insert
+        const [[{ maxno }]] = await conn.query(
+          `SELECT MAX(student_no) AS maxno FROM student`
+        );
+        const newNo = (maxno || 0) + 1;
+        const newId = uuidv4();
+        const mohId = await getMohallahIdByName(owsForm.mohalla);
+
+        const studentData = {
+          student_id:           newId,
+          student_no:           newNo,
+          sf_no:                aiutSurvey.sf_no,
+          its_no:               aiutSurvey.its_no,
+          student_name:         aiutSurvey.student_name,
+          surname:              aiutSurvey.surname,
+          dob:                  aiutSurvey.dob,
+          user_image:           aiutSurvey.user_image,
+          father_its_no:        aiutSurvey.father_its_no,
+          father_name:          aiutSurvey.father_name,
+          father_mobile_no:     aiutSurvey.father_mobile_no,
+          father_occupation_id: 0,
+          father_cnic:          aiutSurvey.father_cnic,
+          mother_its_no:        aiutSurvey.mother_its_no,
+          mother_name:          aiutSurvey.mother_name,
+          mother_mobile_no:     aiutSurvey.mother_mobile_no,
+          mother_occupation_id: 0,
+          residential_address:  aiutSurvey.residential_address,
+          residential_phone_no: aiutSurvey.residential_phone_no,
+          mohallah_id:          mohId,
+          gender:               aiutSurvey.gender,
+          status:               "Pending",
+          delete_request:       null,
+          madrassa_going:       "Yes",
+          madrassa_id:          0,
+          finance_support:      "Inactive",
+          fa_date:              null,
+          employer_name:        "",
+          monthly_income:       totalIncome,
+          earning_members:      income_count,
+          dependents:           dependent_count,
+          flat_area:            aiutSurvey.flat_area,
+          created_at:           toMySQLDatetime(),
+          created_by_id:        1,
+          modified_at:          null,
+          modified_by_id:       null
+        };
+
+        await conn.query(`INSERT INTO student SET ?`, [studentData]);
+
+        // re‐fetch
+        [studentRows] = await conn.query(
+          `SELECT student_id, student_no FROM student WHERE its_no = ?`,
+          [aiutSurvey.its_no]
+        );
+      }
+
+      studentRecord = studentRows[0];
     }
 
-    // 3) Prepare the object to insert
-    // const toInsert = {
-    //   ...aiutSurvey,
-    //   student_id: studentRecord?.student_id || null,
-    //   student_no: studentRecord?.student_no || null,
-    //   total_income: totalIncome,
-    //   application_id: applicationId,
-    //   created_at: toMySQLDatetime(),
-    //   modified_at: null
-    // };
+    // 5) Insert into survey
+    await conn.query(`INSERT INTO survey SET ?`, [{
+      ...aiutSurvey,
+      application_id: applicationId,
+      student_id:     studentRecord.student_id,
+      student_no:     studentRecord.student_no,
+      total_income:   totalIncome,
+      created_at:     toMySQLDatetime(),
+      modified_at:    null
+    }]);
 
-    const owsForm = await OwsReqForm.findOne({
-      where: {
-        ITS: aiutSurvey.its_no
-      }
-    });
+    // 6) Create aiut‐schema records
+    const fyId = await getLastFinancialYearId();
 
-    aiutSurvey.student_id = studentRecord ? studentRecord.student_id : null,
-      aiutSurvey.student_no = studentRecord ? studentRecord.student_no : null,
-      aiutSurvey.created_at = toMySQLDatetime();
-    aiutSurvey.modified_at = null;
-    aiutSurvey.mohalla_id = await getMohallahIdByName(owsForm.mohalla);
-
-    await conn.query(`INSERT INTO survey SET ?`, aiutSurvey);
-
-    const student_id = '';
-
-    let record = await createStudentInstitute({
-      financial_year_id: await getLastFinancialYearId(),
-      student_id: student_id,
+    await createStudentInstitute({
+      financial_year_id:     fyId,
+      student_id:            studentRecord.student_id,
       institute_category_id: 0,
-      school_id: getOrCreateSchoolId({
-        school_name: owsForm.institution,
-        institute_category_id: 0,
-        school_category: 0,
-        created_by_id: 1
-      }),
-      class_id: 0,
+      school_id:             await getOrCreateSchoolId({
+                                school_name: owsForm.institution,
+                                institute_category_id: 0,
+                                school_category: '',
+                                created_by_id:  1
+                              }),
+      class_id:   0,
       section_id: 0,
       created_by_id: 1
     });
 
-    console.log(record);
-
-    let financial_survey = await createFinancialSurvey({
-      student_id: student_id,
+    const finSurvey = await createFinancialSurvey({
+      student_id:     studentRecord.student_id,
       monthly_income: totalIncome,
       earning_members: income_count,
-      dependents: dependent_count,
-      flat_area: '',
-      employer_name: '',
+      dependents,      // shorthand for dependent_count
+      flat_area:       '',
+      employer_name:   '',
       student_status: 'New',
-      status: 'Request',
-      created_by_id: 1
+      status:         'Request',
+      created_by_id:  1
     });
 
-    console.log(financial_survey);
-
-    let financial_survey_fee = await addSurveyFee(
-      financial_survey.financial_survey_id,  // the survey you just created
-      2,                           // fee_type_id = 1
-      owsForm.fundAsking                     // amount
+    await addSurveyFee(
+      finSurvey.financial_survey_id,
+      2,
+      owsForm.fundAsking
     );
 
-    console.log(financial_survey_fee);
-
-    let student_fee = await createStudentFee({
-      financial_year_id: await getLastFinancialYearId(),   // e.g. 8
-      student_id: student_id,
-      amount: owsForm.fundAsking,
-      remarks: owsForm.description,
-      created_by_id: 1
+    await createStudentFee({
+      financial_year_id: fyId,
+      student_id:        studentRecord.student_id,
+      amount:            owsForm.fundAsking,
+      remarks:           owsForm.description,
+      created_by_id:     1
     });
 
-    console.log(student_fee);
-
-    const [rows2] = await pool.query(
-      `SELECT assets 
-       FROM application_main
-      WHERE id = ?`,
+    // 7) Handle assets → student_goods
+    const [assetRows] = await pool.query(
+      `SELECT assets FROM application_main WHERE id = ?`,
       [applicationId]
     );
-    if (!rows2.length) {
-      throw new Error(`Application ${applicationId} not found`);
-    }
-
-    const raw = rows2[0].assets || "";
-    let assetsOptions = raw
+    const rawAssets = assetRows[0]?.assets || '';
+    const assetsOptions = rawAssets
       .split(',')
       .map(s => s.trim())
-      .filter(s => s.length > 0)
+      .filter(Boolean)
       .map(name => ({ name }));
 
-    let studentGoodsRows = await populateStudentGoods(
-      await getLastFinancialYearId(),
-      student_id,
+    await populateStudentGoods(
+      fyId,
+      studentRecord.student_id,
       assetsOptions,
       1
     );
-
-    console.log(studentGoodsRows);
-
 
   } finally {
     conn.release();
