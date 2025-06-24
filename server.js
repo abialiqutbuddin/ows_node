@@ -3049,6 +3049,13 @@ app.get('/api/aiut/:tableName', async (req, res) => {
 });
 
 async function populateStudentGoods(financial_year_id, student_id, assetsOptions, created_by_id) {
+  console.log('⚙️  populateStudentGoods start', {
+    financial_year_id,
+    student_id,
+    assetsOptions,
+    created_by_id
+  });
+
   // 1) Map of known asset names → goods_id
   const assetsToGoodsId = {
     "Gas Stove": null,
@@ -3064,6 +3071,7 @@ async function populateStudentGoods(financial_year_id, student_id, assetsOptions
     "Car": 13,
     "Truck": 14
   };
+  console.log('🔑 assetsToGoodsId map:', assetsToGoodsId);
 
   // 2) Normalize helper
   const normalize = str => str.trim().toLowerCase();
@@ -3071,15 +3079,24 @@ async function populateStudentGoods(financial_year_id, student_id, assetsOptions
   // 3) Build set of selected goods_ids
   const selectedGoodsIds = new Set();
   for (const opt of assetsOptions) {
-    if (!opt.name) continue;
+    console.log('🔍 checking asset option:', opt);
+    if (!opt.name) {
+      console.log('  ⛔ skipping empty name');
+      continue;
+    }
     const key = normalize(opt.name);
-    // try exact key then normalized key
     const gid = assetsToGoodsId[opt.name] ?? assetsToGoodsId[key];
-    if (gid != null) selectedGoodsIds.add(gid);
+    console.log(`  ↳ name="${opt.name}", normalized="${key}" → gid=${gid}`);
+    if (gid != null) {
+      selectedGoodsIds.add(gid);
+      console.log(`  ✅ added goods_id ${gid}`);
+    }
   }
+  console.log('🎯 selectedGoodsIds set:', Array.from(selectedGoodsIds));
 
   // 4) Fetch all master goods
   const masterGoods = await Goods.findAll({ attributes: ['goods_id'] });
+  console.log(`📋 fetched masterGoods (${masterGoods.length} items):`, masterGoods.map(g => g.goods_id));
 
   const now = new Date();
   const inserted = [];
@@ -3087,19 +3104,26 @@ async function populateStudentGoods(financial_year_id, student_id, assetsOptions
   // 5) Loop and insert
   for (const g of masterGoods) {
     const status = selectedGoodsIds.has(g.goods_id) ? 'yes' : 'no';
-    const row = await FinancialSurveyGoods.create({
-      student_goods_id: uuidv4(),
-      financial_year_id,
-      student_id,
-      goods_id: g.goods_id,
-      status,
-      comment: '',
-      created_at: now,
-      created_by_id
-    });
-    inserted.push(row);
+    console.log(`✏️ inserting StudentGoods for goods_id=${g.goods_id}, status=${status}`);
+    try {
+      const row = await FinancialSurveyGoods.create({
+        student_goods_id: uuidv4(),
+        financial_year_id,
+        student_id,
+        goods_id: g.goods_id,
+        status,
+        comment: '',
+        created_at: now,
+        created_by_id
+      });
+      inserted.push(row);
+      console.log('  ✔️ inserted:', row.toJSON());
+    } catch (err) {
+      console.error(`  ❌ failed to insert for goods_id=${g.goods_id}:`, err);
+    }
   }
 
+  console.log('🏁 populateStudentGoods done, total inserted:', inserted.length);
   return inserted;
 }
 
