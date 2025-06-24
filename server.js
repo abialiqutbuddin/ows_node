@@ -3118,6 +3118,8 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
     await conn.beginTransaction();
     console.log('[tx] BEGIN');
 
+    let aiut_student_status = 'Old';
+
     // 1) Fetch the OWS form
     console.log('[1] Fetching OwsReqForm...');
     const owsForm = await OwsReqForm.findOne({ where: { ITS: aiutSurvey.its_no } });
@@ -3168,8 +3170,13 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
       );
       console.log('[4] existing studentRows:', studentRows);
 
+      if(studentRows.length > 0) {
+aiut_student_status = 'Old';
+      }
+
       if (studentRows.length === 0) {
         console.log('[4] No student found → inserting new one...');
+        aiut_student_status = 'New';
         const [[{ maxno }]] = await conn.query(`SELECT MAX(student_no) AS maxno FROM student`);
         const newNo = (maxno || 0) + 1;
         const newId = uuidv4();
@@ -3269,7 +3276,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
       dependents: dependent_count,
       flat_area: '',
       employer_name: '',
-      student_status: 'New',
+      student_status: aiut_student_status,
       status: 'Request',
       created_by_id: 1
     });
