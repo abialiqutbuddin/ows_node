@@ -48,7 +48,7 @@ const {
   Class,
   School,
   Section,
-} = require('./models/aiut_insertion.model.js'); 
+} = require('./models/aiut_insertion.model.js');
 
 const API_VERSION = "1.4.0"; // Change this based on your version
 
@@ -1600,68 +1600,8 @@ app.post('/api/submit-application', async (req, res) => {
     await conn.commit();
 
     // ✅ Handle Aiut-specific logic if provided
-    if (aiut_student || aiut_survey) {
-      const aiutConn = await aiutpool.getConnection(); // Use a different name to avoid conflict
-
-      // Get dependent + earning member count
-      const [rows] = await conn.query(
-        `SELECT
-          (SELECT COUNT(*) FROM dependents WHERE application_id = ?) AS dependent_count,
-          (SELECT COUNT(*) FROM income_types WHERE application_id = ?) AS income_count`,
-        [appId, appId]
-      );
-
-      let totalIncome = 0;
-            let studentRecord = null;
-
-      // Fallback logic: try father_its, then mother_its
-      const [rowsFather] = await conn.query(
-        `SELECT SUM(amount) AS total_income
-         FROM income_types
-         WHERE application_id = ? AND member_its = ?`,
-        [appId, aiut_survey.father_its_no]
-      );
-
-      console.log("Father Income Rows:", rowsFather);
-
-      if (rowsFather[0].total_income !== null) {
-        totalIncome = rowsFather[0].total_income;
-      } else {
-        const [rowsMother] = await conn.query(
-          `SELECT SUM(amount) AS total_income
-           FROM income_types
-           WHERE application_id = ? AND member_its = ?`,
-          [appId, aiut_survey.mother_its_no]
-        );
-
-        if (rowsMother[0].total_income !== null) {
-          totalIncome = rowsMother[0].total_income;
-        }
-      }
-
-      // ✅ Check if student already exists by ITS number
-      if (aiut_survey?.its_no) {
-        const [existingStudents] = await aiutConn.query(
-          `SELECT student_id, student_no FROM student WHERE its_no = ?`,
-          [aiut_survey.its_no]
-        );
-        if (existingStudents.length > 0) {
-          studentRecord = existingStudents[0];
-          //console.log(studentRecord);
-        }
-      }
-
-      // ✅ Always insert survey if provided
-      if (aiut_survey) {
-        aiut_survey.student_id = studentRecord ? studentRecord.student_id : null,
-          aiut_survey.student_no = studentRecord ? studentRecord.student_no : null,
-        aiut_survey.created_at = toMySQLDatetime();
-        aiut_survey.modified_at = null;
-
-        await aiutConn.query(`INSERT INTO survey SET ?`, aiut_survey);
-      }
-
-      aiutConn.release();
+    if (aiut_survey) {
+      await insertAiutSurvey(appId, aiut_survey);
     }
 
     res.json({ success: true, id: appId });
@@ -2937,7 +2877,7 @@ const MODEL_MAP = {
 app.get('/api/get-aiut-table/:tableName', async (req, res) => {
   const { tableName } = req.params;
   const model = MODEL_MAP[tableName];
-  
+
   if (!model) {
     return res.status(400).json({ error: `Unknown table: ${tableName}` });
   }
@@ -2996,8 +2936,8 @@ async function createStudentInstitute({
 async function getOrCreateSchoolId({
   school_name,
   institute_category_id = null,
-  school_category       = null,
-  created_by_id         = null
+  school_category = null,
+  created_by_id = null
 }) {
   // Try to find an existing school
   let school = await School.findOne({
@@ -3110,18 +3050,18 @@ app.get('/api/aiut/:tableName', async (req, res) => {
 async function populateStudentGoods(financial_year_id, student_id, assetsOptions, created_by_id) {
   // 1) Map of known asset names → goods_id
   const assetsToGoodsId = {
-    "Gas Stove":          null,
-    "TV":                 1,
-    "Radio":              null,
-    "Telephone/Mobile":   10,
-    "Animal Cart":        null,
-    "Bicycle":            11,
-    "Computer/Laptop":    8,
-    "Motorbike":          12,
-    "Refrigerator":       2,
-    "Washing Machine":    4,
-    "Car":                13,
-    "Truck":              14
+    "Gas Stove": null,
+    "TV": 1,
+    "Radio": null,
+    "Telephone/Mobile": 10,
+    "Animal Cart": null,
+    "Bicycle": 11,
+    "Computer/Laptop": 8,
+    "Motorbike": 12,
+    "Refrigerator": 2,
+    "Washing Machine": 4,
+    "Car": 13,
+    "Truck": 14
   };
 
   // 2) Normalize helper
@@ -3133,7 +3073,7 @@ async function populateStudentGoods(financial_year_id, student_id, assetsOptions
     if (!opt.name) continue;
     const key = normalize(opt.name);
     // try exact key then normalized key
-    const gid = assetsToGoodsId[opt.name] ?? assetsToGoodsId[ key ];
+    const gid = assetsToGoodsId[opt.name] ?? assetsToGoodsId[key];
     if (gid != null) selectedGoodsIds.add(gid);
   }
 
@@ -3150,10 +3090,10 @@ async function populateStudentGoods(financial_year_id, student_id, assetsOptions
       student_goods_id: uuidv4(),
       financial_year_id,
       student_id,
-      goods_id:       g.goods_id,
+      goods_id: g.goods_id,
       status,
-      comment:        '',
-      created_at:     now,
+      comment: '',
+      created_at: now,
       created_by_id
     });
     inserted.push(row);
@@ -3162,7 +3102,158 @@ async function populateStudentGoods(financial_year_id, student_id, assetsOptions
   return inserted;
 }
 
+async function insertAiutSurvey(applicationId, aiutSurvey) {
+  const conn = await aiutpool.getConnection();
+  try {
 
+    // Get dependent + earning member count
+    const [rows] = await conn.query(
+      `SELECT
+     (SELECT COUNT(*) FROM dependents    WHERE application_id = ?) AS dependent_count,
+     (SELECT COUNT(*) FROM income_types  WHERE application_id = ?) AS income_count`,
+      [applicationId, applicationId]
+    );
+
+    const { dependent_count, income_count } = rows[0];
+
+    // 1) Sum income for father or mother
+    const [[fatherRow]] = await conn.query(
+      `SELECT SUM(amount) AS total_income
+         FROM income_types
+         WHERE application_id = ? AND member_its = ?`,
+      [applicationId, aiutSurvey.father_its_no]
+    );
+
+    let totalIncome = fatherRow.total_income;
+    if (totalIncome == null) {
+      const [[motherRow]] = await conn.query(
+        `SELECT SUM(amount) AS total_income
+           FROM income_types
+           WHERE application_id = ? AND member_its = ?`,
+        [applicationId, aiutSurvey.mother_its_no]
+      );
+      totalIncome = motherRow.total_income || 0;
+    }
+
+    // 2) Optionally look up existing student by ITS
+    let studentRecord = null;
+    if (aiutSurvey.its_no) {
+      const [rows] = await conn.query(
+        `SELECT student_id, student_no 
+           FROM student 
+           WHERE its_no = ?`,
+        [aiutSurvey.its_no]
+      );
+      if (rows.length) studentRecord = rows[0];
+    }
+
+    // 3) Prepare the object to insert
+    // const toInsert = {
+    //   ...aiutSurvey,
+    //   student_id: studentRecord?.student_id || null,
+    //   student_no: studentRecord?.student_no || null,
+    //   total_income: totalIncome,
+    //   application_id: applicationId,
+    //   created_at: toMySQLDatetime(),
+    //   modified_at: null
+    // };
+
+    const owsForm = await OwsReqForm.findOne({
+      where: {
+        ITS: aiutSurvey.its_no
+      }
+    });
+
+    aiutSurvey.student_id = studentRecord ? studentRecord.student_id : null,
+      aiutSurvey.student_no = studentRecord ? studentRecord.student_no : null,
+      aiutSurvey.created_at = toMySQLDatetime();
+    aiutSurvey.modified_at = null;
+    aiutSurvey.mohalla_id = await getMohallahIdByName(owsForm.mohalla);
+
+    await conn.query(`INSERT INTO survey SET ?`, aiutSurvey);
+
+    const student_id = '';
+
+    let record = await createStudentInstitute({
+      financial_year_id: await getLastFinancialYearId(),
+      student_id: student_id,
+      institute_category_id: 0,
+      school_id: getOrCreateSchoolId({
+        school_name: owsForm.institution,
+        institute_category_id: 0,
+        school_category: 0,
+        created_by_id: 1
+      }),
+      class_id: 0,
+      section_id: 0,
+      created_by_id: 1
+    });
+
+    console.log(record);
+
+    let financial_survey = await createFinancialSurvey({
+      student_id: student_id,
+      monthly_income: totalIncome,
+      earning_members: income_count,
+      dependents: dependent_count,
+      flat_area: '',
+      employer_name: '',
+      student_status: 'New',
+      status: 'Request',
+      created_by_id: 1
+    });
+
+    console.log(financial_survey);
+
+    let financial_survey_fee = await addSurveyFee(
+      financial_survey.financial_survey_id,  // the survey you just created
+      2,                           // fee_type_id = 1
+      owsForm.fundAsking                     // amount
+    );
+
+    console.log(financial_survey_fee);
+
+    let student_fee = await createStudentFee({
+      financial_year_id: await getLastFinancialYearId(),   // e.g. 8
+      student_id: student_id,
+      amount: owsForm.fundAsking,
+      remarks: owsForm.description,
+      created_by_id: 1
+    });
+
+    console.log(student_fee);
+
+    const [rows2] = await pool.query(
+      `SELECT assets 
+       FROM application_main
+      WHERE id = ?`,
+      [applicationId]
+    );
+    if (!rows2.length) {
+      throw new Error(`Application ${applicationId} not found`);
+    }
+
+    const raw = rows2[0].assets || "";
+    let assetsOptions = raw
+      .split(',')
+      .map(s => s.trim())
+      .filter(s => s.length > 0)
+      .map(name => ({ name }));
+
+    let studentGoodsRows = await populateStudentGoods(
+      await getLastFinancialYearId(),
+      student_id,
+      assetsOptions,
+      1
+    );
+
+    console.log(studentGoodsRows);
+
+
+  } finally {
+    conn.release();
+  }
+}
 
 
 aiut_sequelize
