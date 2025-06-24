@@ -3224,7 +3224,6 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
         ...aiutSurvey,
         student_id:    studentRecord.student_id,
         student_no:    studentRecord.student_no,
-        total_income:  totalIncome,
         created_at:    toMySQLDatetime(),
         modified_at:   null
       }]);
