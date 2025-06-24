@@ -2951,6 +2951,162 @@ app.get('/api/get-aiut-table/:tableName', async (req, res) => {
   }
 });
 
+async function getMohallahIdByName(name) {
+  // exact match; for case‐insensitive or partial matches you can swap to Op.like etc.
+  const record = await Mohallah.findOne({
+    where: { mohallah_name: name },
+    attributes: ['mohallah_id']
+  });
+
+  return record ? record.mohallah_id : null;
+}
+
+async function getLastFinancialYearId() {
+  const rec = await FinancialYear.findOne({
+    attributes: ['financial_year_id'],
+    order: [['financial_year_id', 'DESC']],
+    limit: 1
+  });
+  return rec ? rec.financial_year_id : null;
+}
+
+async function createStudentInstitute({
+  financial_year_id,
+  student_id,
+  institute_category_id,
+  school_id,
+  class_id,
+  section_id,
+  created_by_id
+}) {
+  const newRecord = await StudentInstitute.create({
+    student_institute_id: uuidv4(),
+    financial_year_id,
+    student_id,
+    institute_category_id,
+    school_id,
+    class_id,
+    section_id,
+    created_at: new Date(),
+    created_by_id
+  });
+  return newRecord;
+}
+
+async function getOrCreateSchoolId({
+  school_name,
+  institute_category_id = null,
+  school_category       = null,
+  created_by_id         = null
+}) {
+  // Try to find an existing school
+  let school = await School.findOne({
+    where: { school_name },
+    attributes: ['school_id']
+  });
+
+  if (school) {
+    return school.school_id;
+  }
+
+  // Not found → insert a new record
+  const newSchool = await School.create({
+    // If you’re using auto-increment, omit this. Otherwise, uncomment:
+    // school_id: uuidv4(),
+    institute_category_id,
+    school_category,
+    school_name,
+    created_at: new Date(),
+    created_by_id
+  });
+
+  return newSchool.school_id;
+}
+
+async function addSurveyFee(financial_survey_id, fee_type_id, amount) {
+  // student_fee_id is NOT NULL in your schema, so we default it to empty string.
+  // If you actually have a student_fee row to link to, pass that ID here.
+  return await FinancialSurveyFee.create({
+    financial_survey_id,
+    student_fee_id: "",    // required by schema, but otherwise “blank”
+    fee_type_id,
+    amount,
+    // sort_order, frequency, parents_share, aiut_share, ratio, due_date, created_at, created_by_id
+    // will all use their DEFAULT values
+  });
+}
+
+async function createStudentFee({
+  financial_year_id,
+  student_id,
+  amount,
+  remarks = null,
+  created_by_id = null
+}) {
+  return await StudentFee.create({
+    student_fee_id: uuidv4(),
+    financial_year_id,
+    student_id,
+    amount,
+    remarks,
+    created_at: new Date(),
+    created_by_id
+    // sort_order, fee_type_id, due_date, parents_share, aiut_share, ratio, modified_at etc.
+    // will use your model defaults (NULL or 0 as defined)
+  });
+}
+
+async function createFinancialSurvey({
+  student_id,
+  monthly_income,
+  earning_members,
+  dependents,
+  flat_area,
+  employer_name,
+  student_status,
+  status,
+  created_by_id = null
+}) {
+  return await FinancialSurvey.create({
+    financial_survey_id: uuidv4(),
+    student_id,
+    monthly_income,
+    earning_members,
+    dependents,
+    flat_area,
+    employer_name,
+    student_status,
+    status,
+    created_at: new Date(),
+    created_by_id
+    // all other columns (mohallah_member_*, document_*, committee_*, modified_*, remove_from_fa, etc.)
+    // will use your model’s default or NULL
+  });
+}
+
+async function selectAllFromAiutTable(tableName) {
+  // Basic validation: only allow letters, numbers, and underscores
+  if (!/^[A-Za-z0-9_]+$/.test(tableName)) {
+    throw new Error('Invalid table name');
+  }
+
+  // ?? is the placeholder for identifiers in mysql2
+  const [rows] = await aiutpool.query('SELECT * FROM ??', [tableName]);
+  return rows;
+}
+
+
+app.get('/api/aiut/:tableName', async (req, res) => {
+  const { tableName } = req.params;
+  try {
+    const rows = await selectAllFromAiutTable(tableName);
+    res.json(rows);
+  } catch (err) {
+    console.error('Error querying table:', err);
+    res.status(400).json({ error: err.message });
+  }
+});
+
 
 
 aiut_sequelize
