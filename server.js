@@ -3290,7 +3290,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
 
     // 7) Handle assets → student_goods
     console.log('[7] Populating student goods...');
-    const [assetRows] = await conn.query(
+    const [assetRows] = await pool.query(
       `SELECT assets FROM application_main WHERE id = ?`,
       [applicationId]
     );
