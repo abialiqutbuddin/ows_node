@@ -3104,189 +3104,211 @@ async function populateStudentGoods(financial_year_id, student_id, assetsOptions
 
 async function insertAiutSurvey(applicationId, aiutSurvey) {
   const conn = await aiutpool.getConnection();
+  console.log(`\n[insertAiutSurvey] Start for applicationId=${applicationId}, its_no=${aiutSurvey.its_no}`);
   try {
-    // 1) Fetch the OWS form first
-    const owsForm = await OwsReqForm.findOne({
-      where: { ITS: aiutSurvey.its_no }
-    });
-    if (!owsForm) throw new Error(`No form for ITS=${aiutSurvey.its_no}`);
+    try {
+      // 1) Fetch the OWS form
+      console.log('[1] Fetching OwsReqForm...');
+      const owsForm = await OwsReqForm.findOne({ where: { ITS: aiutSurvey.its_no } });
+      if (!owsForm) throw new Error(`No OwsReqForm found for ITS=${aiutSurvey.its_no}`);
+      console.log('[1] owsForm:', owsForm.toJSON());
 
-    // 2) Get dependent & income counts
-    const [countRows] = await pool.query(
-      `SELECT
-         (SELECT COUNT(*) FROM dependents   WHERE application_id = ?) AS dependent_count,
-         (SELECT COUNT(*) FROM income_types WHERE application_id = ?) AS income_count`,
-      [applicationId, applicationId]
-    );
-    const { dependent_count, income_count } = countRows[0];
+      // 2) Get dependent & income counts
+      console.log('[2] Counting dependents & income_types...');
+      const [countRows] = await pool.query(
+        `SELECT
+           (SELECT COUNT(*) FROM dependents   WHERE application_id = ?) AS dependent_count,
+           (SELECT COUNT(*) FROM income_types WHERE application_id = ?) AS income_count`,
+        [applicationId, applicationId]
+      );
+      const { dependent_count, income_count } = countRows[0];
+      console.log(`[2] dependent_count=${dependent_count}, income_count=${income_count}`);
 
-    // 3) Sum income for father, fallback to mother
-    const [[{ total_income: dadIncome }]] = await pool.query(
-      `SELECT SUM(amount) AS total_income
-         FROM income_types
-        WHERE application_id = ? AND member_its = ?`,
-      [applicationId, aiutSurvey.father_its_no]
-    );
-    let totalIncome = dadIncome;
-    if (totalIncome == null) {
-      const [[{ total_income: momIncome }]] = await pool.query(
+      // 3) Sum income for father, fallback to mother
+      console.log('[3] Summing father income...');
+      const [[{ total_income: dadIncome }]] = await pool.query(
         `SELECT SUM(amount) AS total_income
            FROM income_types
           WHERE application_id = ? AND member_its = ?`,
-        [applicationId, aiutSurvey.mother_its_no]
+        [applicationId, aiutSurvey.father_its_no]
       );
-      totalIncome = momIncome || 0;
-    }
-
-    // 4) Find or insert student
-    let studentRecord;
-    if (aiutSurvey.its_no) {
-      // look up existing
-      let [studentRows] = await conn.query(
-        `SELECT student_id, student_no
-           FROM student
-          WHERE its_no = ?`,
-        [aiutSurvey.its_no]
-      );
-
-      if (studentRows.length === 0) {
-        // not found → insert
-        const [[{ maxno }]] = await conn.query(
-          `SELECT MAX(student_no) AS maxno FROM student`
+      let totalIncome = dadIncome;
+      if (totalIncome == null) {
+        console.log('[3] Father income null, summing mother income...');
+        const [[{ total_income: momIncome }]] = await pool.query(
+          `SELECT SUM(amount) AS total_income
+             FROM income_types
+            WHERE application_id = ? AND member_its = ?`,
+          [applicationId, aiutSurvey.mother_its_no]
         );
-        const newNo = (maxno || 0) + 1;
-        const newId = uuidv4();
-        const mohId = await getMohallahIdByName(owsForm.mohalla);
+        totalIncome = momIncome || 0;
+      }
+      console.log(`[3] totalIncome=${totalIncome}`);
 
-        const studentData = {
-          student_id:           newId,
-          student_no:           newNo,
-          sf_no:                aiutSurvey.sf_no,
-          its_no:               aiutSurvey.its_no,
-          student_name:         aiutSurvey.student_name,
-          surname:              aiutSurvey.surname,
-          dob:                  aiutSurvey.dob,
-          user_image:           aiutSurvey.user_image,
-          father_its_no:        aiutSurvey.father_its_no,
-          father_name:          aiutSurvey.father_name,
-          father_mobile_no:     aiutSurvey.father_mobile_no,
-          father_occupation_id: 0,
-          father_cnic:          aiutSurvey.father_cnic,
-          mother_its_no:        aiutSurvey.mother_its_no,
-          mother_name:          aiutSurvey.mother_name,
-          mother_mobile_no:     aiutSurvey.mother_mobile_no,
-          mother_occupation_id: 0,
-          residential_address:  aiutSurvey.residential_address,
-          residential_phone_no: aiutSurvey.residential_phone_no,
-          mohallah_id:          mohId,
-          gender:               aiutSurvey.gender,
-          status:               "Pending",
-          delete_request:       null,
-          madrassa_going:       "Yes",
-          madrassa_id:          0,
-          finance_support:      "Inactive",
-          fa_date:              null,
-          employer_name:        "",
-          monthly_income:       totalIncome,
-          earning_members:      income_count,
-          dependents:           dependent_count,
-          flat_area:            aiutSurvey.flat_area,
-          created_at:           toMySQLDatetime(),
-          created_by_id:        1,
-          modified_at:          null,
-          modified_by_id:       null
-        };
-
-        await conn.query(`INSERT INTO student SET ?`, [studentData]);
-
-        // re‐fetch
-        [studentRows] = await conn.query(
-          `SELECT student_id, student_no FROM student WHERE its_no = ?`,
+      // 4) Find or insert student
+      console.log('[4] Looking up student...');
+      let studentRecord = null;
+      if (aiutSurvey.its_no) {
+        let [studentRows] = await conn.query(
+          `SELECT student_id, student_no
+             FROM student
+            WHERE its_no = ?`,
           [aiutSurvey.its_no]
         );
+        console.log('[4] existing studentRows:', studentRows);
+
+        if (studentRows.length === 0) {
+          console.log('[4] No student found → inserting new one...');
+          const [[{ maxno }]] = await conn.query(`SELECT MAX(student_no) AS maxno FROM student`);
+          const newNo = (maxno || 0) + 1;
+          const newId = uuidv4();
+          const mohId = await getMohallahIdByName(owsForm.mohalla);
+          console.log(`[4] newNo=${newNo}, newId=${newId}, mohId=${mohId}`);
+
+          const studentData = {
+            student_id:           newId,
+            student_no:           newNo,
+            sf_no:                aiutSurvey.sf_no,
+            its_no:               aiutSurvey.its_no,
+            student_name:         aiutSurvey.student_name,
+            surname:              aiutSurvey.surname,
+            dob:                  aiutSurvey.dob,
+            user_image:           aiutSurvey.user_image,
+            father_its_no:        aiutSurvey.father_its_no,
+            father_name:          aiutSurvey.father_name,
+            father_mobile_no:     aiutSurvey.father_mobile_no,
+            father_occupation_id: 0,
+            father_cnic:          aiutSurvey.father_cnic,
+            mother_its_no:        aiutSurvey.mother_its_no,
+            mother_name:          aiutSurvey.mother_name,
+            mother_mobile_no:     aiutSurvey.mother_mobile_no,
+            mother_occupation_id: 0,
+            residential_address:  aiutSurvey.residential_address,
+            residential_phone_no: aiutSurvey.residential_phone_no,
+            mohallah_id:          mohId,
+            gender:               aiutSurvey.gender,
+            status:               "Pending",
+            delete_request:       null,
+            madrassa_going:       "Yes",
+            madrassa_id:          0,
+            finance_support:      "Inactive",
+            fa_date:              null,
+            employer_name:        "",
+            monthly_income:       totalIncome,
+            earning_members:      income_count,
+            dependents:           dependent_count,
+            flat_area:            aiutSurvey.flat_area,
+            created_at:           toMySQLDatetime(),
+            created_by_id:        1,
+            modified_at:          null,
+            modified_by_id:       null
+          };
+          console.log('[4] studentData:', studentData);
+
+          await conn.query('INSERT INTO student SET ?', [studentData]);
+          console.log('[4] Inserted new student.');
+
+          [studentRows] = await conn.query(
+            `SELECT student_id, student_no FROM student WHERE its_no = ?`,
+            [aiutSurvey.its_no]
+          );
+        }
+
+        studentRecord = studentRows[0];
+        console.log('[4] Final studentRecord:', studentRecord);
       }
 
-      studentRecord = studentRows[0];
+      // 5) Insert into survey
+      console.log('[5] Inserting into survey...');
+      await conn.query('INSERT INTO survey SET ?', [{
+        ...aiutSurvey,
+        student_id:    studentRecord.student_id,
+        student_no:    studentRecord.student_no,
+        total_income:  totalIncome,
+        created_at:    toMySQLDatetime(),
+        modified_at:   null
+      }]);
+      console.log('[5] Survey inserted.');
+
+      // 6) Create Aiut-schema records
+      const fyId = await getLastFinancialYearId();
+      console.log(`[6] financial_year_id=${fyId}`);
+
+      console.log('[6] createStudentInstitute...');
+      await createStudentInstitute({
+        financial_year_id:     fyId,
+        student_id:            studentRecord.student_id,
+        institute_category_id: 0,
+        school_id:             await getOrCreateSchoolId({
+                                 school_name: owsForm.institution,
+                                 institute_category_id: 0,
+                                 school_category: '',
+                                 created_by_id:  1
+                               }),
+        class_id:   0,
+        section_id: 0,
+        created_by_id: 1
+      });
+      console.log('[6] StudentInstitute created.');
+
+      console.log('[6] createFinancialSurvey...');
+      const finSurvey = await createFinancialSurvey({
+        student_id:     studentRecord.student_id,
+        monthly_income: totalIncome,
+        earning_members: income_count,
+        dependents:      dependent_count,
+        flat_area:       '',
+        employer_name:   '',
+        student_status: 'New',
+        status:         'Request',
+        created_by_id:  1
+      });
+      console.log('[6] FinancialSurvey:', finSurvey.toJSON());
+
+      console.log('[6] addSurveyFee...');
+      await addSurveyFee(finSurvey.financial_survey_id, 2, owsForm.fundAsking);
+      console.log('[6] SurveyFee added.');
+
+      console.log('[6] createStudentFee...');
+      await createStudentFee({
+        financial_year_id: fyId,
+        student_id:        studentRecord.student_id,
+        amount:            owsForm.fundAsking,
+        remarks:           owsForm.description,
+        created_by_id:     1
+      });
+      console.log('[6] StudentFee created.');
+
+      // 7) Handle assets → student_goods
+      console.log('[7] Populating student goods...');
+      const [assetRows] = await pool.query(
+        `SELECT assets FROM application_main WHERE id = ?`,
+        [applicationId]
+      );
+      const rawAssets = assetRows[0]?.assets || '';
+      const assetsOptions = rawAssets
+        .split(',')
+        .map(s => s.trim())
+        .filter(Boolean)
+        .map(name => ({ name }));
+      console.log('[7] assetsOptions:', assetsOptions);
+
+      await populateStudentGoods(fyId, studentRecord.student_id, assetsOptions, 1);
+      console.log('[7] StudentGoods populated.');
+
+    } catch (innerErr) {
+      console.error('[insertAiutSurvey] ERROR in logic:', innerErr);
+      throw innerErr;
     }
 
-    // 5) Insert into survey
-    await conn.query(`INSERT INTO survey SET ?`, [{
-      ...aiutSurvey,
-      student_id: studentRecord.student_id,
-      student_no: studentRecord.student_no,
-      total_income: totalIncome,
-      created_at: toMySQLDatetime(),
-      modified_at: null
-    }]);
-
-    // 6) Create aiut‐schema records
-    const fyId = await getLastFinancialYearId();
-
-    await createStudentInstitute({
-      financial_year_id:     fyId,
-      student_id:            studentRecord.student_id,
-      institute_category_id: 0,
-      school_id:             await getOrCreateSchoolId({
-                                school_name: owsForm.institution,
-                                institute_category_id: 0,
-                                school_category: '',
-                                created_by_id:  1
-                              }),
-      class_id:   0,
-      section_id: 0,
-      created_by_id: 1
-    });
-
-    const finSurvey = await createFinancialSurvey({
-      student_id:     studentRecord.student_id,
-      monthly_income: totalIncome,
-      earning_members: income_count,
-      dependents,      // shorthand for dependent_count
-      flat_area:       '',
-      employer_name:   '',
-      student_status: 'New',
-      status:         'Request',
-      created_by_id:  1
-    });
-
-    await addSurveyFee(
-      finSurvey.financial_survey_id,
-      2,
-      owsForm.fundAsking
-    );
-
-    await createStudentFee({
-      financial_year_id: fyId,
-      student_id:        studentRecord.student_id,
-      amount:            owsForm.fundAsking,
-      remarks:           owsForm.description,
-      created_by_id:     1
-    });
-
-    // 7) Handle assets → student_goods
-    const [assetRows] = await pool.query(
-      `SELECT assets FROM application_main WHERE id = ?`,
-      [applicationId]
-    );
-    const rawAssets = assetRows[0]?.assets || '';
-    const assetsOptions = rawAssets
-      .split(',')
-      .map(s => s.trim())
-      .filter(Boolean)
-      .map(name => ({ name }));
-
-    await populateStudentGoods(
-      fyId,
-      studentRecord.student_id,
-      assetsOptions,
-      1
-    );
-
+  } catch (outerErr) {
+    console.error('[insertAiutSurvey] FAILED:', outerErr);
+    throw outerErr;
   } finally {
     conn.release();
+    console.log('[insertAiutSurvey] Connection released.');
   }
 }
-
 
 aiut_sequelize
   .authenticate()
