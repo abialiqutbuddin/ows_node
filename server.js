@@ -3050,7 +3050,7 @@ app.get('/api/aiut/:tableName', async (req, res) => {
 
 async function populateStudentGoods(financial_survey_id, student_id, assetsOptions, created_by_id) {
   console.log('⚙️  populateStudentGoods start', {
-    financial_year_id,
+    inancial_survey_id,
     student_id,
     assetsOptions,
     created_by_id
