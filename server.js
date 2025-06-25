@@ -3048,7 +3048,7 @@ app.get('/api/aiut/:tableName', async (req, res) => {
   }
 });
 
-async function populateStudentGoods(financial_year_id, student_id, assetsOptions, created_by_id) {
+async function populateStudentGoods(financial_survey_id, student_id, assetsOptions, created_by_id) {
   console.log('⚙️  populateStudentGoods start', {
     financial_year_id,
     student_id,
@@ -3107,8 +3107,8 @@ async function populateStudentGoods(financial_year_id, student_id, assetsOptions
     console.log(`✏️ inserting StudentGoods for goods_id=${g.goods_id}, status=${status}`);
     try {
       const row = await FinancialSurveyGoods.create({
-        student_goods_id: uuidv4(),
-        financial_year_id,
+        financial_survey_goods_id: uuidv4(),
+        financial_survey_id,
         student_id,
         goods_id: g.goods_id,
         status,
@@ -3334,7 +3334,7 @@ aiut_student_status = 'Old';
       .map(name => ({ name }));
     console.log('[7] assetsOptions:', assetsOptions);
 
-    await populateStudentGoods(fyId, studentRecord.student_id, assetsOptions, 1);
+    await populateStudentGoods(finSurvey.financial_survey_id, studentRecord.student_id, assetsOptions, 1);
     console.log('[7] StudentGoods populated.');
 
     // COMMIT TRANSACTION
