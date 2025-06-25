@@ -3107,7 +3107,7 @@ async function populateStudentGoods(financial_survey_id, student_id, assetsOptio
     console.log(`✏️ inserting StudentGoods for goods_id=${g.goods_id}, status=${status}`);
     try {
       const row = await FinancialSurveyGoods.create({
-        financial_survey_goods_id: uuidv4(),
+        //financial_survey_goods_id: uuidv4(),
         financial_survey_id,
         student_id,
         goods_id: g.goods_id,
