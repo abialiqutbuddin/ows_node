@@ -3194,8 +3194,8 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
       );
       console.log('[4] existing studentRows:', studentRows);
 
-      if(studentRows.length > 0) {
-aiut_student_status = 'Old';
+      if (studentRows.length > 0) {
+        aiut_student_status = 'Old';
       }
 
       if (studentRows.length === 0) {
@@ -3290,28 +3290,40 @@ aiut_student_status = 'Old';
     //   section_id: 0,
     //   created_by_id: 1
     // });
+    const existingRecord = await StudentInstitute.findOne({
+      where: {
+        financial_year_id: fyId,
+        student_id: studentRecord.student_id
+      }
+    });
+
+    if (!existingRecord) {
       const newRecord = await StudentInstitute.create({
-    student_institute_id: uuidv4(),
-    fyId,
-    student_id: studentRecord.student_id,
-    institute_category_id: 0,
-    school_id: await getOrCreateSchoolId({
-        school_name: owsForm.institution,
+        student_institute_id: uuidv4(),
+        financial_year_id: fyId,
+        student_id: studentRecord.student_id,
         institute_category_id: 0,
-        school_category: '',
-        created_by_id: 1
-      }),
-          class_id: 0,
-      section_id: 0,
-      created_by_id: 1,
-    created_at: new Date(),
-  });
-    console.log('[6] StudentInstitute created.');
+        school_id: await getOrCreateSchoolId({
+          school_name: owsForm.institution,
+          institute_category_id: 0,
+          school_category: '',
+          created_by_id: 1
+        }),
+        class_id: 0,
+        section_id: 0,
+        created_by_id: 1,
+        created_at: new Date(),
+      });
+
+      console.log('[6] StudentInstitute created.');
+    } else {
+      console.log('[6] StudentInstitute already exists. Skipped.');
+    }
 
     console.log('[6] createFinancialSurvey...');
     const finSurvey = await FinancialSurvey.create({
-    financial_survey_id: uuidv4(),
-    student_id: studentRecord.student_id,
+      financial_survey_id: uuidv4(),
+      student_id: studentRecord.student_id,
       monthly_income: totalIncome,
       earning_members: income_count,
       dependents: dependent_count,
@@ -3320,11 +3332,11 @@ aiut_student_status = 'Old';
       student_status: aiut_student_status,
       status: 'Request',
       created_by_id: 1,
-    created_at: new Date(),
-    // all other columns (mohallah_member_*, document_*, committee_*, modified_*, remove_from_fa, etc.)
-    // will use your model’s default or NULL
-  });
-    
+      created_at: new Date(),
+      // all other columns (mohallah_member_*, document_*, committee_*, modified_*, remove_from_fa, etc.)
+      // will use your model’s default or NULL
+    });
+
     // await createFinancialSurvey({
     //   student_id: studentRecord.student_id,
     //   monthly_income: totalIncome,
@@ -3396,7 +3408,7 @@ app.delete('/api/aiut/:tableName/:columnName/:value', async (req, res) => {
   try {
     // Use parameterized identifiers (??) and values (?) 
     const [result] = await aiutpool.query(
-       'DELETE FROM ?? WHERE ?? = ?',
+      'DELETE FROM ?? WHERE ?? = ?',
       [tableName, columnName, value]
     );
 
