@@ -156,6 +156,35 @@ app.post("/get-profile", async (req, res) => {
   }
 });
 
+//GET PAKTALIM DEENI EDUCATION
+app.post('/get-profile-deeni', async (req, res) => {
+  const { studentId } = req.body;
+
+  if (!studentId) {
+    return res.status(400).json({ error: 'studentId is required in the request body.' });
+  }
+
+  const url = `https://paktalim.com/admin/ws_app/GetProfileDeeniEducation/${studentId}`;
+  const params = {
+    access_key: '0e8012b7e5ae222b77834b509aa8f13f1ee8cc43',
+    username: '40459629'
+  };
+
+  try {
+    const response = await axios.get(url, {
+      params,
+      headers: {
+        Authorization: 'Basic cGFrdGFsaW06RzcjdkQhOXBaJng='
+      }
+    });
+
+    res.status(200).json(response.data);
+  } catch (error) {
+    console.error('Error fetching data:', error.message);
+    res.status(500).json({ error: 'Failed to fetch Deeni education profile.' });
+  }
+});
+
 
 // CRC FAMILY API
 app.post("/get-family-profile", async (req, res) => {
