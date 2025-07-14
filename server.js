@@ -3276,25 +3276,42 @@ aiut_student_status = 'Old';
     console.log(`[6] financial_year_id=${fyId}`);
 
     console.log('[6] createStudentInstitute...');
-    await createStudentInstitute({
-      financial_year_id: fyId,
-      student_id: studentRecord.student_id,
-      institute_category_id: 0,
-      school_id: await getOrCreateSchoolId({
+    // await createStudentInstitute({
+    //   financial_year_id: fyId,
+    //   student_id: studentRecord.student_id,
+    //   institute_category_id: 0,
+    //   school_id: await getOrCreateSchoolId({
+    //     school_name: owsForm.institution,
+    //     institute_category_id: 0,
+    //     school_category: '',
+    //     created_by_id: 1
+    //   }),
+    //   class_id: 0,
+    //   section_id: 0,
+    //   created_by_id: 1
+    // });
+      const newRecord = await StudentInstitute.create({
+    student_institute_id: uuidv4(),
+    fyId,
+    student_id: studentRecord.student_id,
+    institute_category_id: 0,
+    school_id: await getOrCreateSchoolId({
         school_name: owsForm.institution,
         institute_category_id: 0,
         school_category: '',
         created_by_id: 1
       }),
-      class_id: 0,
+          class_id: 0,
       section_id: 0,
-      created_by_id: 1
-    });
+      created_by_id: 1,
+    created_at: new Date(),
+  });
     console.log('[6] StudentInstitute created.');
 
     console.log('[6] createFinancialSurvey...');
-    const finSurvey = await createFinancialSurvey({
-      student_id: studentRecord.student_id,
+    const finSurvey = await FinancialSurvey.create({
+    financial_survey_id: uuidv4(),
+    student_id: studentRecord.student_id,
       monthly_income: totalIncome,
       earning_members: income_count,
       dependents: dependent_count,
@@ -3302,8 +3319,24 @@ aiut_student_status = 'Old';
       employer_name: '',
       student_status: aiut_student_status,
       status: 'Request',
-      created_by_id: 1
-    });
+      created_by_id: 1,
+    created_at: new Date(),
+    // all other columns (mohallah_member_*, document_*, committee_*, modified_*, remove_from_fa, etc.)
+    // will use your model’s default or NULL
+  });
+    
+    // await createFinancialSurvey({
+    //   student_id: studentRecord.student_id,
+    //   monthly_income: totalIncome,
+    //   earning_members: income_count,
+    //   dependents: dependent_count,
+    //   flat_area: '',
+    //   employer_name: '',
+    //   student_status: aiut_student_status,
+    //   status: 'Request',
+    //   created_by_id: 1
+    // });
+
     console.log('[6] FinancialSurvey:', finSurvey.toJSON());
 
     console.log('[6] addSurveyFee...');
