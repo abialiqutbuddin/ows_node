@@ -136,16 +136,23 @@ app.post("/get-profile", async (req, res) => {
     const mainProfileRes = await axios.get(profileUrl);
     const profileData = mainProfileRes.data;
 
-    // Get deeni_education
-    console.log("Fetching deeni education for ITS ID:", its_id);
-    const deeniUrl = `https://paktalim.com/admin/ws_app/GetProfileEducation/${its_id}?access_key=8803c22b50548c9d5b1401e3ab5854812c4dcacb&username=40459629&password=1107865253`;
-    const deeniRes = await axios.get(deeniUrl);
+    // Fetch Deeni Education separately
+    console.log("Fetching deeni education...");
+    const deeniUrl = `https://paktalim.com/admin/ws_app/GetProfileDeeniEducation/${its_id}`;
+    const deeniParams = {
+      access_key: '0e8012b7e5ae222b77834b509aa8f13f1ee8cc43',
+      username: '40459629'
+    };
 
-    const deeniData = deeniRes.data;
+    const deeniRes = await axios.get(deeniUrl, {
+      params: deeniParams,
+      headers: {
+        Authorization: 'Basic cGFrdGFsaW06RzcjdkQhOXBaJng='
+      }
+    });
 
-    // Add `deeni_education` to main profile
-    profileData.deeni_education = Array.isArray(deeniData?.deeni_education)
-      ? deeniData.deeni_education
+    const deeniEducation = Array.isArray(deeniRes.data?.deeni_education)
+      ? deeniRes.data.deeni_education
       : [];
 
     return res.status(200).json(profileData);
