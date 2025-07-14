@@ -155,6 +155,8 @@ app.post("/get-profile", async (req, res) => {
       ? deeniRes.data.deeni_education
       : [];
 
+    profileData.deeni_education = deeniEducation;
+
     return res.status(200).json(profileData);
 
   } catch (error) {
