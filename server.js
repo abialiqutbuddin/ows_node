@@ -132,7 +132,7 @@ app.post("/get-profile", async (req, res) => {
     console.log("Fetching main profile for ITS ID:", its_id);
 
     // Get main profile
-    const profileUrl = `https://paktalim.com/admin/ws_app/GetProfile/${its_id}?access_key=some_main_access_key&username=40459629`;
+    const profileUrl = `https://paktalim.com/admin/ws_app/GetProfileEducation/${its_id}?access_key=8803c22b50548c9d5b1401e3ab5854812c4dcacb&username=40459629&password=1107865253`;
     const mainProfileRes = await axios.get(profileUrl);
     const profileData = mainProfileRes.data;
 
