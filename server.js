@@ -119,40 +119,51 @@ app.get('/fetch-image', async (req, res) => {
   }
 });
 
+//const axios = require("axios");
+
 app.post("/get-profile", async (req, res) => {
   try {
     const { its_id } = req.body;
 
-    if (!its_id) {
-      return res.status(400).json({ error: "Missing 'its_id' in request body" });
-    }
-    if (typeof its_id !== "string" || its_id.trim().length === 0) {
+    if (!its_id || typeof its_id !== "string" || its_id.trim().length === 0) {
       return res.status(400).json({ error: "'its_id' must be a non-empty string" });
     }
 
-    console.log("Fetching profile for ITS ID:", its_id);
+    console.log("Fetching main profile for ITS ID:", its_id);
 
-    const url = `https://paktalim.com/admin/ws_app/GetProfileEducation/${its_id}?access_key=8803c22b50548c9d5b1401e3ab5854812c4dcacb&username=40459629&password=1107865253`;
-    const response = await axios.get(url);
+    // Get main profile
+    const profileUrl = `https://paktalim.com/admin/ws_app/GetProfile/${its_id}?access_key=some_main_access_key&username=40459629`;
+    const mainProfileRes = await axios.get(profileUrl);
+    const profileData = mainProfileRes.data;
 
-    //  await transporter.sendMail({
-    //     from: '"OWS" <abialigadi@gmail.com>',
-    //     //to: "alaqmar11@gmail.com",
-    //     to: "abialigadi@gmail.com",
-    //     subject: "Profile Update Successful",
-    //     text: `The profile update was successful.\n\nResponse: ${JSON.stringify(response.data)}`
-    //   });
+    // Get deeni_education
+    console.log("Fetching deeni education for ITS ID:", its_id);
+    const deeniUrl = `https://paktalim.com/admin/ws_app/GetProfileEducation/${its_id}?access_key=8803c22b50548c9d5b1401e3ab5854812c4dcacb&username=40459629&password=1107865253`;
+    const deeniRes = await axios.get(deeniUrl);
 
-    return res.status(200).json(response.data);
+    const deeniData = deeniRes.data;
+
+    // Add `deeni_education` to main profile
+    profileData.deeni_education = Array.isArray(deeniData?.deeni_education)
+      ? deeniData.deeni_education
+      : [];
+
+    return res.status(200).json(profileData);
 
   } catch (error) {
     console.error("Error fetching profile data:", error.message);
 
     if (error.response) {
-      return res.status(error.response.status).json({ error: "Failed to fetch profile data", details: error.response.data });
+      return res.status(error.response.status).json({
+        error: "Failed to fetch profile data",
+        details: error.response.data
+      });
     }
 
-    return res.status(500).json({ error: "Server error", details: error.message });
+    return res.status(500).json({
+      error: "Server error",
+      details: error.message
+    });
   }
 });
 
