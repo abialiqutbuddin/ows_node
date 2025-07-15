@@ -5,7 +5,7 @@ const { Sequelize, DataTypes } = require('sequelize');
 
 // Initialize Sequelize (adjust config as needed)
 const sequelize = new Sequelize(
-  'aiut',
+  'test_aiut',
   'aak',
   'Aak@110*',
   {
