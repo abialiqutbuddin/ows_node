@@ -1533,7 +1533,18 @@ const aiutpool = mysql.createPool({
   user: 'aak',
   password: 'Aak@110*',
   port: 3308,
-  database: "aiut",
+  database: 'aiut',
+
+  // give up to 60s for a TCP connect
+  connectTimeout: 60000,
+
+  // if using mysql2, give up to 60s to acquire a free pooled conn
+  acquireTimeout: 60000,
+
+  // optional pool tuning
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
 
 // Load form config JSON
