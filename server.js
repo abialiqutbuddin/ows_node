@@ -3204,7 +3204,7 @@ async function populateStudentGoods(financial_survey_id, student_id, assetsOptio
 
 aiut_sequelize
   .authenticate()
-  .then(() => console.log('✔️  Database connection established'))
+  .then(() => console.log('✔️  Database connection established to AIUT SEQ'))
   .catch(err => console.error('❌  Unable to connect to DB:', err));
 
 const { v4: uuidv4 } = require('uuid');
