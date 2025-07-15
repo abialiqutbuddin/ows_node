@@ -12,7 +12,13 @@ const sequelize = new Sequelize(
     host: '36.50.12.171',
     port: 3308,
     dialect: 'mysql',
-    logging: false, // disable SQL logging
+    pool: {
+        max: 10,
+        min: 0,
+        acquire: 30000, 
+        idle: 10000 
+    },
+    logging: false 
   }
 );
 
