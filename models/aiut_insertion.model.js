@@ -9,7 +9,7 @@ const sequelize = new Sequelize(
   'aak',
   'Aak@110*',
   {
-    host: '182.188.38.224',
+    host: '36.50.12.171',
     port: 3308,
     dialect: 'mysql',
     logging: false, // disable SQL logging
