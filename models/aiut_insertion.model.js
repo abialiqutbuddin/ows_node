@@ -5,18 +5,21 @@ const { Sequelize, DataTypes } = require('sequelize');
 
 // Initialize Sequelize (adjust config as needed)
 const sequelize = new Sequelize(
-  'test_aiut',
+  'aiut',
   'aak',
   'Aak@110*',
   {
     host: '36.50.12.171',
     port: 3308,
     dialect: 'mysql',
-    pool: {
-        max: 10,
-        min: 0,
-        acquire: 30000, 
-        idle: 10000 
+     pool: {
+      max: 10,
+      min: 0,
+      acquire: 60000,   // give it up to 60s to acquire a connection
+      idle: 10000,
+    },
+    dialectOptions: {
+      connectTimeout: 60000  // 60s instead of the default ~10s
     },
     logging: false 
   }
