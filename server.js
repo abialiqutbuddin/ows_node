@@ -2244,6 +2244,7 @@ app.post('/api/submit-future-form', upload.none(), async (req, res) => {
   }
 
   const flatData = flattenFormData(req.body);
+  console.log('Flattened form data:', flatData);
   const form = new FormData();
 
   for (const key in flatData) {
