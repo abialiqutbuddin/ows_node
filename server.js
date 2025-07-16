@@ -2233,43 +2233,75 @@ function flattenFormData(formData) {
   return flatData;
 }
 
-app.post('/api/submit-future-form', upload.none(), async (req, res) => {
-  try {
-    if (typeof req.body.details === 'string') {
-      req.body.details = JSON.parse(req.body.details);
+function flattenFormData(data, parentKey = '') {
+  const items = {};
+  for (const key in data) {
+    if (!data.hasOwnProperty(key)) continue;
+    const value = data[key];
+    // Build the new key, e.g. "details[0][field]"
+    const newKey = parentKey ? `${parentKey}[${key}]` : key;
+
+    if (Array.isArray(value)) {
+      value.forEach((v, i) => {
+        Object.assign(items, flattenFormData(v, `${newKey}[${i}]`));
+      });
+    } else if (value !== null && typeof value === 'object') {
+      Object.assign(items, flattenFormData(value, newKey));
+    } else {
+      items[newKey] = value;
     }
-  } catch (e) {
-    console.error('Failed to parse details:', e.message);
-    return res.status(400).json({ error: 'Invalid JSON in `details`' });
   }
+  return items;
+}
 
-  const flatData = flattenFormData(req.body);
-  console.log('Flattened form data:', flatData);
-  const form = new FormData();
-
-  for (const key in flatData) {
-    form.append(key, flatData[key]);
-  }
-
-  try {
-    const response = await axios.post(
-      'https://paktalim.com/admin/ws_app/FutureForm?access_key=9a883f01f08afef40186b935037d67d19232d56c&username=40459629',
-      form,
-      {
-        headers: {
-          ...form.getHeaders(),
-          'Authorization': 'Basic cGFrdGFsaW06RzcjdkQhOXBaJng=',
-          'Cookie': 'DHEducationAdmin=78b8b879e0fdc7d408803363d179c945',
-        },
+app.post(
+  '/api/submit-future-form',
+  upload.none(), // parses multipart/form-data but doesn't handle files
+  async (req, res) => {
+    // 1) Ensure details is parsed JSON if sent as string
+    if (typeof req.body.details === 'string') {
+      try {
+        req.body.details = JSON.parse(req.body.details);
+      } catch (e) {
+        console.error('Failed to parse details JSON:', e.message);
+        return res.status(400).json({ error: 'Invalid JSON in `details`' });
       }
-    );
+    }
 
-    res.status(200).json({ message: 'Form submitted successfully', data: response.data });
-  } catch (error) {
-    console.error('Submission error:', error.message);
-    res.status(500).json({ error: error.message, details: error.response?.data });
+    // 2) Flatten the entire body into form‐fields
+    const flatData = flattenFormData(req.body);
+    console.log('Flattened form data:', flatData);
+
+    // 3) Build a FormData payload
+    const form = new FormData();
+    for (const key in flatData) {
+      form.append(key, flatData[key]);
+    }
+
+    // 4) POST to the remote WS
+    try {
+      const response = await axios.post(
+        'https://paktalim.com/admin/ws_app/FutureForm?access_key=9a883f01f08afef40186b935037d67d19232d56c&username=40459629',
+        form,
+        {
+          headers: {
+            ...form.getHeaders(),
+            Authorization: 'Basic cGFrdGFsaW06RzcjdkQhOXBaJng=',
+            Cookie: 'DHEducationAdmin=78b8b879e0fdc7d408803363d179c945',
+          },
+        }
+      );
+      return res
+        .status(200)
+        .json({ message: 'Form submitted successfully', data: response.data });
+    } catch (error) {
+      console.error('Submission error:', error.message, error.response?.data);
+      return res
+        .status(500)
+        .json({ error: error.message, details: error.response?.data });
+    }
   }
-});
+);
 
 const upload2 = multer({ storage: multer.memoryStorage() });
 
