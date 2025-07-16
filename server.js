@@ -2236,9 +2236,8 @@ function flattenFormData(formData) {
 function flattenFormData(data, parentKey = '') {
   const items = {};
   for (const key in data) {
-    if (!data.hasOwnProperty(key)) continue;
+    if (!Object.prototype.hasOwnProperty.call(data, key)) continue;
     const value = data[key];
-    // Build the new key, e.g. "details[0][field]"
     const newKey = parentKey ? `${parentKey}[${key}]` : key;
 
     if (Array.isArray(value)) {
@@ -2256,29 +2255,55 @@ function flattenFormData(data, parentKey = '') {
 
 app.post(
   '/api/submit-future-form',
-  upload.none(), // parses multipart/form-data but doesn't handle files
+  upload.none(),
   async (req, res) => {
-    // 1) Ensure details is parsed JSON if sent as string
+    // parse JSON string for details
     if (typeof req.body.details === 'string') {
       try {
         req.body.details = JSON.parse(req.body.details);
       } catch (e) {
-        console.error('Failed to parse details JSON:', e.message);
-        return res.status(400).json({ error: 'Invalid JSON in `details`' });
+        return res.status(400).json({ error: 'Invalid JSON in details' });
       }
     }
 
-    // 2) Flatten the entire body into form‐fields
-    const flatData = flattenFormData(req.body);
-    console.log('Flattened form data:', flatData);
+    // ensure details[0] exists
+    const details = Array.isArray(req.body.details)
+      ? req.body.details
+      : [{}];
 
-    // 3) Build a FormData payload
+    // copy all future fields into details[0]
+    [
+      'current_hifz_enrolled',
+      'niyat_hifz_enrolled',
+      'next_sanad',
+      'is_quran_tilawat',
+      'sehat_eraab',
+      'sehat_huroof',
+      'is_tilawat_niyat',
+      'tilawat_preferred_days',
+      'tilawat_preferred_timings',
+      'attended_counselling',
+      'comments',
+      'will_asbaaq',
+      'will_khidmat',
+      'khidmat',
+    ].forEach((field) => {
+      if (req.body[field] !== undefined) {
+        details[0][field] = req.body[field];
+      }
+    });
+
+    req.body.details = details;
+
+    // flatten both top-level and nested fields
+    const flat = flattenFormData(req.body);
+
+    // build multipart/form-data
     const form = new FormData();
-    for (const key in flatData) {
-      form.append(key, flatData[key]);
-    }
+    Object.entries(flat).forEach(([key, val]) => {
+      form.append(key, val);
+    });
 
-    // 4) POST to the remote WS
     try {
       const response = await axios.post(
         'https://paktalim.com/admin/ws_app/FutureForm?access_key=9a883f01f08afef40186b935037d67d19232d56c&username=40459629',
@@ -2287,18 +2312,17 @@ app.post(
           headers: {
             ...form.getHeaders(),
             Authorization: 'Basic cGFrdGFsaW06RzcjdkQhOXBaJng=',
-            Cookie: 'DHEducationAdmin=78b8b879e0fdc7d408803363d179c945',
+            Cookie: 'DHEducationAdmin=1909a79c7026eb921ca596305120a309',
           },
         }
       );
-      return res
-        .status(200)
-        .json({ message: 'Form submitted successfully', data: response.data });
-    } catch (error) {
-      console.error('Submission error:', error.message, error.response?.data);
-      return res
-        .status(500)
-        .json({ error: error.message, details: error.response?.data });
+      res.json({ message: 'Submitted', data: response.data });
+    } catch (err) {
+      console.error('Submission error', err.response?.data || err.message);
+      res.status(500).json({
+        error: err.message,
+        details: err.response?.data,
+      });
     }
   }
 );
