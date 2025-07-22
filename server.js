@@ -2616,50 +2616,42 @@ app.get('/api/get-user-profile', async (req, res) => {
 // Get all user profiles with roles
 app.get('/api/get-user-list', async (req, res) => {
   try {
-    // pagination params (optional)
-    const page    = parseInt(req.query.page) || 1;
-    const perPage = parseInt(req.query.perPage) || 25;
-    const offset  = (page - 1) * perPage;
-
-    // 1) total count for meta
-    const [[{ cnt }]] = await pool.query(`SELECT COUNT(*) AS cnt FROM owsadmUsrProfil`);
-
-    // 2) fetch paged users
+    // 1) fetch all users (you probably already have this)
     const [users] = await pool.query(`
       SELECT
-        u.UsrID,
-        u.UsrITS,
-        u.UsrName  AS name,
-        u.UsrLogin AS login,
-        u.UsrMobile AS mobile,
-        u.UsrMohalla AS mohalla
-      FROM owsadmUsrProfil AS u
-      LIMIT ? OFFSET ?
-    `, [perPage, offset]);
+        UsrID,
+        UsrITS,
+        UsrName  AS name,
+        UsrLogin AS login,
+        UsrMobile AS mobile,
+        UsrMohalla AS mohalla
+      FROM owsadmUsrProfil
+    `);
 
-    // 3) fetch all roles + permissions + company names in one go
+    // 2) fetch all user–role assignments, role details, and company names
     const [userRoles] = await pool.query(`
       SELECT
         ur.UsrID,
-        ur.CompID            AS compId,
-        c.CompName           AS compName,
-        rm.RId               AS roleId,
-        rm.RTitle            AS roleTitle,
+        ur.CompID               AS compId,
+        c.CompName              AS compName,
+        rm.RId                  AS roleId,
+        rm.RTitle               AS roleTitle,
         rm.\`Add\`    AS canAdd,
         rm.\`Edit\`   AS canEdit,
         rm.\`View\`   AS canView,
         rm.\`Delete\` AS canDelete
       FROM owsadmUsrRole AS ur
-      JOIN owsadmRoleMas AS rm ON rm.RId = ur.RID
-      JOIN Companies      AS c  ON c.CompID = ur.CompID
+      LEFT JOIN owsadmRoleMas AS rm
+        ON rm.RId = ur.RID
+      LEFT JOIN owsadmComp AS c
+        ON c.Id = ur.CompID          -- <<== use your real company table here
       WHERE ur.UsrID IN (?)
-    `, [ users.map(u => u.UsrID) ]);
+    `, [ users.map(u => u.UsrID) ]);   
 
-    // 4) group roles by user
-    const rolesByUser = userRoles.reduce((acc,row) => {
+    // 3) build a map of roles per user (deduped)
+    const rolesByUser = userRoles.reduce((acc, row) => {
       const uid = row.UsrID;
       if (!acc[uid]) acc[uid] = new Map();
-      // dedupe by compId+roleId
       const key = `${row.compId}_${row.roleId}`;
       if (!acc[uid].has(key)) {
         acc[uid].set(key, {
@@ -2682,7 +2674,7 @@ app.get('/api/get-user-list', async (req, res) => {
       return acc;
     }, {});
 
-    // 5) assemble final users array
+    // 4) attach each user’s roles array
     const result = users.map(u => ({
       profile: u,
       roles:   rolesByUser[u.UsrID]
@@ -2690,24 +2682,9 @@ app.get('/api/get-user-list', async (req, res) => {
                  : []
     }));
 
-    // 6) build filter options from result if you like
-    const filterOptions = {
-      organizations: [...new Set(userRoles.map(r => r.compName))],
-      roles:         [...new Set(userRoles.map(r => r.roleTitle))]
-    };
-
-    // 7) send everything
-    res.json({
-      meta: {
-        totalCount: cnt,
-        page,
-        perPage
-      },
-      filterOptions,
-      users: result
-    });
+    res.json({ users: result });
   }
-  catch(err) {
+  catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to fetch enriched profiles' });
   }
