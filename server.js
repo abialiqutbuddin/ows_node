@@ -2616,54 +2616,100 @@ app.get('/api/get-user-profile', async (req, res) => {
 // Get all user profiles with roles
 app.get('/api/get-user-list', async (req, res) => {
   try {
-    // 1) load all users
-    const [users] = await pool.query(`
-      SELECT 
-        UsrID,
-        UsrITS,
-        UsrName,
-        UsrLogin,
-        UsrMobile,
-        UsrMohalla,
-        UsrDesig,
-        CoordinatorMohalla
-      FROM owsadmUsrProfil
-    `);
+    // pagination params (optional)
+    const page    = parseInt(req.query.page) || 1;
+    const perPage = parseInt(req.query.perPage) || 25;
+    const offset  = (page - 1) * perPage;
 
-    // 2) load all user–role assignments + role titles
+    // 1) total count for meta
+    const [[{ cnt }]] = await pool.query(`SELECT COUNT(*) AS cnt FROM owsadmUsrProfil`);
+
+    // 2) fetch paged users
+    const [users] = await pool.query(`
+      SELECT
+        u.UsrID,
+        u.UsrITS,
+        u.UsrName  AS name,
+        u.UsrLogin AS login,
+        u.UsrMobile AS mobile,
+        u.UsrMohalla AS mohalla
+      FROM owsadmUsrProfil AS u
+      LIMIT ? OFFSET ?
+    `, [perPage, offset]);
+
+    // 3) fetch all roles + permissions + company names in one go
     const [userRoles] = await pool.query(`
       SELECT
         ur.UsrID,
-        ur.CompID                  AS compId,
-        rm.RId                     AS roleId,
-        rm.RTitle                  AS roleTitle
+        ur.CompID            AS compId,
+        c.CompName           AS compName,
+        rm.RId               AS roleId,
+        rm.RTitle            AS roleTitle,
+        rm.\`Add\`    AS canAdd,
+        rm.\`Edit\`   AS canEdit,
+        rm.\`View\`   AS canView,
+        rm.\`Delete\` AS canDelete
       FROM owsadmUsrRole AS ur
-      LEFT JOIN owsadmRoleMas AS rm
-        ON rm.RId = ur.RID
-    `);
+      JOIN owsadmRoleMas AS rm ON rm.RId = ur.RID
+      JOIN Companies      AS c  ON c.CompID = ur.CompID
+      WHERE ur.UsrID IN (?)
+    `, [ users.map(u => u.UsrID) ]);
 
-    // 3) group roles by UsrID
-    const rolesByUser = userRoles.reduce((acc, row) => {
+    // 4) group roles by user
+    const rolesByUser = userRoles.reduce((acc,row) => {
       const uid = row.UsrID;
-      if (!acc[uid]) acc[uid] = [];
-      acc[uid].push({
-        roleId:    row.roleId,
-        roleTitle: row.roleTitle,
-        compId:    row.compId
-      });
+      if (!acc[uid]) acc[uid] = new Map();
+      // dedupe by compId+roleId
+      const key = `${row.compId}_${row.roleId}`;
+      if (!acc[uid].has(key)) {
+        acc[uid].set(key, {
+          company: {
+            id:   row.compId,
+            name: row.compName
+          },
+          role: {
+            id:          row.roleId,
+            title:       row.roleTitle,
+            permissions: {
+              add:    !!row.canAdd,
+              edit:   !!row.canEdit,
+              view:   !!row.canView,
+              delete: !!row.canDelete
+            }
+          }
+        });
+      }
       return acc;
     }, {});
 
-    // 4) attach roles[] to each user object
-    const result = users.map(user => ({
-      ...user,
-      roles: rolesByUser[user.UsrID] || []
+    // 5) assemble final users array
+    const result = users.map(u => ({
+      profile: u,
+      roles:   rolesByUser[u.UsrID]
+                 ? Array.from(rolesByUser[u.UsrID].values())
+                 : []
     }));
 
-    res.json(result);
-  } catch (err) {
-    console.error('Fetch users error:', err);
-    res.status(500).json({ error: 'Failed to fetch users' });
+    // 6) build filter options from result if you like
+    const filterOptions = {
+      organizations: [...new Set(userRoles.map(r => r.compName))],
+      roles:         [...new Set(userRoles.map(r => r.roleTitle))]
+    };
+
+    // 7) send everything
+    res.json({
+      meta: {
+        totalCount: cnt,
+        page,
+        perPage
+      },
+      filterOptions,
+      users: result
+    });
+  }
+  catch(err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to fetch enriched profiles' });
   }
 });
 
