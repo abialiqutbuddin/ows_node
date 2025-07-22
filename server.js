@@ -635,6 +635,7 @@ app.post("/users-by-mohalla", async (req, res) => {
 });
 
 const validStatuses = [
+  "PDF Not Generated",
   "Request Submitted",
   "Request Received",
   "Partially filled",
@@ -2610,6 +2611,60 @@ app.get('/api/get-user-profile', async (req, res) => {
     res.status(500).send({ error: 'Failed to fetch users' });
   }
 
+});
+
+// Get all user profiles with roles
+app.get('/api/get-user-list', async (req, res) => {
+  try {
+    // 1) load all users
+    const [users] = await pool.query(`
+      SELECT 
+        UsrID,
+        UsrITS,
+        UsrName,
+        UsrLogin,
+        UsrMobile,
+        UsrMohalla,
+        UsrDesig,
+        CoordinatorMohalla
+      FROM owsadmUsrProfil
+    `);
+
+    // 2) load all user–role assignments + role titles
+    const [userRoles] = await pool.query(`
+      SELECT
+        ur.UsrID,
+        ur.CompID                  AS compId,
+        rm.RId                     AS roleId,
+        rm.RTitle                  AS roleTitle
+      FROM owsadmUsrRole AS ur
+      LEFT JOIN owsadmRoleMas AS rm
+        ON rm.RId = ur.RID
+    `);
+
+    // 3) group roles by UsrID
+    const rolesByUser = userRoles.reduce((acc, row) => {
+      const uid = row.UsrID;
+      if (!acc[uid]) acc[uid] = [];
+      acc[uid].push({
+        roleId:    row.roleId,
+        roleTitle: row.roleTitle,
+        compId:    row.compId
+      });
+      return acc;
+    }, {});
+
+    // 4) attach roles[] to each user object
+    const result = users.map(user => ({
+      ...user,
+      roles: rolesByUser[user.UsrID] || []
+    }));
+
+    res.json(result);
+  } catch (err) {
+    console.error('Fetch users error:', err);
+    res.status(500).json({ error: 'Failed to fetch users' });
+  }
 });
 
 //Create User Profile
