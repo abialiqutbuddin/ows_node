@@ -750,8 +750,8 @@ app.post("/all-requests-by-organization", async (req, res) => {
     } else {
       // ✅ Filter requests by organization name (case-insensitive)
       requests = await OwsReqForm.findAll({
-        where: Sequelize.where(
-          Sequelize.fn("LOWER", Sequelize.col("organization")),
+        where: sequelize.where(
+          sequelize.fn("LOWER", sequelize.col("organization")),
           orgLower
         ),
         order: [['created_at', 'DESC']],
