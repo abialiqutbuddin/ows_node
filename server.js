@@ -2959,7 +2959,7 @@ app.post('/users-by-role-company', async (req, res) => {
 
   // Base query
   let query = `
-    SELECT up.Id AS userId, up.UsrITS, up.UsrName
+    SELECT up.UsrID AS userId, up.UsrITS, up.UsrName
     FROM owsadmUsrProfil up
     JOIN owsadmUsrRole ur ON up.UsrId = ur.UsrID
     WHERE ur.RID = ?
