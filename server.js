@@ -2958,12 +2958,17 @@ app.post('/users-by-role-company', async (req, res) => {
   }
 
   // Base query
-  let query = `
-    SELECT up.UsrID AS userId, up.UsrITS, up.UsrName
-    FROM owsadmUsrProfil up
-    JOIN owsadmUsrRole ur ON up.UsrId = ur.UsrID
-    WHERE ur.RID = ?
-  `;
+let query = `
+  SELECT 
+    up.UsrID AS userId,
+    up.UsrITS,
+    up.UsrName,
+    oc.CompName
+  FROM owsadmUsrProfil up
+  JOIN owsadmUsrRole ur ON up.UsrID = ur.UsrID
+  LEFT JOIN owsadmComp oc ON ur.CompID = oc.Id
+  WHERE ur.RID = ?
+`;
   const params = [roleId];
 
   // Conditionally filter by company if compId is provided
