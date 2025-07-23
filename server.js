@@ -738,12 +738,27 @@ app.post("/all-requests-by-organization", async (req, res) => {
       });
     }
 
-    const requests = await OwsReqForm.findAll({
-      where: { organization },
-      order: [['created_at', 'DESC']],
-    });
+    const orgLower = organization.trim().toLowerCase();
 
-    if (requests.length === 0) {
+    let requests;
+
+    if (orgLower === "all") {
+      // ✅ Return all requests
+      requests = await OwsReqForm.findAll({
+        order: [['created_at', 'DESC']],
+      });
+    } else {
+      // ✅ Filter requests by organization name (case-insensitive)
+      requests = await OwsReqForm.findAll({
+        where: Sequelize.where(
+          Sequelize.fn("LOWER", Sequelize.col("organization")),
+          orgLower
+        ),
+        order: [['created_at', 'DESC']],
+      });
+    }
+
+    if (!requests.length) {
       return res.status(404).json({
         success: false,
         message: "No requests found for the given organization",
