@@ -2953,19 +2953,27 @@ app.delete('/api/users/:usrId', async (req, res) => {
 app.post('/users-by-role-company', async (req, res) => {
   const { compId, roleId } = req.body;
 
-  if (!compId || !roleId) {
-    return res.status(400).json({ message: 'Missing compId or roleId' });
+  if (!roleId) {
+    return res.status(400).json({ message: 'Missing roleId' });
   }
 
-  const query = `
+  // Base query
+  let query = `
     SELECT up.Id AS userId, up.UsrITS, up.UsrName
     FROM owsadmUsrProfil up
     JOIN owsadmUsrRole ur ON up.UsrId = ur.UsrID
-    WHERE ur.CompID = ? AND ur.RID = ?
+    WHERE ur.RID = ?
   `;
+  const params = [roleId];
+
+  // Conditionally filter by company if compId is provided
+  if (compId) {
+    query += ' AND ur.CompID = ?';
+    params.push(compId);
+  }
 
   try {
-    const [rows] = await pool.execute(query, [compId, roleId]);
+    const [rows] = await pool.execute(query, params);
 
     if (rows.length === 0) {
       return res.status(404).json({ message: 'No users found for given role and company.' });
