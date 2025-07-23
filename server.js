@@ -2676,7 +2676,7 @@ app.get('/api/get-user-list', async (req, res) => {
         rm.\`Delete\`  AS canDelete
       FROM owsadmUsrRole AS ur
       JOIN owsadmRoleMas  AS rm ON rm.RId = ur.RID
-      JOIN owsadmComp     AS c  ON c.Id   = ur.CompID
+      JOIN owsadmComp     AS c  ON c.Comp   = ur.CompID
       WHERE
         ur.UsrID IN (?)
         AND rm.RId IS NOT NULL
