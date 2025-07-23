@@ -2966,7 +2966,7 @@ let query = `
     oc.CompName
   FROM owsadmUsrProfil up
   JOIN owsadmUsrRole ur ON up.UsrID = ur.UsrID
-  LEFT JOIN owsadmComp oc ON ur.CompID = oc.Id
+  LEFT JOIN owsadmComp oc ON ur.CompID = oc.Comp
   WHERE ur.RID = ?
 `;
   const params = [roleId];
