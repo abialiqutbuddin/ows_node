@@ -2537,12 +2537,12 @@ app.post('/api/login-v2', async (req, res) => {
 
     // 4) Build response
     const userInfo = {
-      usrID: user.UsrID,
-      usrName: user.UsrName,
-      usrITS: user.UsrITS,
-      usrMobile: user.UsrMobile,
-      usrMohalla: user.UsrMohalla,
-      usrDesig: user.UsrDesig,
+      UsrID: user.UsrID,
+      UsrName: user.UsrName,
+      UsrITS: user.UsrITS,
+      UsrMobile: user.UsrMobile,
+      UsrMohalla: user.UsrMohalla,
+      UsrDesig: user.UsrDesig,
     };
 
     const permissions = permRows.map((row) => ({
@@ -3026,9 +3026,9 @@ app.post('/users-by-role-company', async (req, res) => {
   // Base query
 let query = `
   SELECT 
-    up.UsrID AS userId,
-    up.UsrITS AS usrITS,
-    up.UsrName AS usrName,
+    up.UsrID,
+    up.UsrITS,
+    up.UsrName,
     oc.CompName
   FROM owsadmUsrProfil up
   JOIN owsadmUsrRole ur ON up.UsrID = ur.UsrID
