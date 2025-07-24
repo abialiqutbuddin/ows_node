@@ -2495,7 +2495,7 @@ app.post('/api/login-v2', async (req, res) => {
   try {
     // 1) Look up user by UsrLogin
     const [userRows] = await pool.query(
-      `SELECT Id, UsrID, UsrName, UsrLogin, UsrPwd, UsrMobile, UsrMohalla, UsrDesig
+      `SELECT Id, UsrID, UsrName, UsrITS, UsrLogin, UsrPwd, UsrMobile, UsrMohalla, UsrDesig
        FROM owsadmUsrProfil
        WHERE UsrLogin = ?
        LIMIT 1`,
