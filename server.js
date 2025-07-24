@@ -781,7 +781,7 @@ app.post("/all-requests-by-organization", async (req, res) => {
   }
 });
 
-app.post("/all-requests-by-organization", async (req, res) => {
+app.post("/all-requests-by-coordinator", async (req, res) => {
   const { organization, coordinator } = req.body;
 
   try {
