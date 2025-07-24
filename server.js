@@ -791,7 +791,7 @@ app.post("/all-requests-by-coordinator", async (req, res) => {
     }
 
     const orgLower = organization.trim().toLowerCase();
-    const coordLower = coordinator.trim().toLowerCase();
+    //const coordLower = coordinator.trim().toLowerCase();
 
     let whereClause = {};
     
