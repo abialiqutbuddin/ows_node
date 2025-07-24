@@ -779,6 +779,70 @@ app.post("/all-requests-by-organization", async (req, res) => {
   }
 });
 
+app.post("/all-requests-by-coordinator", async (req, res) => {
+  const { organization, coordinator } = req.body;
+
+  try {
+    if (!organization) {
+      return res.status(400).json({
+        success: false,
+        message: "Organization is required",
+      });
+    }
+
+    const orgLower = organization.trim().toLowerCase();
+    const coordLower = coordinator?.trim().toLowerCase();
+
+    let whereClause = {};
+    
+    if (orgLower !== "all") {
+      whereClause = {
+        ...whereClause,
+        [sequelize.Op.and]: [
+          sequelize.where(
+            sequelize.fn("LOWER", sequelize.col("organization")),
+            orgLower
+          )
+        ]
+      };
+    }
+
+    if (coordLower) {
+      whereClause[sequelize.Op.and] = [
+        ...(whereClause[sequelize.Op.and] || []),
+        sequelize.where(
+          sequelize.fn("LOWER", sequelize.col("assignedTo")),
+          coordLower
+        )
+      ];
+    }
+
+    const requests = await OwsReqForm.findAll({
+      where: whereClause,
+      order: [["created_at", "DESC"]],
+    });
+
+    if (!requests.length) {
+      return res.status(404).json({
+        success: false,
+        message: "No requests found for the given filters",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: requests,
+    });
+
+  } catch (error) {
+    console.error("Error fetching requests:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+});
+
 const { Op } = require('sequelize');
 
 app.get("/api/completed-requests", async (req, res) => {
