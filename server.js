@@ -3470,8 +3470,6 @@ aiut_sequelize
   .catch(err => console.error('❌  Unable to connect to DB:', err));
 
 const { v4: uuidv4 } = require('uuid');
-const { use } = require("react");
-
 async function insertAiutSurvey(applicationId, aiutSurvey) {
   const conn = await aiutpool.getConnection();
   console.log(`\n[insertAiutSurvey] Start for applicationId=${applicationId}, its_no=${aiutSurvey.its_no}`);
