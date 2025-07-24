@@ -727,6 +727,9 @@ app.post("/all-requests", async (req, res) => {
   }
 });
 
+const { Op } = require('sequelize');
+
+
 app.post("/all-requests-by-organization", async (req, res) => {
   const { organization } = req.body;
 
@@ -810,10 +813,7 @@ app.post("/all-requests-by-coordinator", async (req, res) => {
     if (coordinator) {
       whereClause[sequelize.Op.and] = [
         ...(whereClause[sequelize.Op.and] || []),
-        sequelize.where(
-          sequelize.fn("LOWER", sequelize.col("assignedTo")),
-          coordinator
-        )
+        { assignedTo: coordinator }
       ];
     }
 
@@ -842,8 +842,6 @@ app.post("/all-requests-by-coordinator", async (req, res) => {
     });
   }
 });
-
-const { Op } = require('sequelize');
 
 app.get("/api/completed-requests", async (req, res) => {
   try {
