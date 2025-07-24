@@ -2539,6 +2539,7 @@ app.post('/api/login-v2', async (req, res) => {
     const userInfo = {
       usrID: user.UsrID,
       usrName: user.UsrName,
+      usrITS: user.UsrITS,
       usrMobile: user.UsrMobile,
       usrMohalla: user.UsrMohalla,
       usrDesig: user.UsrDesig,
@@ -3469,6 +3470,7 @@ aiut_sequelize
   .catch(err => console.error('❌  Unable to connect to DB:', err));
 
 const { v4: uuidv4 } = require('uuid');
+const { use } = require("react");
 
 async function insertAiutSurvey(applicationId, aiutSurvey) {
   const conn = await aiutpool.getConnection();
