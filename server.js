@@ -727,8 +727,7 @@ app.post("/all-requests", async (req, res) => {
   }
 });
 
-const { Op } = require('sequelize');
-
+const { Op, fn, col, where } = require('sequelize');
 
 app.post("/all-requests-by-organization", async (req, res) => {
   const { organization } = req.body;
@@ -782,7 +781,7 @@ app.post("/all-requests-by-organization", async (req, res) => {
   }
 });
 
-app.post("/all-requests-by-coordinator", async (req, res) => {
+app.post("/all-requests-by-organization", async (req, res) => {
   const { organization, coordinator } = req.body;
 
   try {
@@ -793,28 +792,17 @@ app.post("/all-requests-by-coordinator", async (req, res) => {
       });
     }
 
-    const orgLower = organization.trim().toLowerCase();
-    //const coordLower = coordinator.trim().toLowerCase();
+    const orgTrimmed = organization.trim();
+    const coordTrimmed = coordinator?.trim(); // Optional
 
     let whereClause = {};
-    
-    if (orgLower !== "all") {
-      whereClause = {
-        ...whereClause,
-        [sequelize.Op.and]: [
-          sequelize.where(
-            sequelize.fn("LOWER", sequelize.col("organization")),
-            orgLower
-          )
-        ]
-      };
+
+    if (orgTrimmed.toLowerCase() !== "all") {
+      whereClause.organization = orgTrimmed;
     }
 
-    if (coordinator) {
-      whereClause[sequelize.Op.and] = [
-        ...(whereClause[sequelize.Op.and] || []),
-        { assignedTo: coordinator }
-      ];
+    if (coordTrimmed) {
+      whereClause.assignedTo = coordTrimmed;
     }
 
     const requests = await OwsReqForm.findAll({
