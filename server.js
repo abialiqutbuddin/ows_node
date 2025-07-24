@@ -807,12 +807,12 @@ app.post("/all-requests-by-coordinator", async (req, res) => {
       };
     }
 
-    if (coordLower) {
+    if (coordinator) {
       whereClause[sequelize.Op.and] = [
         ...(whereClause[sequelize.Op.and] || []),
         sequelize.where(
           sequelize.fn("LOWER", sequelize.col("assignedTo")),
-          coordLower
+          coordinator
         )
       ];
     }
