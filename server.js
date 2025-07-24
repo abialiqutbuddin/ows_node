@@ -3027,8 +3027,8 @@ app.post('/users-by-role-company', async (req, res) => {
 let query = `
   SELECT 
     up.UsrID AS userId,
-    up.UsrITS,
-    up.UsrName,
+    up.UsrITS AS usrITS,
+    up.UsrName AS usrName,
     oc.CompName
   FROM owsadmUsrProfil up
   JOIN owsadmUsrRole ur ON up.UsrID = ur.UsrID
