@@ -3817,7 +3817,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
         .map(s => s.trim().toLowerCase())
         .filter(Boolean);
 
-      const [goods] = await conn.query(`SELECT goods_id, LOWER(goods_name) AS name FROM goods`);
+      const [goods] = await conn.query(`SELECT goods_id, LOWER(description) AS name FROM goods`);
       for (const g of goods) {
         await conn.query('INSERT INTO financial_survey_goods SET ?', [{
           financial_survey_goods_id: uuidv4(),
