@@ -1529,10 +1529,10 @@ app.post('/occupationDetails', async (req, res) => {
   } = req.body;
 
   // 1) Validate inputs
-  if (!ITSID || !Password) {
+  if (!ITSID) {
     return res
       .status(400)
-      .json({ error: 'ITSID and Password are required.' });
+      .json({ error: 'ITSID is required.' });
   }
 
   try {
