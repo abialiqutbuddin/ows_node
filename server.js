@@ -3610,7 +3610,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
     console.log('[1] owsForm loaded');
 
     // 2) Count dependents & income types
-    const [countRows] = await conn.query(
+    const [countRows] = await pool.query(
       `SELECT
          (SELECT COUNT(*) FROM dependents   WHERE application_id = ?) AS dependent_count,
          (SELECT COUNT(*) FROM income_types WHERE application_id = ?) AS income_count`,
@@ -3621,7 +3621,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
 
     // 3) Sum father’s income; fallback to mother’s
     let totalIncome = 0;
-    const [[{ total_income: dadIncome }]] = await conn.query(
+    const [[{ total_income: dadIncome }]] = await pool.query(
       `SELECT SUM(amount) AS total_income
          FROM income_types
         WHERE application_id = ? AND member_its = ?`,
@@ -3631,7 +3631,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
       totalIncome = dadIncome;
       console.log('[3] father income:', totalIncome);
     } else {
-      const [[{ total_income: momIncome }]] = await conn.query(
+      const [[{ total_income: momIncome }]] = await pool.query(
         `SELECT SUM(amount) AS total_income
            FROM income_types
           WHERE application_id = ? AND member_its = ?`,
@@ -3801,7 +3801,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
 
     // 10) Populate StudentGoods
     {
-      const [[{ assets }]] = await conn.query(
+      const [[{ assets }]] = await pool.query(
         `SELECT assets FROM application_main WHERE id = ?`,
         [applicationId]
       );
