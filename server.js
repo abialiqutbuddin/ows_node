@@ -1472,44 +1472,44 @@ app.post('/code-by-group', async (req, res) => {
   }
 });
 
-const SOAP_URL = 'https://qardanhasana.pk/BQHT_App_WS/BQHTAPP.asmx';
-const NAMESPACE = 'http://test.qardanhasana.pk/BQHT_App_WS';
+// const SOAP_URL = 'https://qardanhasana.pk/BQHT_App_WS/BQHTAPP.asmx';
+// const NAMESPACE = 'http://test.qardanhasana.pk/BQHT_App_WS';
 
 
-async function callSoap(action, bodyXml) {
-  // 1) Build the full SOAP envelope
-  const envelope = `<?xml version="1.0" encoding="utf-8"?>
-  <soap:Envelope 
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-      xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
-      xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-    <soap:Body>
-      ${bodyXml}
-    </soap:Body>
-  </soap:Envelope>`;
+// async function callSoap(action, bodyXml) {
+//   // 1) Build the full SOAP envelope
+//   const envelope = `<?xml version="1.0" encoding="utf-8"?>
+//   <soap:Envelope 
+//       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+//       xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+//       xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+//     <soap:Body>
+//       ${bodyXml}
+//     </soap:Body>
+//   </soap:Envelope>`;
 
-  // 2) Send it
-  const response = await axios.post(SOAP_URL, envelope, {
-    headers: {
-      'Content-Type': 'text/xml; charset=utf-8',
-      'SOAPAction': `"${NAMESPACE}/${action}"`
-    },
-    timeout: 10000, // 10s timeout for debugging
-  });
+//   // 2) Send it
+//   const response = await axios.post(SOAP_URL, envelope, {
+//     headers: {
+//       'Content-Type': 'text/xml; charset=utf-8',
+//       'SOAPAction': `"${NAMESPACE}/${action}"`
+//     },
+//     timeout: 10000, // 10s timeout for debugging
+//   });
 
-  // 3) Parse XML → JS object
-  let parsed;
-  try {
-    parsed = await xml2js.parseStringPromise(response.data, {
-      explicitArray: false,
-      ignoreAttrs: true
-    });
-  } catch (xmlErr) {
-    throw xmlErr;
-  }
+//   // 3) Parse XML → JS object
+//   let parsed;
+//   try {
+//     parsed = await xml2js.parseStringPromise(response.data, {
+//       explicitArray: false,
+//       ignoreAttrs: true
+//     });
+//   } catch (xmlErr) {
+//     throw xmlErr;
+//   }
 
-  return parsed;
-}
+//   return parsed;
+// }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Route: POST /occupationDetails
