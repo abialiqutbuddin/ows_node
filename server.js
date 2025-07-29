@@ -3604,6 +3604,8 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
     await conn.beginTransaction();
     console.log(`[insertAiutSurvey] BEGIN TX for applicationId=${applicationId}`);
 
+    let aiut_student_status = 'Old';
+
     // 1) Load the OWS request form
     const owsForm = await OwsReqForm.findOne({ where: { ITS: aiutSurvey.its_no } });
     if (!owsForm) throw new Error(`No OwsReqForm for ITS=${aiutSurvey.its_no}`);
@@ -3651,7 +3653,9 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
       if (existing) {
         student = existing;
         console.log('[4] existing student:', student);
+        aiut_student_status = 'Old';
       } else {
+        aiut_student_status = 'New';
         // new student_no
         const [[{ maxno }]] = await conn.query(`SELECT MAX(student_no) AS maxno FROM student`);
         const newNo = (maxno || 0) + 1;
@@ -3771,24 +3775,24 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
       dependents: dependent_count,
       flat_area: owsForm.flat_area || "",
       employer_name: owsForm.employer_name || "",
-      student_status: "Old",
+      student_status: aiut_student_status,
       status: "Request",
       created_by_id: 1,
       created_at: new Date()
     }]);
     console.log('[7] FinancialSurvey created');
 
-    // 8) Add SurveyFee
-    await conn.query('INSERT INTO financial_survey_fee SET ?', [{
-      financial_survey_fee_id: uuidv4(),
-      financial_survey_id: finSurveyId,
-      student_fee_id: "",
-      fee_type_id: 2,
-      amount: owsForm.fundAsking,
-      created_at: new Date(),
-      created_by_id: 1
-    }]);
-    console.log('[8] FinancialSurveyFee added');
+    // // 8) Add SurveyFee
+    // await conn.query('INSERT INTO financial_survey_fee SET ?', [{
+    //   //financial_survey_fee_id: uuidv4(),
+    //   financial_survey_id: finSurveyId,
+    //   student_fee_id: "",
+    //   fee_type_id: 2,
+    //   amount: owsForm.fundAsking,
+    //   created_at: new Date(),
+    //   created_by_id: 1
+    // }]);
+    // console.log('[8] FinancialSurveyFee added');
 
     // 9) Create StudentFee
     await conn.query('INSERT INTO student_fee SET ?', [{
