@@ -498,7 +498,7 @@ app.post(
           classification,
           organization,
           description,
-          currentStatus: "Request Generated",
+          currentStatus: "Partially filled",
           draft_id: draftId,
           created_by,
           updated_by,
@@ -1892,7 +1892,7 @@ app.post('/api/submit-application', async (req, res) => {
     console.error(err);
     res.status(500).json({ success: false, error: 'Failed to submit application' });
   } finally {
-    await conn.release(); // 🔁 Use release() not end() for pooled connection
+    conn.release(); // 🔁 Use release() not end() for pooled connection
   }
 });
 
