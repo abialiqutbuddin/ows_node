@@ -3756,7 +3756,8 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
       ...aiutSurvey,
       student_id: student.student_id,
       student_no: student.student_no,
-      created_at: toMySQLDatetime()
+      created_at: toMySQLDatetime(),
+      modified_at: null
     }]);
     console.log('[6] survey inserted');
 
