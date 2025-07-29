@@ -3695,7 +3695,9 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
           dependents: dependent_count,
           flat_area: aiutSurvey.flat_area,
           created_at: toMySQLDatetime(),
-          created_by_id: 1
+          created_by_id: 1,
+          modified_at: null,
+           modified_by_id: null
         }]);
         student = { student_id: newId, student_no: newNo };
         console.log('[4] inserted new student:', student);
@@ -3726,7 +3728,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
       } else {
         schoolId = uuidv4();
         await conn.query('INSERT INTO school SET ?', [{
-          school_id,
+          schoolId,
           institute_category_id: 0,
           school_category: "",
           school_name: owsForm.institution,
