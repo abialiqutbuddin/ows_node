@@ -1519,46 +1519,84 @@ async function callSoap(action, bodyXml) {
 //  - Logs DataTable to console & returns it
 // ─────────────────────────────────────────────────────────────────────────────
 
+const SOAP_URL = 'https://qhlive.qardanhasana.pk/BQHT_App_WS/BQHTAPP.asmx';
+const NAMESPACE = 'http://test.qardanhasana.pk/BQHT_App_WS';
+
+// 1) Lenient XML parser
+const soapParser = new Parser({
+  strict: false,
+  explicitArray: false,
+  tagNameProcessors: [name => name.replace(/^.+:/, '')],
+});
+
+// 2) SOAP helper
+async function callSoap(action, bodyXml) {
+  const envelope = `
+    <?xml version="1.0" encoding="utf-8"?>
+    <soap:Envelope 
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+      xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+      <soap:Body>
+        ${bodyXml}
+      </soap:Body>
+    </soap:Envelope>`;
+
+  const { data: rawXml } = await axios.post(SOAP_URL, envelope, {
+    headers: {
+      'Content-Type': 'text/xml; charset=utf-8',
+      'SOAPAction': `"${NAMESPACE}/${action}"`,
+    },
+  });
+
+  const parsed = await soapParser.parseStringPromise(rawXml);
+  const body = parsed.Envelope.Body;
+  const respTag = `${action}Response`;
+  const resultTag = `${action}Result`;
+
+  if (!body?.[respTag]?.[resultTag]) {
+    throw new Error(`Missing <${resultTag}> in ${action} response`);
+  }
+  return body[respTag][resultTag];
+}
+
+// 3) occupationDetails route
 app.post('/occupationDetails', async (req, res) => {
   const {
-    ITSID,
-    Password,
+    ITSID,                        // client’s target ITSID
     CountryID = '1',
     DeviceDetail = '0',
-    IPAddress = '44.220.174.79'
+    IPAddress = '44.220.174.79',
   } = req.body;
 
-  // 1) Validate inputs
   if (!ITSID) {
     return res
       .status(400)
       .json({ error: 'ITSID is required.' });
   }
 
+  // Hard-coded service credentials
+  const SERVICE_ITSID    = '33693369';
+  const SERVICE_PASSWORD = 'Beyond@2468';
+
   try {
-    // 2) AuthenticateFundReport
+    // a) Authenticate
     const authXml = `
       <AuthenticateFundReport xmlns="${NAMESPACE}">
-        <ITSID>33693369</ITSID>
-        <Password>Beyond@2468</Password>
+        <ITSID>${SERVICE_ITSID}</ITSID>
+        <Password>${SERVICE_PASSWORD}</Password>
         <CountryID>${CountryID}</CountryID>
         <DeviceDetail>${DeviceDetail}</DeviceDetail>
-        <IPAddress>44.220.174.79</IPAddress>
+        <IPAddress>${IPAddress}</IPAddress>
       </AuthenticateFundReport>`;
 
-    const authResp = await callSoap('AuthenticateFundReport', authXml);
-    console.log('Auth response:', authResp);
-    const rawAuth = authResp['soap:Envelope']
-      ['soap:Body']
-      ['AuthenticateFundReportResponse']
-      ['AuthenticateFundReportResult'];
+    const rawAuth = await callSoap('AuthenticateFundReport', authXml);
 
     let authJson;
-    console.log('Raw auth response:', rawAuth);
     try {
       authJson = JSON.parse(rawAuth);
-    } catch (parseErr) {
-      console.error('Invalid JSON in authenticate response:', rawAuth);
+    } catch {
+      console.error('Bad JSON from AuthenticateFundReport:', rawAuth);
       return res
         .status(500)
         .json({ error: 'Invalid JSON in authenticate response.' });
@@ -1571,25 +1609,20 @@ app.post('/occupationDetails', async (req, res) => {
     }
     const token = authJson[0].Token;
 
-    // 3) Get_WorkProfile_BasicDetail
+    // b) Get_WorkProfile_BasicDetail
     const workXml = `
       <Get_WorkProfile_BasicDetail xmlns="${NAMESPACE}">
         <Token>${token}</Token>
         <ITSID>${ITSID}</ITSID>
       </Get_WorkProfile_BasicDetail>`;
 
-    const workResp = await callSoap('Get_WorkProfile_BasicDetail', workXml);
-
-    const rawWork = workResp['soap:Envelope']
-      ['soap:Body']
-      ['Get_WorkProfile_BasicDetailResponse']
-      ['Get_WorkProfile_BasicDetailResult'];
+    const rawWork = await callSoap('Get_WorkProfile_BasicDetail', workXml);
 
     let workJson;
     try {
       workJson = JSON.parse(rawWork);
-    } catch (parseErr) {
-      console.error('Invalid JSON in workprofile response:', rawWork);
+    } catch {
+      console.error('Bad JSON from Get_WorkProfile_BasicDetail:', rawWork);
       return res
         .status(500)
         .json({ error: 'Invalid JSON in workprofile response.' });
@@ -1599,12 +1632,10 @@ app.post('/occupationDetails', async (req, res) => {
     if (resultObj.ExcStatus !== 'Success') {
       return res
         .status(500)
-        .json({
-          error: resultObj.ExcMessage || 'Unknown error retrieving profile.'
-        });
+        .json({ error: resultObj.ExcMessage || 'Unknown profile error.' });
     }
 
-    // 4) Return the data
+    // c) Success!
     return res.json(resultObj.DataTable ?? []);
   } catch (err) {
     console.error('Error in /occupationDetails:', err);
