@@ -1547,13 +1547,14 @@ app.post('/occupationDetails', async (req, res) => {
       </AuthenticateFundReport>`;
 
     const authResp = await callSoap('AuthenticateFundReport', authXml);
-
+    console.log('Auth response:', authResp);
     const rawAuth = authResp['soap:Envelope']
       ['soap:Body']
       ['AuthenticateFundReportResponse']
       ['AuthenticateFundReportResult'];
 
     let authJson;
+    console.log('Raw auth response:', rawAuth);
     try {
       authJson = JSON.parse(rawAuth);
     } catch (parseErr) {
