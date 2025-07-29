@@ -1852,6 +1852,11 @@ app.post('/api/submit-application', async (req, res) => {
   const conn = await pool.getConnection();
 
   try {
+
+    if (aiut_survey) {
+      await insertAiutSurvey(appId, aiut_survey);
+    }
+
     await conn.beginTransaction();
 
     // Insert into main application table
@@ -1879,11 +1884,6 @@ app.post('/api/submit-application', async (req, res) => {
     }
 
     await conn.commit();
-
-    // ✅ Handle Aiut-specific logic if provided
-    if (aiut_survey) {
-      await insertAiutSurvey(appId, aiut_survey);
-    }
 
     res.json({ success: true, id: appId });
 
