@@ -1518,6 +1518,7 @@ app.post('/code-by-group', async (req, res) => {
 //  - Calls Get_WorkProfile_BasicDetail → gets JSON blob
 //  - Logs DataTable to console & returns it
 // ─────────────────────────────────────────────────────────────────────────────
+const { Parser } = require('xml2js');
 
 const SOAP_URL = 'https://qhlive.qardanhasana.pk/BQHT_App_WS/BQHTAPP.asmx';
 const NAMESPACE = 'http://test.qardanhasana.pk/BQHT_App_WS';
