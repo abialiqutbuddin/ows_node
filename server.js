@@ -3795,16 +3795,16 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
     // console.log('[8] FinancialSurveyFee added');
 
     // 9) Create StudentFee
-    await conn.query('INSERT INTO student_fee SET ?', [{
-      student_fee_id: uuidv4(),
-      financial_year_id: financialYearId,
-      student_id: student.student_id,
-      amount: owsForm.fundAsking,
-      remarks: owsForm.description,
-      created_by_id: 1,
-      created_at: new Date()
-    }]);
-    console.log('[9] StudentFee created');
+    // await conn.query('INSERT INTO student_fee SET ?', [{
+    //   student_fee_id: uuidv4(),
+    //   financial_year_id: financialYearId,
+    //   student_id: student.student_id,
+    //   amount: owsForm.fundAsking,
+    //   remarks: owsForm.description,
+    //   created_by_id: 1,
+    //   created_at: new Date()
+    // }]);
+    // console.log('[9] StudentFee created');
 
     // 10) Populate StudentGoods
     {
