@@ -1521,7 +1521,7 @@ app.post('/code-by-group', async (req, res) => {
 const { Parser } = require('xml2js');
 
 const SOAP_URL = 'https://qhlive.qardanhasana.pk/BQHT_App_WS/BQHTAPP.asmx';
-const NAMESPACE = 'http://qardanhasana.pk/BQHT_App_WS';
+const NAMESPACE = 'http://test.qardanhasana.pk/BQHT_App_WS';
 
 // 1) Lenient XML parser
 const soapParser = new Parser({
@@ -1576,7 +1576,7 @@ app.post('/occupationDetails', async (req, res) => {
       .json({ error: 'ITSID is required.' });
   }
 
-  // Hard-coded service credentials
+  // hard-coded service creds
   const SERVICE_ITSID    = '33693369';
   const SERVICE_PASSWORD = 'Beyond@2468';
 
@@ -1589,7 +1589,7 @@ app.post('/occupationDetails', async (req, res) => {
         <CountryID>${CountryID}</CountryID>
         <DeviceDetail>${DeviceDetail}</DeviceDetail>
         <IPAddress>${IPAddress}</IPAddress>
-      </AuthenticateFundReport>`;
+      </AuthenticateFundReport>`.trim();
 
     const rawAuth = await callSoap('AuthenticateFundReport', authXml);
 
@@ -1597,7 +1597,7 @@ app.post('/occupationDetails', async (req, res) => {
     try {
       authJson = JSON.parse(rawAuth);
     } catch {
-      console.error('Bad JSON from AuthenticateFundReport:', rawAuth);
+      console.error('Invalid JSON in authenticate:', rawAuth);
       return res
         .status(500)
         .json({ error: 'Invalid JSON in authenticate response.' });
@@ -1610,12 +1610,12 @@ app.post('/occupationDetails', async (req, res) => {
     }
     const token = authJson[0].Token;
 
-    // b) Get_WorkProfile_BasicDetail
+    // b) Fetch work profile
     const workXml = `
       <Get_WorkProfile_BasicDetail xmlns="${NAMESPACE}">
         <Token>${token}</Token>
         <ITSID>${ITSID}</ITSID>
-      </Get_WorkProfile_BasicDetail>`;
+      </Get_WorkProfile_BasicDetail>`.trim();
 
     const rawWork = await callSoap('Get_WorkProfile_BasicDetail', workXml);
 
@@ -1623,7 +1623,7 @@ app.post('/occupationDetails', async (req, res) => {
     try {
       workJson = JSON.parse(rawWork);
     } catch {
-      console.error('Bad JSON from Get_WorkProfile_BasicDetail:', rawWork);
+      console.error('Invalid JSON in workprofile:', rawWork);
       return res
         .status(500)
         .json({ error: 'Invalid JSON in workprofile response.' });
@@ -1636,10 +1636,10 @@ app.post('/occupationDetails', async (req, res) => {
         .json({ error: resultObj.ExcMessage || 'Unknown profile error.' });
     }
 
-    // c) Success!
+    // success → send DataTable
     return res.json(resultObj.DataTable ?? []);
   } catch (err) {
-    console.error('Error in /occupationDetails:', err);
+    console.error('Error in /occupationDetails:', err.message);
     return res
       .status(500)
       .json({ error: 'Server error.', detail: err.message });
