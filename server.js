@@ -3822,7 +3822,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
         await conn.query('INSERT INTO financial_survey_goods SET ?', [{
           financial_survey_goods_id: uuidv4(),
           financial_survey_id: finSurveyId,
-          student_id: student.student_id,
+          //student_id: student.student_id,
           goods_id: g.goods_id,
           status: selected.includes(g.name) ? 'yes' : 'no',
           comment: '',
