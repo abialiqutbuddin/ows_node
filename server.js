@@ -3599,7 +3599,7 @@ aiut_sequelize
 
 const { v4: uuidv4 } = require('uuid');
 async function insertAiutSurvey(applicationId, aiutSurvey) {
-  const conn = await pool.getConnection();
+  const conn = await aiutpool.getConnection();
   try {
     await conn.beginTransaction();
     console.log(`[insertAiutSurvey] BEGIN TX for applicationId=${applicationId}`);

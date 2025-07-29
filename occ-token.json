@@ -1,0 +1,42 @@
+{
+  "info": {
+    "name": "Qardan Hasana SOAP",
+    "description": "SOAP calls for QardanHasana BQHT_App_WS",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "AuthenticateFundReport",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "text/xml; charset=utf-8"
+          },
+          {
+            "key": "SOAPAction",
+            "value": "http://qardanhasana.pk/BQHT_App_WS/AuthenticateFundReport"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n               xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"\n               xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n  <soap:Body>\n    <AuthenticateFundReport xmlns=\"http://qardanhasana.pk/BQHT_App_WS\">\n      <ITSID>33693369</ITSID>\n      <Password>Beyond@2468</Password>\n      <CountryID>1</CountryID>\n      <DeviceDetail>0</DeviceDetail>\n      <IPAddress></IPAddress>\n    </AuthenticateFundReport>\n  </soap:Body>\n</soap:Envelope>"
+        },
+        "url": {
+          "raw": "http://qardanhasana.pk/BQHT_App_WS/BQHTAPP.asmx",
+          "protocol": "http",
+          "host": [
+            "qardanhasana",
+            "pk"
+          ],
+          "path": [
+            "BQHT_App_WS",
+            "BQHTAPP.asmx"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
