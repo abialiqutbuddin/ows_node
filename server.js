@@ -1521,7 +1521,7 @@ app.post('/code-by-group', async (req, res) => {
 const { Parser } = require('xml2js');
 
 const SOAP_URL = 'https://qhlive.qardanhasana.pk/BQHT_App_WS/BQHTAPP.asmx';
-const NAMESPACE = 'http://test.qardanhasana.pk/BQHT_App_WS';
+const NAMESPACE = 'http://qardanhasana.pk/BQHT_App_WS';
 
 // 1) Lenient XML parser
 const soapParser = new Parser({
