@@ -752,10 +752,14 @@ app.post("/all-requests-by-organization", async (req, res) => {
     } else {
       // ✅ Filter requests by organization name (case-insensitive)
       requests = await OwsReqForm.findAll({
-        where: sequelize.where(
-          sequelize.fn("LOWER", sequelize.col("organization")),
-          orgLower
-        ),
+         where: {
+    [Op.and]: [
+      // your existing LOWER(organization) = orgLower clause
+      where(fn('LOWER', col('organization')), orgLower),
+      // new condition: appId is not null
+      { application_id: { [Op.ne]: null } }
+    ]
+  },
         order: [['created_at', 'DESC']],
       });
     }
@@ -795,7 +799,10 @@ app.post("/all-requests-by-coordinator", async (req, res) => {
     const orgTrimmed = organization.trim();
     const coordTrimmed = coordinator?.trim(); // Optional
 
-    let whereClause = {};
+    let whereClause = {
+  // always require appId to be non-null
+  application_id: { [Op.ne]: null }
+};
 
     if (orgTrimmed.toLowerCase() !== "all") {
       whereClause.organization = orgTrimmed;
