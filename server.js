@@ -747,19 +747,22 @@ app.post("/all-requests-by-organization", async (req, res) => {
     if (orgLower === "all") {
       // ✅ Return all requests
       requests = await OwsReqForm.findAll({
-        order: [['created_at', 'DESC']],
+  where: {
+    appId: { [Op.ne]: null }
+  },
+  order: [['created_at', 'DESC']],
       });
     } else {
       // ✅ Filter requests by organization name (case-insensitive)
       requests = await OwsReqForm.findAll({
-         where: {
-    [Op.and]: [
-      // your existing LOWER(organization) = orgLower clause
-      where(fn('LOWER', col('organization')), orgLower),
-      // new condition: appId is not null
-      { application_id: { [Op.ne]: null } }
-    ]
-  },
+        where: {
+          [Op.and]: [
+            // your existing LOWER(organization) = orgLower clause
+            where(fn('LOWER', col('organization')), orgLower),
+            // new condition: appId is not null
+            { application_id: { [Op.ne]: null } }
+          ]
+        },
         order: [['created_at', 'DESC']],
       });
     }
@@ -800,9 +803,9 @@ app.post("/all-requests-by-coordinator", async (req, res) => {
     const coordTrimmed = coordinator?.trim(); // Optional
 
     let whereClause = {
-  // always require appId to be non-null
-  application_id: { [Op.ne]: null }
-};
+      // always require appId to be non-null
+      application_id: { [Op.ne]: null }
+    };
 
     if (orgTrimmed.toLowerCase() !== "all") {
       whereClause.organization = orgTrimmed;
@@ -1584,7 +1587,7 @@ app.post('/occupationDetails', async (req, res) => {
   }
 
   // hard-coded service creds
-  const SERVICE_ITSID    = '33693369';
+  const SERVICE_ITSID = '33693369';
   const SERVICE_PASSWORD = 'Beyond@2468';
 
   try {
@@ -2818,9 +2821,9 @@ app.get('/api/get-user-profile', async (req, res) => {
 app.get('/api/get-user-list', async (req, res) => {
   try {
     // paging params (optional)
-    const page    = +(req.query.page   || 1);
-    const perPage = +(req.query.perPage|| 25);
-    const offset  = (page - 1) * perPage;
+    const page = +(req.query.page || 1);
+    const perPage = +(req.query.perPage || 25);
+    const offset = (page - 1) * perPage;
 
     // 1) total count
     const [[{ cnt }]] = await pool.query(
@@ -2866,7 +2869,7 @@ app.get('/api/get-user-list', async (req, res) => {
       WHERE
         ur.UsrID IN (?)
         AND rm.RId IS NOT NULL
-    `, [ users.map(u => u.UsrID) ]);
+    `, [users.map(u => u.UsrID)]);
 
     // 4) group roles by user, dedupe
     const rolesByUser = userRoles.reduce((acc, row) => {
@@ -2876,19 +2879,19 @@ app.get('/api/get-user-list', async (req, res) => {
       if (!acc[uid].has(key)) {
         acc[uid].set(key, {
           company: {
-            id:            row.compId,
-            name:          row.compName,
-            address:       row.address,
+            id: row.compId,
+            name: row.compName,
+            address: row.address,
             contactPerson: row.contactPerson,
             contactMobile: row.contactMobile
           },
           role: {
-            id:          row.roleId,
-            title:       row.roleTitle,
+            id: row.roleId,
+            title: row.roleTitle,
             permissions: {
-              add:    !!row.canAdd,
-              edit:   !!row.canEdit,
-              view:   !!row.canView,
+              add: !!row.canAdd,
+              edit: !!row.canEdit,
+              view: !!row.canView,
               delete: !!row.canDelete
             }
           }
@@ -2900,15 +2903,15 @@ app.get('/api/get-user-list', async (req, res) => {
     // 5) attach roles to each user
     const enriched = users.map(u => ({
       profile: u,
-      roles:   rolesByUser[u.UsrID]
-                 ? Array.from(rolesByUser[u.UsrID].values())
-                 : []
+      roles: rolesByUser[u.UsrID]
+        ? Array.from(rolesByUser[u.UsrID].values())
+        : []
     }));
 
     // 6) build filter options for the front end
     const filters = {
       organizations: [...new Set(userRoles.map(r => r.compName))].sort(),
-      roles:         [...new Set(userRoles.map(r => r.roleTitle))].sort()
+      roles: [...new Set(userRoles.map(r => r.roleTitle))].sort()
     };
 
     // 7) send one payload
@@ -3159,7 +3162,7 @@ app.post('/users-by-role-company', async (req, res) => {
   }
 
   // Base query
-let query = `
+  let query = `
   SELECT 
     up.UsrID,
     up.UsrITS,
@@ -3708,7 +3711,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
           created_at: toMySQLDatetime(),
           created_by_id: 1,
           modified_at: null,
-           modified_by_id: null
+          modified_by_id: null
         }]);
         student = { student_id: newId, student_no: newNo };
         console.log('[4] inserted new student:', student);
