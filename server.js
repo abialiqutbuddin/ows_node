@@ -747,10 +747,10 @@ app.post("/all-requests-by-organization", async (req, res) => {
     if (orgLower === "all") {
       // ✅ Return all requests
       requests = await OwsReqForm.findAll({
-  where: {
-    appId: { [Op.ne]: null }
-  },
-  order: [['created_at', 'DESC']],
+        where: {
+          application_id: { [Op.ne]: null }
+        },
+        order: [['created_at', 'DESC']],
       });
     } else {
       // ✅ Filter requests by organization name (case-insensitive)
