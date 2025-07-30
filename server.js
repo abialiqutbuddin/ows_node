@@ -1880,8 +1880,11 @@ app.post('/api/submit-application', async (req, res) => {
     // Link to request if reqId provided
     if (reqId) {
       await conn.query(
-        `UPDATE owsReqForm SET application_id = ? WHERE reqId = ?`,
-        [appId, reqId]
+        `UPDATE owsReqForm
+     SET application_id = ?,
+         currentStatus  = ?
+     WHERE reqId         = ?`,
+        [appId, 'Request Generated', reqId]
       );
     }
 
@@ -4141,4 +4144,63 @@ app.delete('/api/aiut/:tableName/:columnName/:value', async (req, res) => {
     console.error('Error deleting rows:', err);
     return res.status(500).json({ error: err.message });
   }
+});
+
+function generateOtp() {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+const OTP_STORE = new Map();
+
+app.post('/api/send-otp', async (req, res) => {
+  const { phone } = req.body;
+  if (!phone) {
+    return res.status(400).json({ error: 'Missing "phone" in request body' });
+  }
+
+  // 1) Generate & store OTP
+  const otp = generateOtp();
+  OTP_STORE.set(phone, {
+    code: otp,
+    expires: Date.now() + 5 * 60 * 1000, // 5 minutes
+  });
+
+  // 2) Prepare WaAPI request
+  const chatId = `${phone}@c.us`;
+  //const url = `https://waapi.app/api/v1/instances/${process.env.WAAPI_INSTANCE_ID}/client/action/send-message`;
+  
+  const url = "https://waapi.app/api/v1/instances/5164/client/action/send-message"
+  const token = "N4g8hLGka0cRFSP9DfU8HMA5F3cxccbYjVzMSO8H4b38d73f";
+  const payload = {
+    chatId,
+    message: `Your verification code is: *${otp}*`,
+  };
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json',
+  };
+
+  // 3) Send via WaAPI
+  try {
+    await axios.post(url, payload, { headers });
+    res.json({ success: true, message: 'OTP sent' });
+  } catch (err) {
+    console.error(err.response?.data || err.message);
+    res.status(500).json({ error: 'Failed to send OTP' });
+  }
+});
+
+// (Optional) Verification endpoint
+app.post('/verify-otp', (req, res) => {
+  const { phone, otp } = req.body;
+  const record = OTP_STORE.get(phone);
+  if (
+    record &&
+    record.code === otp &&
+    record.expires > Date.now()
+  ) {
+    OTP_STORE.delete(phone);
+    return res.json({ success: true, message: 'OTP verified' });
+  }
+  res.status(400).json({ success: false, message: 'Invalid or expired OTP' });
 });
