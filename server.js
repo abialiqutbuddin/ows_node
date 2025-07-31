@@ -3931,13 +3931,13 @@ app.post('/api/verify-otp', (req, res) => {
 
 // Change Password
 app.post('/api/change-password', async (req, res) => {
-  const { login, oldPassword, newPassword } = req.body;
+  const { login, newPassword } = req.body;
 
   // 1) Validate input
-  if (!login || !oldPassword || !newPassword) {
+  if (!login || !newPassword) {
     return res
       .status(400)
-      .json({ error: 'login, oldPassword and newPassword are all required' });
+      .json({ error: 'login and newPassword are all required' });
   }
   if (newPassword.length < 8) {
     return res
@@ -3956,12 +3956,6 @@ app.post('/api/change-password', async (req, res) => {
     );
     if (rows.length === 0) {
       return res.status(404).json({ error: 'User not found' });
-    }
-    const currentPwd = rows[0].UsrPwd;
-
-    // 3) Verify old password
-    if (currentPwd !== oldPassword) {
-      return res.status(401).json({ error: 'Old password is incorrect' });
     }
 
     // 4) Update to the new password
