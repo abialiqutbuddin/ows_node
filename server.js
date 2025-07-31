@@ -3795,31 +3795,6 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
     }]);
     console.log('[7] FinancialSurvey created');
 
-    // // 8) Add SurveyFee
-    // await conn.query('INSERT INTO financial_survey_fee SET ?', [{
-    //   //financial_survey_fee_id: uuidv4(),
-    //   financial_survey_id: finSurveyId,
-    //   student_fee_id: "",
-    //   fee_type_id: 2,
-    //   amount: owsForm.fundAsking,
-    //   created_at: new Date(),
-    //   created_by_id: 1
-    // }]);
-    // console.log('[8] FinancialSurveyFee added');
-
-    // 9) Create StudentFee
-    // await conn.query('INSERT INTO student_fee SET ?', [{
-    //   student_fee_id: uuidv4(),
-    //   financial_year_id: financialYearId,
-    //   student_id: student.student_id,
-    //   amount: owsForm.fundAsking,
-    //   remarks: owsForm.description,
-    //   created_by_id: 1,
-    //   created_at: new Date()
-    // }]);
-    // console.log('[9] StudentFee created');
-
-    // 10) Populate StudentGoods
     {
       const [[{ assets }]] = await pool.query(
         `SELECT assets FROM application_main WHERE id = ?`,
@@ -3856,268 +3831,6 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
     conn.release();
   }
 }
-// async function insertAiutSurvey(applicationId, aiutSurvey) {
-//   const conn = await aiutpool.getConnection();
-//   console.log(`\n[insertAiutSurvey] Start for applicationId=${applicationId}, its_no=${aiutSurvey.its_no}`);
-//   try {
-//     // BEGIN TRANSACTION
-//     await conn.beginTransaction();
-//     console.log('[tx] BEGIN');
-
-//     let aiut_student_status = 'Old';
-
-//     // 1) Fetch the OWS form
-//     console.log('[1] Fetching OwsReqForm...');
-//     const owsForm = await OwsReqForm.findOne({ where: { ITS: aiutSurvey.its_no } });
-//     if (!owsForm) throw new Error(`No OwsReqForm found for ITS=${aiutSurvey.its_no}`);
-//     console.log('[1] owsForm:', owsForm.toJSON());
-
-//     // 2) Get dependent & income counts
-//     console.log('[2] Counting dependents & income_types...');
-//     const [countRows] = await pool.query(
-//       `SELECT
-//          (SELECT COUNT(*) FROM dependents   WHERE application_id = ?) AS dependent_count,
-//          (SELECT COUNT(*) FROM income_types WHERE application_id = ?) AS income_count`,
-//       [applicationId, applicationId]
-//     );
-//     const { dependent_count, income_count } = countRows[0];
-//     console.log(`[2] dependent_count=${dependent_count}, income_count=${income_count}`);
-
-//     // 3) Sum income for father, fallback to mother
-//     console.log('[3] Summing father income...');
-//     const [[{ total_income: dadIncome }]] = await pool.query(
-//       `SELECT SUM(amount) AS total_income
-//          FROM income_types
-//         WHERE application_id = ? AND member_its = ?`,
-//       [applicationId, aiutSurvey.father_its_no]
-//     );
-//     let totalIncome = dadIncome;
-//     if (totalIncome == null) {
-//       console.log('[3] Father income null, summing mother income...');
-//       const [[{ total_income: momIncome }]] = await pool.query(
-//         `SELECT SUM(amount) AS total_income
-//            FROM income_types
-//           WHERE application_id = ? AND member_its = ?`,
-//         [applicationId, aiutSurvey.mother_its_no]
-//       );
-//       totalIncome = momIncome || 0;
-//     }
-//     console.log(`[3] totalIncome=${totalIncome}`);
-
-//     // 4) Find or insert student
-//     console.log('[4] Looking up student...');
-//     let studentRecord = null;
-//     if (aiutSurvey.its_no) {
-//       let [studentRows] = await conn.query(
-//         `SELECT student_id, student_no
-//            FROM student
-//           WHERE its_no = ?`,
-//         [aiutSurvey.its_no]
-//       );
-//       console.log('[4] existing studentRows:', studentRows);
-
-//       if (studentRows.length > 0) {
-//         aiut_student_status = 'Old';
-//       }
-
-//       if (studentRows.length === 0) {
-//         console.log('[4] No student found → inserting new one...');
-//         aiut_student_status = 'New';
-//         const [[{ maxno }]] = await conn.query(`SELECT MAX(student_no) AS maxno FROM student`);
-//         const newNo = (maxno || 0) + 1;
-//         const newId = uuidv4();
-//         const mohId = await getMohallahIdByName(owsForm.mohalla);
-//         console.log(`[4] newNo=${newNo}, newId=${newId}, mohId=${mohId}`);
-
-//         const studentData = {
-//           student_id: newId,
-//           student_no: newNo,
-//           sf_no: aiutSurvey.sf_no,
-//           its_no: aiutSurvey.its_no,
-//           student_name: aiutSurvey.student_name,
-//           surname: aiutSurvey.surname,
-//           dob: aiutSurvey.dob,
-//           user_image: aiutSurvey.user_image,
-//           father_its_no: aiutSurvey.father_its_no,
-//           father_name: aiutSurvey.father_name,
-//           father_mobile_no: aiutSurvey.father_mobile_no,
-//           father_occupation_id: 0,
-//           father_cnic: aiutSurvey.father_cnic,
-//           mother_its_no: aiutSurvey.mother_its_no,
-//           mother_name: aiutSurvey.mother_name,
-//           mother_mobile_no: aiutSurvey.mother_mobile_no,
-//           mother_occupation_id: 0,
-//           residential_address: aiutSurvey.residential_address,
-//           residential_phone_no: aiutSurvey.residential_phone_no,
-//           mohallah_id: mohId,
-//           gender: aiutSurvey.gender,
-//           status: "Pending",
-//           delete_request: null,
-//           madrassa_going: "Yes",
-//           madrassa_id: 0,
-//           finance_support: "Inactive",
-//           fa_date: null,
-//           employer_name: "",
-//           monthly_income: totalIncome,
-//           earning_members: income_count,
-//           dependents: dependent_count,
-//           flat_area: aiutSurvey.flat_area,
-//           created_at: toMySQLDatetime(),
-//           created_by_id: 1,
-//           modified_at: null,
-//           modified_by_id: null
-//         };
-//         console.log('[4] studentData:', studentData);
-
-//         await conn.query('INSERT INTO student SET ?', [studentData]);
-//         console.log('[4] Inserted new student.');
-
-//         [studentRows] = await conn.query(
-//           `SELECT student_id, student_no FROM student WHERE its_no = ?`,
-//           [aiutSurvey.its_no]
-//         );
-//       }
-
-//       studentRecord = studentRows[0];
-//       console.log('[4] Final studentRecord:', studentRecord);
-//     }
-
-//     // 5) Insert into survey
-//     console.log('[5] Inserting into survey...');
-//     await conn.query('INSERT INTO survey SET ?', [{
-//       ...aiutSurvey,
-//       student_id: studentRecord.student_id,
-//       student_no: studentRecord.student_no,
-//       created_at: toMySQLDatetime(),
-//       modified_at: null
-//     }]);
-//     console.log('[5] Survey inserted.');
-
-//     // 6) Create Aiut-schema records
-//     const fyId = await getLastFinancialYearId();
-//     console.log(`[6] financial_year_id=${fyId}`);
-
-//     console.log('[6] createStudentInstitute...');
-//     // await createStudentInstitute({
-//     //   financial_year_id: fyId,
-//     //   student_id: studentRecord.student_id,
-//     //   institute_category_id: 0,
-//     //   school_id: await getOrCreateSchoolId({
-//     //     school_name: owsForm.institution,
-//     //     institute_category_id: 0,
-//     //     school_category: '',
-//     //     created_by_id: 1
-//     //   }),
-//     //   class_id: 0,
-//     //   section_id: 0,
-//     //   created_by_id: 1
-//     // });
-//     const existingRecord = await StudentInstitute.findOne({
-//       where: {
-//         financial_year_id: fyId,
-//         student_id: studentRecord.student_id
-//       }
-//     });
-
-//     if (!existingRecord) {
-//       const newRecord = await StudentInstitute.create({
-//         student_institute_id: uuidv4(),
-//         financial_year_id: fyId,
-//         student_id: studentRecord.student_id,
-//         institute_category_id: 0,
-//         school_id: await getOrCreateSchoolId({
-//           school_name: owsForm.institution,
-//           institute_category_id: 0,
-//           school_category: '',
-//           created_by_id: 1
-//         }),
-//         class_id: 0,
-//         section_id: 0,
-//         created_by_id: 1,
-//         created_at: new Date(),
-//       });
-
-//       console.log('[6] StudentInstitute created.');
-//     } else {
-//       console.log('[6] StudentInstitute already exists. Skipped.');
-//     }
-
-//     console.log('[6] createFinancialSurvey...');
-//     const finSurvey = await FinancialSurvey.create({
-//       financial_survey_id: uuidv4(),
-//       student_id: studentRecord.student_id,
-//       monthly_income: totalIncome,
-//       earning_members: income_count,
-//       dependents: dependent_count,
-//       flat_area: '',
-//       employer_name: '',
-//       student_status: aiut_student_status,
-//       status: 'Request',
-//       created_by_id: 1,
-//       created_at: new Date(),
-//       // all other columns (mohallah_member_*, document_*, committee_*, modified_*, remove_from_fa, etc.)
-//       // will use your model’s default or NULL
-//     });
-
-//     // await createFinancialSurvey({
-//     //   student_id: studentRecord.student_id,
-//     //   monthly_income: totalIncome,
-//     //   earning_members: income_count,
-//     //   dependents: dependent_count,
-//     //   flat_area: '',
-//     //   employer_name: '',
-//     //   student_status: aiut_student_status,
-//     //   status: 'Request',
-//     //   created_by_id: 1
-//     // });
-
-//     console.log('[6] FinancialSurvey:', finSurvey.toJSON());
-
-//     console.log('[6] addSurveyFee...');
-//     await addSurveyFee(finSurvey.financial_survey_id, 2, owsForm.fundAsking);
-//     console.log('[6] SurveyFee added.');
-
-//     console.log('[6] createStudentFee...');
-//     await createStudentFee({
-//       financial_year_id: fyId,
-//       student_id: studentRecord.student_id,
-//       amount: owsForm.fundAsking,
-//       remarks: owsForm.description,
-//       created_by_id: 1
-//     });
-//     console.log('[6] StudentFee created.');
-
-//     // 7) Handle assets → student_goods
-//     console.log('[7] Populating student goods...');
-//     const [assetRows] = await pool.query(
-//       `SELECT assets FROM application_main WHERE id = ?`,
-//       [applicationId]
-//     );
-//     const rawAssets = assetRows[0]?.assets || '';
-//     const assetsOptions = rawAssets
-//       .split(',')
-//       .map(s => s.trim())
-//       .filter(Boolean)
-//       .map(name => ({ name }));
-//     console.log('[7] assetsOptions:', assetsOptions);
-
-//     await populateStudentGoods(finSurvey.financial_survey_id, studentRecord.student_id, assetsOptions, 1);
-//     console.log('[7] StudentGoods populated.');
-
-//     // COMMIT TRANSACTION
-//     await conn.commit();
-//     console.log('[tx] COMMIT');
-
-//   } catch (err) {
-//     // ROLLBACK on any error
-//     console.error('[tx] ROLLBACK due to:', err);
-//     await conn.rollback();
-//     throw err;
-//   } finally {
-//     conn.release();
-//     console.log('[insertAiutSurvey] Connection released.');
-//   }
-// }
 
 app.delete('/api/aiut/:tableName/:columnName/:value', async (req, res) => {
   const { tableName, columnName, value } = req.params;
@@ -4146,11 +3859,12 @@ app.delete('/api/aiut/:tableName/:columnName/:value', async (req, res) => {
   }
 });
 
+const OTP_STORE = new Map();
+const OTP_TTL_MS = 5 * 60 * 1000; // 5 minutes
+
 function generateOtp() {
   return Math.floor(100000 + Math.random() * 900000).toString();
 }
-
-const OTP_STORE = new Map();
 
 app.post('/api/send-otp', async (req, res) => {
   const { phone } = req.body;
@@ -4158,29 +3872,34 @@ app.post('/api/send-otp', async (req, res) => {
     return res.status(400).json({ error: 'Missing "phone" in request body' });
   }
 
-  // 1) Generate & store OTP
-  const otp = generateOtp();
-  OTP_STORE.set(phone, {
-    code: otp,
-    expires: Date.now() + 5 * 60 * 1000, // 5 minutes
-  });
+  // If there's an existing OTP for this phone, clear its removal timer
+  const existing = OTP_STORE.get(phone);
+  if (existing?.timeoutId) {
+    clearTimeout(existing.timeoutId);
+  }
 
-  // 2) Prepare WaAPI request
+  // 1) Generate new OTP
+  const code = generateOtp();
+  const expiresAt = Date.now() + OTP_TTL_MS;
+
+  // 2) Schedule auto‐deletion when it expires
+  const timeoutId = setTimeout(() => {
+    OTP_STORE.delete(phone);
+  }, OTP_TTL_MS);
+
+  // 3) Store the new OTP record (overwrites any old one)
+  OTP_STORE.set(phone, { code, expiresAt, timeoutId });
+
+  // 4) Send via WaAPI
   const chatId = `${phone}@c.us`;
-  //const url = `https://waapi.app/api/v1/instances/${process.env.WAAPI_INSTANCE_ID}/client/action/send-message`;
-  
-  const url = "https://waapi.app/api/v1/instances/5164/client/action/send-message"
+  const url = "https://waapi.app/api/v1/instances/5164/client/action/send-message";
   const token = "N4g8hLGka0cRFSP9DfU8HMA5F3cxccbYjVzMSO8H4b38d73f";
-  const payload = {
-    chatId,
-    message: `Your verification code is: *${otp}*`,
-  };
+  const payload = { chatId, message: `Your verification code is: *${code}*` };
   const headers = {
     Authorization: `Bearer ${token}`,
     'Content-Type': 'application/json',
   };
 
-  // 3) Send via WaAPI
   try {
     await axios.post(url, payload, { headers });
     res.json({ success: true, message: 'OTP sent' });
@@ -4190,17 +3909,72 @@ app.post('/api/send-otp', async (req, res) => {
   }
 });
 
-// (Optional) Verification endpoint
 app.post('/verify-otp', (req, res) => {
   const { phone, otp } = req.body;
   const record = OTP_STORE.get(phone);
-  if (
-    record &&
-    record.code === otp &&
-    record.expires > Date.now()
-  ) {
+
+  // Clean up expired on‐the‐fly
+  if (record?.expiresAt <= Date.now()) {
+    clearTimeout(record.timeoutId);
+    OTP_STORE.delete(phone);
+    return res.status(400).json({ success: false, message: 'Expired OTP' });
+  }
+
+  if (record && record.code === otp) {
+    clearTimeout(record.timeoutId);
     OTP_STORE.delete(phone);
     return res.json({ success: true, message: 'OTP verified' });
   }
-  res.status(400).json({ success: false, message: 'Invalid or expired OTP' });
+
+  res.status(400).json({ success: false, message: 'Invalid OTP' });
+});
+
+// Change Password
+app.post('/api/change-password', async (req, res) => {
+  const { login, oldPassword, newPassword } = req.body;
+
+  // 1) Validate input
+  if (!login || !oldPassword || !newPassword) {
+    return res
+      .status(400)
+      .json({ error: 'login, oldPassword and newPassword are all required' });
+  }
+  if (newPassword.length < 8) {
+    return res
+      .status(400)
+      .json({ error: 'newPassword must be at least 8 characters long' });
+  }
+
+  let conn;
+  try {
+    conn = await pool.getConnection();
+
+    // 2) Fetch current password
+    const [rows] = await conn.query(
+      'SELECT UsrPwd FROM owsadmUsrProfil WHERE UsrLogin = ? LIMIT 1',
+      [login]
+    );
+    if (rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    const currentPwd = rows[0].UsrPwd;
+
+    // 3) Verify old password
+    if (currentPwd !== oldPassword) {
+      return res.status(401).json({ error: 'Old password is incorrect' });
+    }
+
+    // 4) Update to the new password
+    await conn.query(
+      'UPDATE owsadmUsrProfil SET UsrPwd = ? WHERE UsrLogin = ?',
+      [newPassword, login]
+    );
+
+    res.json({ success: true, message: 'Password changed successfully' });
+  } catch (err) {
+    console.error('Error in change-password:', err);
+    res.status(500).json({ error: 'Server error' });
+  } finally {
+    if (conn) conn.release();
+  }
 });
