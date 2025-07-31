@@ -3951,7 +3951,7 @@ app.post('/api/change-password', async (req, res) => {
 
     // 2) Fetch current password
     const [rows] = await conn.query(
-      'SELECT UsrPwd FROM owsadmUsrProfil WHERE UsrLogin = ? LIMIT 1',
+      'SELECT UsrPwd FROM owsadmUsrProfil WHERE UsrID = ? LIMIT 1',
       [login]
     );
     if (rows.length === 0) {
