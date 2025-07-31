@@ -3909,7 +3909,7 @@ app.post('/api/send-otp', async (req, res) => {
   }
 });
 
-app.post('/verify-otp', (req, res) => {
+app.post('/api/verify-otp', (req, res) => {
   const { phone, otp } = req.body;
   const record = OTP_STORE.get(phone);
 
