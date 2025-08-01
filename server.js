@@ -3978,7 +3978,7 @@ app.post('/api/change-password', async (req, res) => {
 
 app.post('/api/sync-aiut-students', async (req, res) => {
   try {
-    // 1) grab all AIUT forms
+    // 1) grab all AIUT forms (we only need reqId + ITS)
     const forms = await OwsReqForm.findAll({
       where: { organization: 'AIUT' },
       attributes: ['reqId', 'ITS']
@@ -3988,31 +3988,28 @@ app.post('/api/sync-aiut-students', async (req, res) => {
     const conn = await aiutpool.getConnection();
 
     for (const form of forms) {
-            const itsValue = form.get('ITS');
+      const itsValue = form.get('ITS');
+
       // 2) Find matching student
       const [[student]] = await conn.query(
-        `SELECT student_id 
-           FROM student 
+        `SELECT student_id
+           FROM student
           WHERE its_no = ?`,
         [itsValue]
       );
 
       // 3) If found, update the form row
-      if (student) {
-        // Option A: update via the model
+      if (student && student.student_id) {
         await OwsReqForm.update(
           { aiut_student_id: student.student_id },
-          { where: { reqId: form.reqId } }
+          { where: { reqId: form.get('reqId') } }
         );
-
-        // Option B (a little cleaner): update the instance directly
-        // await form.update({ aiut_student_id: student.student_id });
-
         updatedCount++;
       }
     }
 
-    res.json({ success: true, updatedCount: updated });
+    conn.release();
+    res.json({ success: true, updatedCount });
   } catch (err) {
     console.error('sync-aiut-students error:', err);
     res.status(500).json({ error: 'Internal server error' });
