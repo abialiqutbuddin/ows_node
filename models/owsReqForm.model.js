@@ -178,7 +178,7 @@ const OwsReqForm = sequelize.define("owsReqForm", {
     type: DataTypes.STRING(8),
     allowNull: true
   },
-  student_id: { type: DataTypes.CHAR(38), allowNull: true },
+  aiut_student_id: { type: DataTypes.CHAR(38), allowNull: true },
 
 }, {
   tableName: "owsReqForm",
