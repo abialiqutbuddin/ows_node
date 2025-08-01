@@ -3981,7 +3981,7 @@ app.post('/api/sync-aiut-students', async (req, res) => {
     // 1) grab all AIUT forms
     const forms = await OwsReqForm.findAll({
       where: { organization: 'AIUT' },
-      attributes: ['reqId', 'its_no']
+      attributes: ['reqId', 'ITS']
     });
 
     let updated = 0;
