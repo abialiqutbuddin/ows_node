@@ -1886,7 +1886,7 @@ app.post('/api/submit-application', async (req, res) => {
          currentStatus  = ?,
          aiut_student_id = ?
      WHERE reqId         = ?`,
-        [appId, 'Request Generated',student_id, reqId]
+        [appId, 'Request Generated', student_id, reqId]
       );
     }
 
@@ -3973,5 +3973,47 @@ app.post('/api/change-password', async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   } finally {
     if (conn) conn.release();
+  }
+});
+
+app.post('/api/sync-aiut-students', async (req, res) => {
+  try {
+    // 1) grab all AIUT forms
+    const forms = await OwsReqForm.findAll({
+      where: { organization: 'AIUT' },
+      attributes: ['reqId', 'its_no']
+    });
+
+    let updated = 0;
+    const conn = await aiutpool.getConnection();
+
+    for (const form of forms) {
+      // 2) Find matching student
+      const [[student]] = await conn.query(
+        `SELECT student_id 
+           FROM student 
+          WHERE its_no = ?`,
+        [form.ITS]
+      );
+
+      // 3) If found, update the form row
+      if (student) {
+        // Option A: update via the model
+        await OwsReqForm.update(
+          { aiut_student_id: student.student_id },
+          { where: { reqId: form.reqId } }
+        );
+
+        // Option B (a little cleaner): update the instance directly
+        // await form.update({ aiut_student_id: student.student_id });
+
+        updatedCount++;
+      }
+    }
+
+    res.json({ success: true, updatedCount: updated });
+  } catch (err) {
+    console.error('sync-aiut-students error:', err);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
