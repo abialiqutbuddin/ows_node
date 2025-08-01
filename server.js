@@ -3984,16 +3984,17 @@ app.post('/api/sync-aiut-students', async (req, res) => {
       attributes: ['reqId', 'ITS']
     });
 
-    let updated = 0;
+    let updatedCount = 0;
     const conn = await aiutpool.getConnection();
 
     for (const form of forms) {
+            const itsValue = form.get('ITS');
       // 2) Find matching student
       const [[student]] = await conn.query(
         `SELECT student_id 
            FROM student 
           WHERE its_no = ?`,
-        [form.ITS]
+        [itsValue]
       );
 
       // 3) If found, update the form row
