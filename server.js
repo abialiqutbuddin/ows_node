@@ -1863,8 +1863,9 @@ app.post('/api/submit-application', async (req, res) => {
 
   try {
 
+    let student_id = null;
     if (aiut_survey) {
-      await insertAiutSurvey(appId, aiut_survey);
+      student_id = await insertAiutSurvey(appId, aiut_survey);
     }
 
     await conn.beginTransaction();
@@ -1882,9 +1883,10 @@ app.post('/api/submit-application', async (req, res) => {
       await conn.query(
         `UPDATE owsReqForm
      SET application_id = ?,
-         currentStatus  = ?
+         currentStatus  = ?,
+         aiut_student_id = ?
      WHERE reqId         = ?`,
-        [appId, 'Request Generated', reqId]
+        [appId, 'Request Generated',student_id, reqId]
       );
     }
 
@@ -3823,6 +3825,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
 
     await conn.commit();
     console.log('[insertAiutSurvey] COMMIT TX');
+    return student.student_id;
   } catch (err) {
     await conn.rollback();
     console.error('[insertAiutSurvey] ROLLBACK TX due to:', err);
