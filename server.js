@@ -3745,6 +3745,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
     }
 
     {
+      console.log(applicationId);
       const [[{ assets }]] = await pool.query(
         `SELECT assets FROM application_main WHERE id = ?`,
         [applicationId]
