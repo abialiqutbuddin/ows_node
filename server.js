@@ -1880,6 +1880,11 @@ app.post('/api/submit-application', async (req, res) => {
     );
 
     const appId = result.insertId;
+    let id = { student_id: null, finSurveyId: null };
+
+    if (aiut_survey) {
+      id = await insertAiutSurvey(appId, aiut_survey);
+    }
 
     // Link to request if reqId provided
     if (reqId) {
@@ -1901,10 +1906,6 @@ app.post('/api/submit-application', async (req, res) => {
         entry.application_id = appId;
         await conn.query(`INSERT INTO ${tableKey} SET ?`, entry);
       }
-    }
-
-    if (aiut_survey) {
-      id = await insertAiutSurvey(appId, aiut_survey);
     }
 
     await conn.commit();
