@@ -3081,24 +3081,23 @@ app.put('/api/users/:usrId', async (req, res) => {
   const now = new Date();
   try {
     // If password is present, hash it
-    let pwdClause = '', params = [];
-    if (UsrPwd) {
-      const hash = await bcrypt.hash(UsrPwd, 12);
-      pwdClause = ', UsrPwd = ?';
-      params.push(hash);
-    }
+    //let pwdClause = '', params = [];
+    // if (UsrPwd) {
+    //   const hash = await bcrypt.hash(UsrPwd, 12);
+    //   pwdClause = ', UsrPwd = ?';
+    //   params.push(hash);
+    // }
 
     // Build and run UPDATE
     const sql = `
       UPDATE owsadmUsrProfil
-      SET UsrITS = ?, UsrName = ?, UsrLogin = ?${pwdClause},
+      SET UsrITS = ?, UsrName = ?, UsrLogin = ?, UsrPwd = ?,
           UsrMobile = ?, UsrMohalla = ?, UsrDesig = ?,
           CoordinatorMohalla = ?, EditBy = ?, EditOn = ?, UsrEmail = ?
       WHERE UsrID = ?
     `;
     params = [
-      UsrITS, UsrName, UsrLogin,
-      ...params,
+      UsrITS, UsrName, UsrLogin, UsrPwd,
       UsrMobile, UsrMohalla, UsrDesig || null,
       CoordinatorMohalla || null,
       EditedBy, now,UsrEmail,
