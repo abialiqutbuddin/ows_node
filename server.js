@@ -2870,6 +2870,7 @@ app.get('/api/get-user-list', async (req, res) => {
       SELECT
         ur.UsrID,
         ur.CompID              AS compId,
+        ur.mohallah_name        AS mohallah_name,
         c.CompName             AS compName,
         c.CompAddress          AS address,
         c.ContactPerson        AS contactPerson,
