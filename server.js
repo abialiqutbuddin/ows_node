@@ -1881,6 +1881,7 @@ app.post('/api/submit-application', async (req, res) => {
 
     const appId = result.insertId;
     let id = { student_id: null, finSurveyId: null };
+    console.log(`New application created with ID: ${appId}`);
 
     if (aiut_survey) {
       id = await insertAiutSurvey(appId, aiut_survey);
