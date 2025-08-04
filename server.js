@@ -2855,6 +2855,8 @@ app.get('/api/get-user-list', async (req, res) => {
         u.UsrMobile           AS mobile,
         u.UsrMohalla          AS mohalla,
         u.UsrDesig            AS designation,
+        u.UsrEmail            AS email,
+        u.UsrPwd              AS password,
         u.CoordinatorMohalla  AS coordinatorMohalla,
         u.CrOn                AS createdAt,
         u.EditOn              AS updatedAt
