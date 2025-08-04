@@ -2999,11 +2999,11 @@ app.post('/api/assign-user-role', async (req, res) => {
     await pool.query(`
       INSERT INTO owsadmUsrRole (
         SysTag, UsrID, RID, CompID,
-        URCrBy, URCrOn, UREditBy, UREditOn
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        URCrBy, URCrOn, UREditBy, UREditOn,mohalla_name
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)
     `, [
       'ows', UsrID, RID, CompID,
-      URCrBy, now, URCrBy, now,
+      URCrBy, now, URCrBy, now,mohalla_name
     ]);
 
     res.send({ success: true });
