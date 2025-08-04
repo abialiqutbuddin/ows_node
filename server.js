@@ -3599,7 +3599,7 @@ let student;
       residential_phone_no: aiutSurvey.residential_phone_no,
       mohallah_id,          // from query above
       gender:               aiutSurvey.gender,
-      status:               "Pending",
+      status:               "Active",
       delete_request:       null,
       madrassa_going:       "Yes",
       madrassa_id:          0,
@@ -3669,7 +3669,7 @@ let student;
       residential_phone_no: aiutSurvey.residential_phone_no,
       mohallah_id,
       gender:            aiutSurvey.gender,
-      status:            "Pending",
+      status:            "Active",
       delete_request:    null,
       madrassa_going:    "Yes",
       madrassa_id:       0,
