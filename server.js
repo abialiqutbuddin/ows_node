@@ -3491,7 +3491,7 @@ app.get('/api/mohallah-names', async (req, res) => {
   try {
     const conn = await aiutpool.getConnection();
     const [rows] = await conn.query(
-      `SELECT mohallah_id, mohallah_name FROM mohalla ORDER BY mohallah_name`
+      `SELECT mohallah_id, mohallah_name FROM mohallah ORDER BY mohallah_name`
     );
 
     const names = rows.map(row => ({
