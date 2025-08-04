@@ -3494,10 +3494,7 @@ app.get('/api/mohallah-names', async (req, res) => {
       `SELECT mohallah_id, mohallah_name FROM mohallah ORDER BY mohallah_name`
     );
 
-    const names = rows.map(row => ({
-      //id: row.mohallah_id,
-      name: row.mohallah_name,
-    }));
+    const names = rows.map(row => row.mohallah_name);
 
     res.json({ success: true, data: names });
   } catch (err) {
