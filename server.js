@@ -1892,11 +1892,11 @@ app.post('/api/submit-application', async (req, res) => {
       }
     }
 
+        await conn.commit();
+
         if (aiut_survey) {
       id = await insertAiutSurvey(appId, aiut_survey);
     }
-
-    await conn.commit();
 
     // Link to request if reqId provided
     if (reqId) {
