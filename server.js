@@ -3746,10 +3746,17 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
 
     {
       console.log(applicationId);
-      const [[{ assets }]] = await pool.query(
-        `SELECT assets FROM application_main WHERE id = ?`,
-        [applicationId]
-      );
+     const [rows] = await pool.query(
+  `SELECT assets FROM application_main WHERE id = ?`,
+  [applicationId]
+);
+
+const assets = rows.length ? rows[0].assets : null;
+
+// Optional: throw an error or handle missing record
+if (assets === null) {
+  throw new Error(`No application_main record found for id ${applicationId}`);
+}
       const selected = (assets || "")
         .split(',')
         .map(s => s.trim().toLowerCase())
