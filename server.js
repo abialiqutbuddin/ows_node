@@ -2905,6 +2905,7 @@ app.get('/api/get-user-list', async (req, res) => {
           role: {
             id: row.roleId,
             title: row.roleTitle,
+            mohallah: row.mohallah_name || null,
             permissions: {
               add: !!row.canAdd,
               edit: !!row.canEdit,
