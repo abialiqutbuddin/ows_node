@@ -3791,8 +3791,7 @@ let student;
              earning_members  = ?,
              dependents       = ?,
              student_status   = ?,
-             status           = ?,
-             updated_at       = ?
+             status           = ?
        WHERE student_id = ?`,
         [
           updateData.monthly_income,
@@ -3800,7 +3799,7 @@ let student;
           updateData.dependents,
           updateData.student_status,
           updateData.status,
-          updateData.updated_at,
+          //updateData.updated_at,
           student.student_id
         ]
       );
