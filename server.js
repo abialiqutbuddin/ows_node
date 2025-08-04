@@ -3091,13 +3091,13 @@ app.put('/api/users/:usrId', async (req, res) => {
     // Build and run UPDATE
     const sql = `
       UPDATE owsadmUsrProfil
-      SET UsrITS = ?, UsrName = ?, UsrLogin = ?, UsrPwd = ?,
+      SET UsrITS = ?, UsrName = ?, UsrLogin = ?, UsrPwd = ?,UsrEmail = ?,
           UsrMobile = ?, UsrMohalla = ?, UsrDesig = ?,
           CoordinatorMohalla = ?, EditBy = ?, EditOn = ?, UsrEmail = ?
       WHERE UsrID = ?
     `;
     params = [
-      UsrITS, UsrName, UsrLogin, UsrPwd,
+      UsrITS, UsrName, UsrLogin, UsrPwd, UsrEmail,
       UsrMobile, UsrMohalla, UsrDesig || null,
       CoordinatorMohalla || null,
       EditedBy, now,UsrEmail,
