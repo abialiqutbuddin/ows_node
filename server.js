@@ -1870,9 +1870,6 @@ app.post('/api/submit-application', async (req, res) => {
   try {
 
     let student_id = null;
-    if (aiut_survey) {
-      id = await insertAiutSurvey(appId, aiut_survey);
-    }
 
     await conn.beginTransaction();
 
@@ -1904,6 +1901,10 @@ app.post('/api/submit-application', async (req, res) => {
         entry.application_id = appId;
         await conn.query(`INSERT INTO ${tableKey} SET ?`, entry);
       }
+    }
+
+    if (aiut_survey) {
+      id = await insertAiutSurvey(appId, aiut_survey);
     }
 
     await conn.commit();
