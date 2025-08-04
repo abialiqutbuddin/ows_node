@@ -3486,6 +3486,26 @@ app.get('/api/aiut/:tableName', async (req, res) => {
 //   return inserted;
 // }
 
+// GET: List of all Mohallah names
+app.get('/api/mohallah-names', async (req, res) => {
+  try {
+    const conn = await aiutpool.getConnection();
+    const [rows] = await conn.query(
+      `SELECT mohallah_id, mohallah_name FROM mohalla ORDER BY mohallah_name`
+    );
+
+    const names = rows.map(row => ({
+      //id: row.mohallah_id,
+      name: row.mohallah_name,
+    }));
+
+    res.json({ success: true, data: names });
+  } catch (err) {
+    console.error('❌ Error fetching mohallah names:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 async function insertAiutSurvey(applicationId, aiutSurvey) {
   const conn = await aiutpool.getConnection();
   try {
