@@ -1892,9 +1892,9 @@ app.post('/api/submit-application', async (req, res) => {
       }
     }
 
-        await conn.commit();
+    await conn.commit();
 
-        if (aiut_survey) {
+    if (aiut_survey) {
       id = await insertAiutSurvey(appId, aiut_survey);
     }
 
@@ -3747,17 +3747,17 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
 
     {
       console.log(applicationId);
-     const [rows] = await pool.query(
-  `SELECT assets FROM application_main WHERE id = ?`,
-  [applicationId]
-);
+      const [rows] = await pool.query(
+        `SELECT assets FROM application_main WHERE id = ?`,
+        [applicationId]
+      );
 
-const assets = rows.length ? rows[0].assets : null;
+      const assets = rows.length ? rows[0].assets : null;
 
-// Optional: throw an error or handle missing record
-if (assets === null) {
-  throw new Error(`No application_main record found for id ${applicationId}`);
-}
+      // Optional: throw an error or handle missing record
+      if (assets === null) {
+        throw new Error(`No application_main record found for id ${applicationId}`);
+      }
       const selected = (assets || "")
         .split(',')
         .map(s => s.trim().toLowerCase())
