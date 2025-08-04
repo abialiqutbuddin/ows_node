@@ -1896,6 +1896,8 @@ app.post('/api/submit-application', async (req, res) => {
       id = await insertAiutSurvey(appId, aiut_survey);
     }
 
+    await conn.commit();
+
     // Link to request if reqId provided
     if (reqId) {
       await conn.query(
@@ -1909,8 +1911,6 @@ app.post('/api/submit-application', async (req, res) => {
         [appId, 'Request Generated', id.student_id, id.finSurveyId, reqId]
       );
     }
-
-    await conn.commit();
 
     res.json({ success: true, id: appId });
 
