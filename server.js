@@ -1879,11 +1879,20 @@ app.post('/api/submit-application', async (req, res) => {
       application
     );
 
+
     const appId = result.insertId;
     let id = { student_id: null, finSurveyId: null };
     console.log(`New application created with ID: ${appId}`);
 
-    if (aiut_survey) {
+    // Insert repeatable entries into corresponding tables
+    for (const [tableKey, entries] of Object.entries(repeatables)) {
+      for (const entry of entries) {
+        entry.application_id = appId;
+        await conn.query(`INSERT INTO ${tableKey} SET ?`, entry);
+      }
+    }
+
+        if (aiut_survey) {
       id = await insertAiutSurvey(appId, aiut_survey);
     }
 
@@ -1899,14 +1908,6 @@ app.post('/api/submit-application', async (req, res) => {
      WHERE reqId = ?`,
         [appId, 'Request Generated', id.student_id, id.finSurveyId, reqId]
       );
-    }
-
-    // Insert repeatable entries into corresponding tables
-    for (const [tableKey, entries] of Object.entries(repeatables)) {
-      for (const entry of entries) {
-        entry.application_id = appId;
-        await conn.query(`INSERT INTO ${tableKey} SET ?`, entry);
-      }
     }
 
     await conn.commit();
