@@ -3609,7 +3609,7 @@ let student;
       monthly_income:       totalIncome,
       earning_members:      income_count,
       dependents:           dependent_count,
-      flat_area:            aiutSurvey.flat_area,
+      flat_area:            "",
       modified_at:          toMySQLDatetime(),
       modified_by_id:       1
       // (we leave student_id, student_no, its_no, created_at, created_by_id intact)
@@ -3679,7 +3679,7 @@ let student;
       monthly_income:    totalIncome,
       earning_members:   income_count,
       dependents:        dependent_count,
-      flat_area:         aiutSurvey.flat_area,
+      flat_area:         "",
       created_at:        toMySQLDatetime(),
       created_by_id:     1,
       modified_at:       null,
