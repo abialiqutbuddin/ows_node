@@ -51,7 +51,13 @@ const {
   Goods,
 } = require('./models/aiut_insertion.model.js');
 
-const API_VERSION = "1.4.0"; // Change this based on your version
+aiut_sequelize
+  .authenticate()
+  .then(() => console.log('✔️  Database connection established to AIUT SEQ'))
+  .catch(err => console.error('❌  Unable to connect to DB:', err));
+
+const { v4: uuidv4 } = require('uuid');
+const API_VERSION = "2.2.0";
 
 const PORT = 3001;
 
@@ -3372,139 +3378,6 @@ app.get('/api/get-aiut-table/:tableName', async (req, res) => {
   }
 });
 
-async function getMohallahIdByName(name) {
-  // exact match; for case‐insensitive or partial matches you can swap to Op.like etc.
-  const record = await Mohallah.findOne({
-    where: { mohallah_name: name },
-    attributes: ['mohallah_id']
-  });
-
-  return record ? record.mohallah_id : null;
-}
-
-async function getLastFinancialYearId() {
-  const rec = await FinancialYear.findOne({
-    attributes: ['financial_year_id'],
-    order: [['financial_year_id', 'DESC']],
-    limit: 1
-  });
-  return rec ? rec.financial_year_id : null;
-}
-
-async function createStudentInstitute({
-  financial_year_id,
-  student_id,
-  institute_category_id,
-  school_id,
-  class_id,
-  section_id,
-  created_by_id
-}) {
-  const newRecord = await StudentInstitute.create({
-    student_institute_id: uuidv4(),
-    financial_year_id,
-    student_id,
-    institute_category_id,
-    school_id,
-    class_id,
-    section_id,
-    created_at: new Date(),
-    created_by_id
-  });
-  return newRecord;
-}
-
-async function getOrCreateSchoolId({
-  school_name,
-  institute_category_id = null,
-  school_category = null,
-  created_by_id = null
-}) {
-  // Try to find an existing school
-  let school = await School.findOne({
-    where: { school_name },
-    attributes: ['school_id']
-  });
-
-  if (school) {
-    return school.school_id;
-  }
-
-  // Not found → insert a new record
-  const newSchool = await School.create({
-    // If you’re using auto-increment, omit this. Otherwise, uncomment:
-    // school_id: uuidv4(),
-    institute_category_id,
-    school_category,
-    school_name,
-    created_at: new Date(),
-    created_by_id
-  });
-
-  return newSchool.school_id;
-}
-
-async function addSurveyFee(financial_survey_id, fee_type_id, amount) {
-  // student_fee_id is NOT NULL in your schema, so we default it to empty string.
-  // If you actually have a student_fee row to link to, pass that ID here.
-  return await FinancialSurveyFee.create({
-    financial_survey_id,
-    student_fee_id: "",    // required by schema, but otherwise “blank”
-    fee_type_id,
-    amount,
-    // sort_order, frequency, parents_share, aiut_share, ratio, due_date, created_at, created_by_id
-    // will all use their DEFAULT values
-  });
-}
-
-async function createStudentFee({
-  financial_year_id,
-  student_id,
-  amount,
-  remarks = null,
-  created_by_id = null
-}) {
-  return await StudentFee.create({
-    student_fee_id: uuidv4(),
-    financial_year_id,
-    student_id,
-    amount,
-    remarks,
-    created_at: new Date(),
-    created_by_id
-    // sort_order, fee_type_id, due_date, parents_share, aiut_share, ratio, modified_at etc.
-    // will use your model defaults (NULL or 0 as defined)
-  });
-}
-
-async function createFinancialSurvey({
-  student_id,
-  monthly_income,
-  earning_members,
-  dependents,
-  flat_area,
-  employer_name,
-  student_status,
-  status,
-  created_by_id = null
-}) {
-  return await FinancialSurvey.create({
-    financial_survey_id: uuidv4(),
-    student_id,
-    monthly_income,
-    earning_members,
-    dependents,
-    flat_area,
-    employer_name,
-    student_status,
-    status,
-    created_at: new Date(),
-    created_by_id
-    // all other columns (mohallah_member_*, document_*, committee_*, modified_*, remove_from_fa, etc.)
-    // will use your model’s default or NULL
-  });
-}
-
 async function selectAllFromAiutTable(tableName) {
   // Basic validation: only allow letters, numbers, and underscores
   if (!/^[A-Za-z0-9_]+$/.test(tableName)) {
@@ -3528,91 +3401,85 @@ app.get('/api/aiut/:tableName', async (req, res) => {
   }
 });
 
-async function populateStudentGoods(financial_survey_id, student_id, assetsOptions, created_by_id) {
-  console.log('⚙️  populateStudentGoods start', {
-    financial_survey_id,
-    student_id,
-    assetsOptions,
-    created_by_id
-  });
+// async function populateStudentGoods(financial_survey_id, student_id, assetsOptions, created_by_id) {
+//   console.log('⚙️  populateStudentGoods start', {
+//     financial_survey_id,
+//     student_id,
+//     assetsOptions,
+//     created_by_id
+//   });
 
-  // 1) Map of known asset names → goods_id
-  const assetsToGoodsId = {
-    "Gas Stove": null,
-    "TV": 1,
-    "Radio": null,
-    "Telephone/Mobile": 10,
-    "Animal Cart": null,
-    "Bicycle": 11,
-    "Computer/Laptop": 8,
-    "Motorbike": 12,
-    "Refrigerator": 2,
-    "Washing Machine": 4,
-    "Car": 13,
-    "Truck": 14
-  };
-  console.log('🔑 assetsToGoodsId map:', assetsToGoodsId);
+//   // 1) Map of known asset names → goods_id
+//   const assetsToGoodsId = {
+//     "Gas Stove": null,
+//     "TV": 1,
+//     "Radio": null,
+//     "Telephone/Mobile": 10,
+//     "Animal Cart": null,
+//     "Bicycle": 11,
+//     "Computer/Laptop": 8,
+//     "Motorbike": 12,
+//     "Refrigerator": 2,
+//     "Washing Machine": 4,
+//     "Car": 13,
+//     "Truck": 14
+//   };
+//   console.log('🔑 assetsToGoodsId map:', assetsToGoodsId);
 
-  // 2) Normalize helper
-  const normalize = str => str.trim().toLowerCase();
+//   // 2) Normalize helper
+//   const normalize = str => str.trim().toLowerCase();
 
-  // 3) Build set of selected goods_ids
-  const selectedGoodsIds = new Set();
-  for (const opt of assetsOptions) {
-    console.log('🔍 checking asset option:', opt);
-    if (!opt.name) {
-      console.log('  ⛔ skipping empty name');
-      continue;
-    }
-    const key = normalize(opt.name);
-    const gid = assetsToGoodsId[opt.name] ?? assetsToGoodsId[key];
-    console.log(`  ↳ name="${opt.name}", normalized="${key}" → gid=${gid}`);
-    if (gid != null) {
-      selectedGoodsIds.add(gid);
-      console.log(`  ✅ added goods_id ${gid}`);
-    }
-  }
-  console.log('🎯 selectedGoodsIds set:', Array.from(selectedGoodsIds));
+//   // 3) Build set of selected goods_ids
+//   const selectedGoodsIds = new Set();
+//   for (const opt of assetsOptions) {
+//     console.log('🔍 checking asset option:', opt);
+//     if (!opt.name) {
+//       console.log('  ⛔ skipping empty name');
+//       continue;
+//     }
+//     const key = normalize(opt.name);
+//     const gid = assetsToGoodsId[opt.name] ?? assetsToGoodsId[key];
+//     console.log(`  ↳ name="${opt.name}", normalized="${key}" → gid=${gid}`);
+//     if (gid != null) {
+//       selectedGoodsIds.add(gid);
+//       console.log(`  ✅ added goods_id ${gid}`);
+//     }
+//   }
+//   console.log('🎯 selectedGoodsIds set:', Array.from(selectedGoodsIds));
 
-  // 4) Fetch all master goods
-  const masterGoods = await Goods.findAll({ attributes: ['goods_id'] });
-  console.log(`📋 fetched masterGoods (${masterGoods.length} items):`, masterGoods.map(g => g.goods_id));
+//   // 4) Fetch all master goods
+//   const masterGoods = await Goods.findAll({ attributes: ['goods_id'] });
+//   console.log(`📋 fetched masterGoods (${masterGoods.length} items):`, masterGoods.map(g => g.goods_id));
 
-  const now = new Date();
-  const inserted = [];
+//   const now = new Date();
+//   const inserted = [];
 
-  // 5) Loop and insert
-  for (const g of masterGoods) {
-    const status = selectedGoodsIds.has(g.goods_id) ? 'yes' : 'no';
-    console.log(`✏️ inserting StudentGoods for goods_id=${g.goods_id}, status=${status}`);
-    try {
-      const row = await FinancialSurveyGoods.create({
-        //financial_survey_goods_id: uuidv4(),
-        financial_survey_id,
-        student_id,
-        goods_id: g.goods_id,
-        status,
-        comment: '',
-        created_at: now,
-        created_by_id
-      });
-      inserted.push(row);
-      console.log('  ✔️ inserted:', row.toJSON());
-    } catch (err) {
-      console.error(`  ❌ failed to insert for goods_id=${g.goods_id}:`, err);
-    }
-  }
+//   // 5) Loop and insert
+//   for (const g of masterGoods) {
+//     const status = selectedGoodsIds.has(g.goods_id) ? 'yes' : 'no';
+//     console.log(`✏️ inserting StudentGoods for goods_id=${g.goods_id}, status=${status}`);
+//     try {
+//       const row = await FinancialSurveyGoods.create({
+//         //financial_survey_goods_id: uuidv4(),
+//         financial_survey_id,
+//         student_id,
+//         goods_id: g.goods_id,
+//         status,
+//         comment: '',
+//         created_at: now,
+//         created_by_id
+//       });
+//       inserted.push(row);
+//       console.log('  ✔️ inserted:', row.toJSON());
+//     } catch (err) {
+//       console.error(`  ❌ failed to insert for goods_id=${g.goods_id}:`, err);
+//     }
+//   }
 
-  console.log('🏁 populateStudentGoods done, total inserted:', inserted.length);
-  return inserted;
-}
+//   console.log('🏁 populateStudentGoods done, total inserted:', inserted.length);
+//   return inserted;
+// }
 
-aiut_sequelize
-  .authenticate()
-  .then(() => console.log('✔️  Database connection established to AIUT SEQ'))
-  .catch(err => console.error('❌  Unable to connect to DB:', err));
-
-const { v4: uuidv4 } = require('uuid');
 async function insertAiutSurvey(applicationId, aiutSurvey) {
   const conn = await aiutpool.getConnection();
   try {
@@ -3761,7 +3628,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
         financial_year_id: financialYearId,
         student_id: student.student_id,
         institute_category_id: 0,
-        school_id,
+        schoolId,
         class_id: 0,
         section_id: 0,
         created_by_id: 1,
@@ -3782,7 +3649,9 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
 
     // 7) Create FinancialSurvey
     const finSurveyId = uuidv4();
-    await conn.query('INSERT INTO financial_survey SET ?', [{
+
+    // 1) Prepare your data objects
+    const insertData = {
       financial_survey_id: finSurveyId,
       student_id: student.student_id,
       monthly_income: totalIncome,
@@ -3794,8 +3663,54 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
       status: "Request",
       created_by_id: 1,
       created_at: new Date()
-    }]);
-    console.log('[7] FinancialSurvey created');
+    };
+
+    const updateData = {
+      monthly_income: totalIncome,
+      earning_members: income_count,
+      dependents: dependent_count,
+      student_status: aiut_student_status,
+      status: "Request",
+      updated_at: new Date()
+    };
+
+    // 2) Check if a survey already exists for this student
+    const [rows] = await conn.query(
+      'SELECT financial_survey_id FROM financial_survey WHERE student_id = ?',
+      [student.student_id]
+    );
+
+    if (rows.length > 0) {
+      // 3a) Found an existing record → UPDATE
+      await conn.query(
+        `UPDATE financial_survey 
+         SET monthly_income   = ?,
+             earning_members  = ?,
+             dependents       = ?,
+             student_status   = ?,
+             status           = ?,
+             updated_at       = ?
+       WHERE student_id = ?`,
+        [
+          updateData.monthly_income,
+          updateData.earning_members,
+          updateData.dependents,
+          updateData.student_status,
+          updateData.status,
+          updateData.updated_at,
+          student.student_id
+        ]
+      );
+      console.log('[7] FinancialSurvey updated for student', student.student_id);
+
+    } else {
+      // 3b) No record found → INSERT
+      await conn.query(
+        'INSERT INTO financial_survey SET ?',
+        [insertData]
+      );
+      console.log('[7] FinancialSurvey created with id', finSurveyId);
+    }
 
     {
       const [[{ assets }]] = await pool.query(
