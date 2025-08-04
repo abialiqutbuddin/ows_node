@@ -1895,6 +1895,7 @@ app.post('/api/submit-application', async (req, res) => {
     await conn.commit();
 
     if (aiut_survey) {
+      console.log('Inserting into Aiut Survey table');
       id = await insertAiutSurvey(appId, aiut_survey);
     }
 
