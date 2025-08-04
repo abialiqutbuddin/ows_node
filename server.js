@@ -1914,6 +1914,7 @@ app.post('/api/submit-application', async (req, res) => {
     res.json({ success: true, id: appId });
 
   } catch (err) {
+    console.error('Error submitting application:', err);
     await conn.rollback();
     console.error(err);
     res.status(500).json({ success: false, error: 'Failed to submit application' });
