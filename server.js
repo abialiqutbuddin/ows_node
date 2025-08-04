@@ -3097,7 +3097,7 @@ app.put('/api/users/:usrId', async (req, res) => {
       WHERE UsrID = ?
     `;
     params = [
-      UsrITS, UsrName, UsrLogin, UsrPwd, UsrEmail,
+      UsrITS, UsrName, UsrLogin, UsrPwd,
       UsrMobile, UsrMohalla, UsrDesig || null,
       CoordinatorMohalla || null,
       EditedBy, now,UsrEmail,
