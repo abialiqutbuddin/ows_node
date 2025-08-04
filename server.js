@@ -3558,69 +3558,138 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
     }
 
     // 4) Find or insert Student
-    let student;
-    {
-      const [[existing]] = await conn.query(
-        `SELECT student_id, student_no FROM student WHERE its_no = ?`,
-        [aiutSurvey.its_no]
-      );
-      if (existing) {
-        student = existing;
-        console.log('[4] existing student:', student);
-        aiut_student_status = 'Old';
-      } else {
-        aiut_student_status = 'New';
-        // new student_no
-        const [[{ maxno }]] = await conn.query(`SELECT MAX(student_no) AS maxno FROM student`);
-        const newNo = (maxno || 0) + 1;
-        const newId = uuidv4();
-        // mohallah lookup
-        const [[{ mohallah_id }]] = await conn.query(
-          `SELECT mohallah_id FROM mohalla WHERE mohallah_name = ?`,
-          [owsForm.mohalla]
-        );
-        // insert student
-        await conn.query('INSERT INTO student SET ?', [{
-          student_id: newId,
-          student_no: newNo,
-          its_no: aiutSurvey.its_no,
-          student_name: aiutSurvey.student_name,
-          surname: aiutSurvey.surname,
-          dob: aiutSurvey.dob,
-          user_image: aiutSurvey.user_image,
-          father_its_no: aiutSurvey.father_its_no,
-          father_name: aiutSurvey.father_name,
-          father_mobile_no: aiutSurvey.father_mobile_no,
-          father_occupation_id: 0,
-          father_cnic: aiutSurvey.father_cnic,
-          mother_its_no: aiutSurvey.mother_its_no,
-          mother_name: aiutSurvey.mother_name,
-          mother_mobile_no: aiutSurvey.mother_mobile_no,
-          mother_occupation_id: 0,
-          residential_address: aiutSurvey.residential_address,
-          residential_phone_no: aiutSurvey.residential_phone_no,
-          mohallah_id,
-          gender: aiutSurvey.gender,
-          status: "Pending",
-          delete_request: null,
-          madrassa_going: "Yes",
-          madrassa_id: 0,
-          finance_support: "Inactive",
-          fa_date: null,
-          employer_name: "",
-          monthly_income: totalIncome,
-          earning_members: income_count,
-          dependents: dependent_count,
-          flat_area: aiutSurvey.flat_area,
-          created_at: toMySQLDatetime(),
-          created_by_id: 1,
-          modified_at: null,
-          modified_by_id: null
-        }]);
-        student = { student_id: newId, student_no: newNo };
-        console.log('[4] inserted new student:', student);
-      }
-    }
+// Inside your async function where `conn`, `aiutSurvey`, `owsForm`, `totalIncome`, `income_count`, `dependent_count`,
+// `toMySQLDatetime`, and `uuidv4` are all in scope:
+
+let student;
+{
+  // 1) Try to find an existing student by ITS
+  const [[existing]] = await conn.query(
+    `SELECT student_id, student_no FROM student WHERE its_no = ?`,
+    [aiutSurvey.its_no]
+  );
+
+  if (existing) {
+    // 2) Mark as old
+    aiut_student_status = 'Old';
+
+    // 3) Re-lookup mohalla_id in case it changed
+    const [[{ mohallah_id }]] = await conn.query(
+      `SELECT mohallah_id FROM mohalla WHERE mohallah_name = ?`,
+      [owsForm.mohalla]
+    );
+
+    // 4) Assemble all fields you want to refresh
+    const updateFields = {
+      student_name:         aiutSurvey.student_name,
+      surname:              aiutSurvey.surname,
+      dob:                  aiutSurvey.dob,
+      user_image:           aiutSurvey.user_image,
+      father_its_no:        aiutSurvey.father_its_no,
+      father_name:          aiutSurvey.father_name,
+      father_mobile_no:     aiutSurvey.father_mobile_no,
+      father_occupation_id: 0,
+      father_cnic:          aiutSurvey.father_cnic,
+      mother_its_no:        aiutSurvey.mother_its_no,
+      mother_name:          aiutSurvey.mother_name,
+      mother_mobile_no:     aiutSurvey.mother_mobile_no,
+      mother_occupation_id: 0,
+      residential_address:  aiutSurvey.residential_address,
+      residential_phone_no: aiutSurvey.residential_phone_no,
+      mohallah_id,          // from query above
+      gender:               aiutSurvey.gender,
+      status:               "Pending",
+      delete_request:       null,
+      madrassa_going:       "Yes",
+      madrassa_id:          0,
+      finance_support:      "Inactive",
+      fa_date:              null,
+      employer_name:        "",
+      monthly_income:       totalIncome,
+      earning_members:      income_count,
+      dependents:           dependent_count,
+      flat_area:            aiutSurvey.flat_area,
+      modified_at:          toMySQLDatetime(),
+      modified_by_id:       1
+      // (we leave student_id, student_no, its_no, created_at, created_by_id intact)
+    };
+
+    // 5) Run the UPDATE
+    await conn.query(
+      `UPDATE student 
+          SET ? 
+        WHERE student_id = ?`,
+      [updateFields, existing.student_id]
+    );
+
+    // 6) Preserve the existing keys for downstream logic
+    student = {
+      student_id: existing.student_id,
+      student_no: existing.student_no
+    };
+    console.log('[4] updated existing student:', student);
+
+  } else {
+    // New‐student path
+    aiut_student_status = 'New';
+
+    // 7) Determine next student_no
+    const [[{ maxno }]] = await conn.query(
+      `SELECT MAX(student_no) AS maxno FROM student`
+    );
+    const newNo = (maxno || 0) + 1;
+    const newId = uuidv4();
+
+    // 8) Lookup mohallah_id
+    const [[{ mohallah_id }]] = await conn.query(
+      `SELECT mohallah_id FROM mohalla WHERE mohallah_name = ?`,
+      [owsForm.mohalla]
+    );
+
+    // 9) INSERT all fields
+    await conn.query('INSERT INTO student SET ?', [{
+      student_id:        newId,
+      student_no:        newNo,
+      its_no:            aiutSurvey.its_no,
+      student_name:      aiutSurvey.student_name,
+      surname:           aiutSurvey.surname,
+      dob:               aiutSurvey.dob,
+      user_image:        aiutSurvey.user_image,
+      father_its_no:     aiutSurvey.father_its_no,
+      father_name:       aiutSurvey.father_name,
+      father_mobile_no:  aiutSurvey.father_mobile_no,
+      father_occupation_id: 0,
+      father_cnic:       aiutSurvey.father_cnic,
+      mother_its_no:     aiutSurvey.mother_its_no,
+      mother_name:       aiutSurvey.mother_name,
+      mother_mobile_no:  aiutSurvey.mother_mobile_no,
+      mother_occupation_id: 0,
+      residential_address: aiutSurvey.residential_address,
+      residential_phone_no: aiutSurvey.residential_phone_no,
+      mohallah_id,
+      gender:            aiutSurvey.gender,
+      status:            "Pending",
+      delete_request:    null,
+      madrassa_going:    "Yes",
+      madrassa_id:       0,
+      finance_support:   "Inactive",
+      fa_date:           null,
+      employer_name:     "",
+      monthly_income:    totalIncome,
+      earning_members:   income_count,
+      dependents:        dependent_count,
+      flat_area:         aiutSurvey.flat_area,
+      created_at:        toMySQLDatetime(),
+      created_by_id:     1,
+      modified_at:       null,
+      modified_by_id:    null
+    }]);
+
+    // 10) Record the new keys
+    student = { student_id: newId, student_no: newNo };
+    console.log('[4] inserted new student:', student);
+  }
+}
 
     // 5) Ensure StudentInstitute
     let financialYearId;
