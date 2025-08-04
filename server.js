@@ -3773,7 +3773,7 @@ let student;
       dependents: dependent_count,
       student_status: aiut_student_status,
       status: "Request",
-      updated_at: new Date()
+      //updated_at: new Date()
     };
 
     // 2) Check if a survey already exists for this student
