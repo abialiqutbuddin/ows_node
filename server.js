@@ -3576,7 +3576,7 @@ let student;
 
     // 3) Re-lookup mohalla_id in case it changed
     const [[{ mohallah_id }]] = await conn.query(
-      `SELECT mohallah_id FROM mohalla WHERE mohallah_name = ?`,
+      `SELECT mohallah_id FROM mohallah WHERE mohallah_name = ?`,
       [owsForm.mohalla]
     );
 
