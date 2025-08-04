@@ -1871,7 +1871,7 @@ app.post('/api/submit-application', async (req, res) => {
 
     let student_id = null;
     if (aiut_survey) {
-      student_id = await insertAiutSurvey(appId, aiut_survey);
+      id = await insertAiutSurvey(appId, aiut_survey);
     }
 
     await conn.beginTransaction();
@@ -1890,9 +1890,11 @@ app.post('/api/submit-application', async (req, res) => {
         `UPDATE owsReqForm
      SET application_id = ?,
          currentStatus  = ?,
-         aiut_student_id = ?
-     WHERE reqId         = ?`,
-        [appId, 'Request Generated', student_id, reqId]
+         aiut_student_id = ?,
+        aiut_financial_id = ?
+
+     WHERE reqId = ?`,
+        [appId, 'Request Generated', id.student_id, id.finSurveyId, reqId]
       );
     }
 
@@ -2992,7 +2994,7 @@ app.post('/api/assign-user-role', async (req, res) => {
   console.log('Assigning user role:', req.body);
   const {
     UsrID, RID, CompID,
-    URCrBy,mohallah_name
+    URCrBy, mohallah_name
   } = req.body;
 
   const now = new Date();
@@ -3005,7 +3007,7 @@ app.post('/api/assign-user-role', async (req, res) => {
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)
     `, [
       'ows', UsrID, RID, CompID,
-      URCrBy, now, URCrBy, now,mohallah_name
+      URCrBy, now, URCrBy, now, mohallah_name
     ]);
 
     res.send({ success: true });
@@ -3102,7 +3104,7 @@ app.put('/api/users/:usrId', async (req, res) => {
       UsrITS, UsrName, UsrLogin, UsrPwd,
       UsrMobile, UsrMohalla, UsrDesig || null,
       CoordinatorMohalla || null,
-      EditedBy, now,UsrEmail,
+      EditedBy, now, UsrEmail,
       usrId
     ];
 
@@ -3673,7 +3675,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
     console.log('[6] survey inserted');
 
     // 7) Create FinancialSurvey
-    const finSurveyId = uuidv4();
+    let finSurveyId = uuidv4();
 
     // 1) Prepare your data objects
     const insertData = {
@@ -3707,6 +3709,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
 
     if (rows.length > 0) {
       // 3a) Found an existing record → UPDATE
+      finSurveyId = rows[0].financial_survey_id; // use existing ID
       await conn.query(
         `UPDATE financial_survey 
          SET monthly_income   = ?,
@@ -3765,7 +3768,10 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
 
     await conn.commit();
     console.log('[insertAiutSurvey] COMMIT TX');
-    return student.student_id;
+    return {
+      studentId: student.student_id,
+      financialSurveyId: finSurveyId
+    };
   } catch (err) {
     await conn.rollback();
     console.error('[insertAiutSurvey] ROLLBACK TX due to:', err);
