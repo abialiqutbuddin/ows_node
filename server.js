@@ -2990,7 +2990,7 @@ app.post('/api/assign-user-role', async (req, res) => {
   console.log('Assigning user role:', req.body);
   const {
     UsrID, RID, CompID,
-    URCrBy
+    URCrBy,mohallah_name
   } = req.body;
 
   const now = new Date();
@@ -2999,11 +2999,11 @@ app.post('/api/assign-user-role', async (req, res) => {
     await pool.query(`
       INSERT INTO owsadmUsrRole (
         SysTag, UsrID, RID, CompID,
-        URCrBy, URCrOn, UREditBy, UREditOn,mohalla_name
+        URCrBy, URCrOn, UREditBy, UREditOn,mohallah_name
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)
     `, [
       'ows', UsrID, RID, CompID,
-      URCrBy, now, URCrBy, now,mohalla_name
+      URCrBy, now, URCrBy, now,mohallah_name
     ]);
 
     res.send({ success: true });
