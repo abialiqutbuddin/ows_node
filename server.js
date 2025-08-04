@@ -3072,6 +3072,7 @@ app.put('/api/users/:usrId', async (req, res) => {
   const {
     UsrITS, UsrName, UsrLogin, UsrPwd,
     UsrMobile, UsrMohalla, UsrDesig, CoordinatorMohalla,
+    UsrEmail,
     EditedBy
   } = req.body;
 
@@ -3090,7 +3091,7 @@ app.put('/api/users/:usrId', async (req, res) => {
       UPDATE owsadmUsrProfil
       SET UsrITS = ?, UsrName = ?, UsrLogin = ?${pwdClause},
           UsrMobile = ?, UsrMohalla = ?, UsrDesig = ?,
-          CoordinatorMohalla = ?, EditBy = ?, EditOn = ?
+          CoordinatorMohalla = ?, EditBy = ?, EditOn = ?, UsrEmail = ?
       WHERE UsrID = ?
     `;
     params = [
@@ -3098,7 +3099,7 @@ app.put('/api/users/:usrId', async (req, res) => {
       ...params,
       UsrMobile, UsrMohalla, UsrDesig || null,
       CoordinatorMohalla || null,
-      EditedBy, now,
+      EditedBy, now,UsrEmail,
       usrId
     ];
 
