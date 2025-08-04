@@ -2472,7 +2472,7 @@ app.post(
   '/api/submit-future-form',
   upload.none(),
   async (req, res) => {
-    // parse JSON string for details
+    // ✅ Parse 'details' if it's a stringified JSON
     if (typeof req.body.details === 'string') {
       try {
         req.body.details = JSON.parse(req.body.details);
@@ -2481,39 +2481,43 @@ app.post(
       }
     }
 
-    // ensure details[0] exists
-    const details = Array.isArray(req.body.details)
-      ? req.body.details
-      : [{}];
+    // ✅ Conditionally copy fields into details[0] only if details exists
+    if (Array.isArray(req.body.details)) {
+      const details = req.body.details;
 
-    // copy all future fields into details[0]
-    [
-      'current_hifz_enrolled',
-      'niyat_hifz_enrolled',
-      'next_sanad',
-      'is_quran_tilawat',
-      'sehat_eraab',
-      'sehat_huroof',
-      'is_tilawat_niyat',
-      'tilawat_preferred_days',
-      'tilawat_preferred_timings',
-      'attended_counselling',
-      'comments',
-      'will_asbaaq',
-      'will_khidmat',
-      'khidmat',
-    ].forEach((field) => {
-      if (req.body[field] !== undefined) {
-        details[0][field] = req.body[field];
-      }
-    });
+      // Create details[0] if missing
+      if (!details[0]) details[0] = {};
 
-    req.body.details = details;
+      [
+        'current_hifz_enrolled',
+        'niyat_hifz_enrolled',
+        'next_sanad',
+        'is_quran_tilawat',
+        'sehat_eraab',
+        'sehat_huroof',
+        'is_tilawat_niyat',
+        'tilawat_preferred_days',
+        'tilawat_preferred_timings',
+        'attended_counselling',
+        'comments',
+        'will_asbaaq',
+        'will_khidmat',
+        'khidmat',
+      ].forEach((field) => {
+        if (req.body[field] !== undefined) {
+          details[0][field] = req.body[field];
+        }
+      });
 
-    // flatten both top-level and nested fields
+      req.body.details = details; // keep it
+    } else {
+      delete req.body.details; // ❌ remove if null or not a valid array
+    }
+
+    // ✅ Flatten form
     const flat = flattenFormData(req.body);
 
-    // build multipart/form-data
+    // ✅ Build form data
     const form = new FormData();
     Object.entries(flat).forEach(([key, val]) => {
       form.append(key, val);
