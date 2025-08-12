@@ -736,7 +736,7 @@ app.post("/all-requests", async (req, res) => {
 const { Op, fn, col, where } = require('sequelize');
 
 app.post("/all-requests-by-organization", async (req, res) => {
-  const { organization } = req.body;
+  const { organization, mohalla } = req.body;
 
   try {
     if (!organization) {
@@ -747,25 +747,42 @@ app.post("/all-requests-by-organization", async (req, res) => {
     }
 
     const orgLower = organization.trim().toLowerCase();
-
     let requests;
 
     if (orgLower === "all") {
-      // ✅ Return all requests
+      // ✅ Return all requests (appId not null)
       requests = await OwsReqForm.findAll({
         where: {
           application_id: { [Op.ne]: null }
         },
         order: [['created_at', 'DESC']],
       });
-    } else {
-      // ✅ Filter requests by organization name (case-insensitive)
+
+    } else if (orgLower === "dini") {
+      // ✅ Special case: Filter by mohalla
+      if (!mohalla) {
+        return res.status(400).json({
+          success: false,
+          message: "Mohalla is required when organization is Dini",
+        });
+      }
+
       requests = await OwsReqForm.findAll({
         where: {
           [Op.and]: [
-            // your existing LOWER(organization) = orgLower clause
+            { mohalla: mohalla.trim() },
+            { application_id: { [Op.ne]: null } }
+          ]
+        },
+        order: [['created_at', 'DESC']],
+      });
+
+    } else {
+      // ✅ Default: Filter by organization (case-insensitive)
+      requests = await OwsReqForm.findAll({
+        where: {
+          [Op.and]: [
             where(fn('LOWER', col('organization')), orgLower),
-            // new condition: appId is not null
             { application_id: { [Op.ne]: null } }
           ]
         },
@@ -776,7 +793,7 @@ app.post("/all-requests-by-organization", async (req, res) => {
     if (!requests.length) {
       return res.status(404).json({
         success: false,
-        message: "No requests found for the given organization",
+        message: "No requests found for the given organization/mohalla",
       });
     }
 
