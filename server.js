@@ -3065,6 +3065,102 @@ app.get('/api/get-user-list', async (req, res) => {
 //   }
 // });
 
+app.get('/api/get-user-list', async (req, res) => {
+  try {
+    // 1) fetch all users
+    const [users] = await pool.query(`
+      SELECT
+        COALESCE(u.UsrID, 0)            AS UsrID,
+        u.UsrITS                         AS UsrITS,
+        u.UsrName                        AS name,
+        u.UsrLogin                       AS login,
+        u.UsrMobile                      AS mobile,
+        TRIM(COALESCE(u.UsrMohalla, '')) AS mohalla,
+        TRIM(COALESCE(u.UsrDesig, ''))   AS designation,
+        COALESCE(u.UsrEmail, '')         AS email,
+        COALESCE(u.UsrPwd, '')           AS password,
+        TRIM(COALESCE(u.CoordinatorMohalla, '')) AS coordinatorMohalla,
+        u.CrOn                           AS createdAt,
+        u.EditOn                         AS updatedAt
+      FROM owsadmUsrProfil AS u
+      ORDER BY u.UsrName
+    `);
+
+    const cnt = users.length;
+
+    // 3) roles + perms + company
+    const [userRoles] = await pool.query(`
+      SELECT
+        COALESCE(ur.UsrID, 0)           AS UsrID,
+        COALESCE(ur.CompID, 0)          AS compId,
+        TRIM(COALESCE(ur.mohallah_name, '')) AS mohallah_name,
+        TRIM(COALESCE(c.CompName, ''))  AS compName,
+        c.CompAddress                   AS address,
+        c.ContactPerson                 AS contactPerson,
+        c.ContactMobile                 AS contactMobile,
+        COALESCE(rm.RId, 0)             AS roleId,
+        TRIM(COALESCE(rm.RTitle, ''))   AS roleTitle,
+        rm.\`Add\`  AS canAdd,
+        rm.\`Edit\` AS canEdit,
+        rm.\`View\` AS canView,
+        rm.\`Delete\` AS canDelete
+      FROM owsadmUsrRole AS ur
+      JOIN owsadmRoleMas  AS rm ON rm.RId = ur.RID
+      JOIN owsadmComp     AS c  ON c.Comp   = ur.CompID
+      WHERE ur.UsrID IN (?)
+    `, [users.map(u => u.UsrID)]);
+
+    // group + attach (unchanged)
+    const rolesByUser = userRoles.reduce((acc, row) => {
+      const uid = row.UsrID;
+      if (!acc[uid]) acc[uid] = new Map();
+      const key = `${row.compId}_${row.roleId}`;
+      if (!acc[uid].has(key)) {
+        acc[uid].set(key, {
+          company: {
+            id: row.compId,
+            name: row.compName,
+            address: row.address,
+            contactPerson: row.contactPerson,
+            contactMobile: row.contactMobile
+          },
+          role: {
+            id: row.roleId,
+            title: row.roleTitle,
+            mohallah: row.mohallah_name || null,
+            permissions: {
+              add: !!row.canAdd,
+              edit: !!row.canEdit,
+              view: !!row.canView,
+              delete: !!row.canDelete
+            }
+          }
+        });
+      }
+      return acc;
+    }, {});
+
+    const enriched = users.map(u => ({
+      profile: u,
+      roles: rolesByUser[u.UsrID]
+        ? Array.from(rolesByUser[u.UsrID].values())
+        : []
+    }));
+
+    res.json({
+      meta: { totalCount: cnt },
+      filters: {
+        organizations: [...new Set(userRoles.map(r => r.compName))].sort(),
+        roles: [...new Set(userRoles.map(r => r.roleTitle))].sort()
+      },
+      users: enriched
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to fetch enriched profiles' });
+  }
+});
+
 //Create User Profile
 app.post('/api/create-user-profile', async (req, res) => {
   const {
