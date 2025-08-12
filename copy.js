@@ -1,6 +1,6 @@
-// insert_roles_umoor_missing.js
-// Creates roles for users whose `umoor` is NOT defined,
-// have a valid `UsrMohalla` (not empty, not "ALL"), and no existing RID=10 CompID=4 role.
+// insert_roles_umoor_company_match.js
+// For users with umoor (UsrDesig), match to owsadmComp.CompName -> CompID,
+// then insert a role row with RID=4. mohallah_name is blank. Skips duplicates.
 
 import mysql from 'mysql2/promise';
 
@@ -20,7 +20,7 @@ const DB_PORT = 3306;
   });
 
   try {
-    console.log('\nInserting roles for users with empty `umoor`, valid `UsrMohalla` ...');
+    console.log('\nInserting roles for users with umoor (UsrDesig) ...');
 
     const sql = `
       INSERT INTO owsadmUsrRole
@@ -28,26 +28,24 @@ const DB_PORT = 3306;
       SELECT
         NULL AS SysTag,
         p.Id AS UsrID,
-        10  AS RID,
-        4   AS CompID,
+        4   AS RID,
+        c.Comp AS CompID,
         'Admin' AS URCrBy,
         NOW()   AS URCrOn,
         'Admin' AS UREditBy,
         NOW()   AS UREditOn,
-        TRIM(p.UsrMohalla) AS mohallah_name
+        '' AS mohallah_name
       FROM owsadmUsrProfil p
-      JOIN users u
-        ON p.UsrITS = LPAD(REGEXP_REPLACE(u.its_id, '[^0-9]', ''), 8, '0')
+      JOIN owsadmComp c
+        ON LOWER(TRIM(c.CompName)) = LOWER(TRIM(p.UsrDesig))
       WHERE
-        (u.umoor IS NULL OR TRIM(u.umoor) = '')
-        AND p.UsrMohalla IS NOT NULL
-        AND TRIM(p.UsrMohalla) <> ''
-        AND UPPER(TRIM(p.UsrMohalla)) <> 'ALL'
+        p.UsrDesig IS NOT NULL
+        AND TRIM(p.UsrDesig) <> ''
         AND NOT EXISTS (
           SELECT 1 FROM owsadmUsrRole r
           WHERE r.UsrID = p.Id
-            AND r.RID = 10
-            AND IFNULL(r.CompID,0) = 4
+            AND r.RID   = 4
+            AND IFNULL(r.CompID, 0) = IFNULL(c.Comp, 0)
         );
     `;
 
