@@ -2840,20 +2840,9 @@ app.get('/api/get-user-profile', async (req, res) => {
 
 });
 
-// Get all user profiles with roles
 app.get('/api/get-user-list', async (req, res) => {
   try {
-    // paging params (optional)
-    const page = +(req.query.page || 1);
-    const perPage = +(req.query.perPage || 25);
-    const offset = (page - 1) * perPage;
-
-    // 1) total count
-    const [[{ cnt }]] = await pool.query(
-      `SELECT COUNT(*) AS cnt FROM owsadmUsrProfil`
-    );
-
-    // 2) fetch page of users, including extra fields
+    // 1) fetch all users
     const [users] = await pool.query(`
       SELECT
         u.UsrID,
@@ -2870,8 +2859,10 @@ app.get('/api/get-user-list', async (req, res) => {
         u.EditOn              AS updatedAt
       FROM owsadmUsrProfil AS u
       ORDER BY u.UsrName
-      LIMIT ? OFFSET ?
-    `, [perPage, offset]);
+    `);
+
+    // 2) total count (can also just use users.length)
+    const cnt = users.length;
 
     // 3) fetch *only real* roles + permissions + enriched company
     const [userRoles] = await pool.query(`
@@ -2944,9 +2935,7 @@ app.get('/api/get-user-list', async (req, res) => {
     // 7) send one payload
     res.json({
       meta: {
-        totalCount: cnt,
-        page,
-        perPage
+        totalCount: cnt
       },
       filters,
       users: enriched
@@ -2957,6 +2946,124 @@ app.get('/api/get-user-list', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch enriched profiles' });
   }
 });
+
+// Get all user profiles with roles
+// app.get('/api/get-user-list', async (req, res) => {
+//   try {
+//     // paging params (optional)
+//     const page = 1;
+//     const perPage = 500;
+//     const offset = (page - 1) * perPage;
+
+//     // 1) total count
+//     const [[{ cnt }]] = await pool.query(
+//       `SELECT COUNT(*) AS cnt FROM owsadmUsrProfil`
+//     );
+
+//     // 2) fetch page of users, including extra fields
+//     const [users] = await pool.query(`
+//       SELECT
+//         u.UsrID,
+//         u.UsrITS,
+//         u.UsrName             AS name,
+//         u.UsrLogin            AS login,
+//         u.UsrMobile           AS mobile,
+//         u.UsrMohalla          AS mohalla,
+//         u.UsrDesig            AS designation,
+//         u.UsrEmail            AS email,
+//         u.UsrPwd              AS password,
+//         u.CoordinatorMohalla  AS coordinatorMohalla,
+//         u.CrOn                AS createdAt,
+//         u.EditOn              AS updatedAt
+//       FROM owsadmUsrProfil AS u
+//       ORDER BY u.UsrName
+//       LIMIT ? OFFSET ?
+//     `, [perPage, offset]);
+
+//     // 3) fetch *only real* roles + permissions + enriched company
+//     const [userRoles] = await pool.query(`
+//       SELECT
+//         ur.UsrID,
+//         ur.CompID              AS compId,
+//         ur.mohallah_name       AS mohallah_name,
+//         c.CompName             AS compName,
+//         c.CompAddress          AS address,
+//         c.ContactPerson        AS contactPerson,
+//         c.ContactMobile        AS contactMobile,
+//         rm.RId                 AS roleId,
+//         rm.RTitle              AS roleTitle,
+//         rm.\`Add\`     AS canAdd,
+//         rm.\`Edit\`    AS canEdit,
+//         rm.\`View\`    AS canView,
+//         rm.\`Delete\`  AS canDelete
+//       FROM owsadmUsrRole AS ur
+//       JOIN owsadmRoleMas  AS rm ON rm.RId = ur.RID
+//       JOIN owsadmComp     AS c  ON c.Comp   = ur.CompID
+//       WHERE
+//         ur.UsrID IN (?)
+//         AND rm.RId IS NOT NULL
+//     `, [users.map(u => u.UsrID)]);
+
+//     // 4) group roles by user, dedupe
+//     const rolesByUser = userRoles.reduce((acc, row) => {
+//       const uid = row.UsrID;
+//       if (!acc[uid]) acc[uid] = new Map();
+//       const key = `${row.compId}_${row.roleId}`;
+//       if (!acc[uid].has(key)) {
+//         acc[uid].set(key, {
+//           company: {
+//             id: row.compId,
+//             name: row.compName,
+//             address: row.address,
+//             contactPerson: row.contactPerson,
+//             contactMobile: row.contactMobile
+//           },
+//           role: {
+//             id: row.roleId,
+//             title: row.roleTitle,
+//             mohallah: row.mohallah_name || null,
+//             permissions: {
+//               add: !!row.canAdd,
+//               edit: !!row.canEdit,
+//               view: !!row.canView,
+//               delete: !!row.canDelete
+//             }
+//           }
+//         });
+//       }
+//       return acc;
+//     }, {});
+
+//     // 5) attach roles to each user
+//     const enriched = users.map(u => ({
+//       profile: u,
+//       roles: rolesByUser[u.UsrID]
+//         ? Array.from(rolesByUser[u.UsrID].values())
+//         : []
+//     }));
+
+//     // 6) build filter options for the front end
+//     const filters = {
+//       organizations: [...new Set(userRoles.map(r => r.compName))].sort(),
+//       roles: [...new Set(userRoles.map(r => r.roleTitle))].sort()
+//     };
+
+//     // 7) send one payload
+//     res.json({
+//       meta: {
+//         totalCount: cnt,
+//         page,
+//         perPage
+//       },
+//       filters,
+//       users: enriched
+//     });
+//   }
+//   catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: 'Failed to fetch enriched profiles' });
+//   }
+// });
 
 //Create User Profile
 app.post('/api/create-user-profile', async (req, res) => {
@@ -3236,7 +3343,7 @@ app.post('/update-assigned', async (req, res) => {
       { where: { reqId } }
     );
 
-    // Step 2: Insert into history
+//    Step 2: Insert into history
     // await owsReqAssignHistory.create({
     //   reqId,
     //   assignedTo,
