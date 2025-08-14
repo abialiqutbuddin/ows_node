@@ -155,13 +155,13 @@ function makeHttpsAgentFor(urlStr) {
   return new https.Agent({ rejectUnauthorized: true });
 }
 
-app.get('/fetch-image', async (req, res) => {
+app.post('/fetch-image', async (req, res) => {
   try {
-    const raw = req.query.url;
-    if (!raw) return res.status(400).json({ error: 'Image URL is required' });
+    const { url } = req.body;
+    if (!url) return res.status(400).json({ error: 'Image URL is required' });
 
     let target;
-    try { target = new URL(Array.isArray(raw) ? raw[0] : String(raw)); }
+    try { target = new URL(url); }
     catch { return res.status(400).json({ error: 'Invalid URL' }); }
 
     if (!/^https?:$/.test(target.protocol)) {
@@ -171,10 +171,9 @@ app.get('/fetch-image', async (req, res) => {
       return res.status(403).json({ error: 'Host not allowed' });
     }
 
-    const httpsAgent = makeHttpsAgentFor(target.toString());
+    const httpsAgent = makeHttpsAgentFor(url);
 
-    // Stream fetch, send UA/Referer to appease some CDNs
-    const upstream = await axios.get(target.toString(), {
+    const upstream = await axios.get(url, {
       responseType: 'stream',
       timeout: 15000,
       httpsAgent,
@@ -183,11 +182,10 @@ app.get('/fetch-image', async (req, res) => {
         'Accept': 'image/*,*/*;q=0.8',
         'Referer': target.origin
       },
-      validateStatus: () => true // let us forward non-2xx
+      validateStatus: () => true
     });
 
     if (upstream.status < 200 || upstream.status >= 300) {
-      // Forward upstream error so you see what's wrong
       return res.status(upstream.status).send(`Upstream error: ${upstream.statusText}`);
     }
 
