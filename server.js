@@ -125,6 +125,52 @@ app.get('/fetch-image', async (req, res) => {
   }
 });
 
+app.post('/fetch-image', async (req, res) => {
+  try {
+    const { url } = req.body;
+    if (!url) return res.status(400).json({ error: 'Image URL is required' });
+
+    let target;
+    try {
+      target = new URL(url);
+    } catch {
+      return res.status(400).json({ error: 'Invalid URL' });
+    }
+    if (!/^https?:$/.test(target.protocol)) {
+      return res.status(400).json({ error: 'Only http/https URLs are allowed' });
+    }
+
+    const upstream = await axios.get(target.toString(), {
+      responseType: 'stream',
+      timeout: 15000,
+      headers: {
+        'User-Agent': 'Mozilla/5.0',
+        'Accept': 'image/*,*/*;q=0.8',
+        'Referer': target.origin
+      },
+      httpsAgent: new https.Agent({ rejectUnauthorized: true })
+    });
+
+    if (upstream.status < 200 || upstream.status >= 300) {
+      return res.status(upstream.status).send(`Upstream error: ${upstream.statusText}`);
+    }
+
+    res.setHeader('Content-Type', upstream.headers['content-type'] || 'application/octet-stream');
+    if (upstream.headers['content-length']) {
+      res.setHeader('Content-Length', upstream.headers['content-length']);
+    }
+    res.setHeader('Cache-Control', 'public, max-age=86400');
+
+    upstream.data.pipe(res);
+  } catch (err) {
+    console.error('Error fetching image:', err.message);
+    if (err.response) {
+      return res.status(err.response.status).send(err.response.statusText);
+    }
+    res.status(500).send(`Failed to fetch image: ${err.message}`);
+  }
+});
+
 //const axios = require("axios");
 
 app.post("/get-profile", async (req, res) => {
