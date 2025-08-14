@@ -125,49 +125,95 @@ app.get('/fetch-image', async (req, res) => {
   }
 });
 
-app.post('/fetch-image', async (req, res) => {
+// ✅ Allow only known hosts (avoid SSRF)
+const ALLOWED_HOSTS = new Set([
+  'followup.qardanhasana.in',
+  // 'another.allowed.host'
+]);
+
+// ✅ For hosts with odd chains, add their CA bundle here (PEM text or file read)
+const HOST_EXTRA_CA = {
+  // 'followup.qardanhasana.in': fs.readFileSync('/etc/ssl/certs/followup-extra.pem', 'utf8'),
+};
+
+// ⚠️ TEMPORARY bypass for hosts with broken chains (remove when fixed)
+const INSECURE_HOSTS = new Set([
+  // 'followup.qardanhasana.in'
+]);
+
+function makeHttpsAgentFor(urlStr) {
+  const { host } = new URL(urlStr);
+  if (INSECURE_HOSTS.has(host)) {
+    // TEMP ONLY: bypass verification for this host
+    return new https.Agent({ rejectUnauthorized: false });
+  }
+  if (HOST_EXTRA_CA[host]) {
+    // Supply extra intermediates for this host
+    return new https.Agent({ ca: HOST_EXTRA_CA[host] });
+  }
+  // Default strict verification
+  return new https.Agent({ rejectUnauthorized: true });
+}
+
+app.get('/fetch-image', async (req, res) => {
   try {
-    const { url } = req.body;
-    if (!url) return res.status(400).json({ error: 'Image URL is required' });
+    const raw = req.query.url;
+    if (!raw) return res.status(400).json({ error: 'Image URL is required' });
 
     let target;
-    try {
-      target = new URL(url);
-    } catch {
-      return res.status(400).json({ error: 'Invalid URL' });
-    }
+    try { target = new URL(Array.isArray(raw) ? raw[0] : String(raw)); }
+    catch { return res.status(400).json({ error: 'Invalid URL' }); }
+
     if (!/^https?:$/.test(target.protocol)) {
       return res.status(400).json({ error: 'Only http/https URLs are allowed' });
     }
+    if (!ALLOWED_HOSTS.has(target.host)) {
+      return res.status(403).json({ error: 'Host not allowed' });
+    }
 
+    const httpsAgent = makeHttpsAgentFor(target.toString());
+
+    // Stream fetch, send UA/Referer to appease some CDNs
     const upstream = await axios.get(target.toString(), {
       responseType: 'stream',
       timeout: 15000,
+      httpsAgent,
       headers: {
         'User-Agent': 'Mozilla/5.0',
         'Accept': 'image/*,*/*;q=0.8',
         'Referer': target.origin
       },
-      httpsAgent: new https.Agent({ rejectUnauthorized: true })
+      validateStatus: () => true // let us forward non-2xx
     });
 
     if (upstream.status < 200 || upstream.status >= 300) {
+      // Forward upstream error so you see what's wrong
       return res.status(upstream.status).send(`Upstream error: ${upstream.statusText}`);
     }
 
-    res.setHeader('Content-Type', upstream.headers['content-type'] || 'application/octet-stream');
+    const type = upstream.headers['content-type'] || 'application/octet-stream';
+    if (!type.startsWith('image/')) {
+      return res.status(400).send('URL did not return an image');
+    }
+
+    res.setHeader('Content-Type', type);
     if (upstream.headers['content-length']) {
       res.setHeader('Content-Length', upstream.headers['content-length']);
     }
     res.setHeader('Cache-Control', 'public, max-age=86400');
 
+    upstream.data.on('error', (e) => {
+      if (!res.headersSent) res.status(502).end('Upstream stream error');
+      else res.destroy(e);
+    });
+
     upstream.data.pipe(res);
   } catch (err) {
-    console.error('Error fetching image:', err.message);
+    console.error('Fetcher error:', err.message, err.code || '');
     if (err.response) {
       return res.status(err.response.status).send(err.response.statusText);
     }
-    res.status(500).send(`Failed to fetch image: ${err.message}`);
+    res.status(500).send(`Failed to fetch image: ${err.code || err.message}`);
   }
 });
 
