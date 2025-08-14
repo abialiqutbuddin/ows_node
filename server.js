@@ -469,10 +469,48 @@ app.post(
       });
 
       if (existingApplication) {
-        await transaction.rollback();
+        //await transaction.rollback();
+        const repeatRequest = await OwsReqForm.create(
+          {
+            ITS,
+            reqByITS,
+            reqByName,
+            city,
+            institution,
+            class_degree,
+            fieldOfStudy,
+            subject_course,
+            yearOfStart,
+            grade,
+            email,
+            contactNo,
+            whatsappNo,
+            purpose,
+            fundAsking,
+            classification,
+            organization,
+            description,
+            currentStatus: "Repeat",
+            draft_id: null,
+            created_by,
+            updated_by,
+            mohalla,
+            studentName: studentFullName,
+            gender,
+            hasGuardian,
+            fatherCnic,
+            motherCnic,
+            cnic,
+          },
+          { transaction }
+        );
+
+        await transaction.commit();
+
         return res.status(202).json({
           success: false,
           message: "An application already exists for this ITS, organization, and year of start.",
+          data: { reqId: repeatRequest.reqId, status: "Repeat" }
         });
       }
 
