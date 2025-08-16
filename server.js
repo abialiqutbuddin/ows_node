@@ -3567,7 +3567,7 @@ app.post('/delete-assigned', async (req, res) => {
 });
 
 // Assign to a user (sets assignedTo and logs history)
-router.post('/update-assigned', async (req, res) => {
+app.post('/update-assigned', async (req, res) => {
   const { reqId, assignedTo, assignedBy, notes } = req.body;
   if (!reqId || !assignedTo || !assignedBy) {
     return res.status(400).json({ message: 'Missing required fields (reqId, assignedTo, assignedBy)' });
@@ -3591,7 +3591,7 @@ router.post('/update-assigned', async (req, res) => {
 });
 
 // Unassign (clears main table, logs previous assignee in history)
-router.post('/delete-assigned', async (req, res) => {
+app.post('/delete-assigned', async (req, res) => {
   const { reqId, assignedBy, notes } = req.body;
   if (!reqId || !assignedBy) {
     return res.status(400).json({ message: 'Missing required fields (reqId, assignedBy)' });
@@ -3607,7 +3607,7 @@ router.post('/delete-assigned', async (req, res) => {
 
       await OwsReqFormAssignmentHistory.create({
         reqId,
-        assignedTo: previous,        // NOT NULL in history; we log who was cleared
+        assignedTo: previous,
         assignedBy,
         notes: notes ?? 'UNASSIGNED'
       }, { transaction: t });
