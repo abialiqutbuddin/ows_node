@@ -388,21 +388,21 @@ app.post("/fetch-pdf", async (req, res) => {
 });
 
 // API Route to Send Email
-app.post("/send-email", async (req, res) => {
-  const { to, subject, text, html } = req.body;
+// app.post("/send-email", async (req, res) => {
+//   const { to, subject, text, html } = req.body;
 
-  if (!to || !subject || (!text && !html)) {
-    return res.status(400).json({ success: false, message: "Missing required fields" });
-  }
+//   if (!to || !subject || (!text && !html)) {
+//     return res.status(400).json({ success: false, message: "Missing required fields" });
+//   }
 
-  const response = await sendMail(to, subject, text, html);
+//   const response = await sendMail(to, subject, text, html);
 
-  if (response.success) {
-    res.status(200).json(response);
-  } else {
-    res.status(500).json(response);
-  }
-});
+//   if (response.success) {
+//     res.status(200).json(response);
+//   } else {
+//     res.status(500).json(response);
+//   }
+// });
 
 //GET FROM URL
 app.post("/get-url", async (req, res) => {
@@ -1355,13 +1355,13 @@ app.post('/get-student-documents', async (req, res) => {
   }
 });
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: 'abialigadi@gmail.com',
-    pass: 'wxyo ylqm hrok vmxx'  // use App Password if 2FA is enabled
-  }
-});
+// const transporter = nodemailer.createTransport({
+//   service: 'gmail',
+//   auth: {
+//     user: 'abialigadi@gmail.com',
+//     pass: 'wxyo ylqm hrok vmxx'  // use App Password if 2FA is enabled
+//   }
+// });
 
 app.post("/update-paktalim-profile", upload_paktalim.none(), async (req, res) => {
   try {
@@ -1415,16 +1415,16 @@ app.post("/update-paktalim-profile", upload_paktalim.none(), async (req, res) =>
       }
     });
 
-    // ✅ Only email if response.data contains "success"
-    if (response.data?.success === true || response.data?.status === "success") {
-      await transporter.sendMail({
-        from: '"OWS" <abialigadi@gmail.com>',
-        to: "alaqmar11@gmail.com",
-        //to: "abialigadi@gmail.com",
-        subject: "Profile Update Successful",
-        text: `Request to check given ITS # ${its_id}, profile update done by himself/family and if its completed then mark Status 'Complete'.`
-      });
-    }
+    // Only email if response.data contains "success"
+    // if (response.data?.success === true || response.data?.status === "success") {
+    //   await transporter.sendMail({
+    //     from: '"OWS" <abialigadi@gmail.com>',
+    //     to: "alaqmar11@gmail.com",
+    //     //to: "abialigadi@gmail.com",
+    //     subject: "Profile Update Successful",
+    //     text: `Request to check given ITS # ${its_id}, profile update done by himself/family and if its completed then mark Status 'Complete'.`
+    //   });
+    // }
 
     // Send the API response back to the client
     res.json(response.data);
@@ -4431,5 +4431,88 @@ app.post('/api/sync-aiut-students', async (req, res) => {
   } catch (err) {
     console.error('sync-aiut-students error:', err);
     res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Create a single reusable transporter
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT || 25),
+  secure: String(process.env.SMTP_SECURE).toLowerCase() === 'true', // false for port 25
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+  // If your server uses self-signed certs and you see TLS errors, uncomment:
+//  tls: { rejectUnauthorized: false },
+});
+
+// Quick health check
+app.get('/health', async (_req, res) => {
+  try {
+    await transporter.verify();
+    res.json({ ok: true, message: 'SMTP ready' });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: e.message });
+  }
+});
+
+/**
+ * POST /send-email
+ * body: {
+ *   to: "user@example.com" | ["a@b.com","c@d.com"],
+ *   subject: "Hello",
+ *   text?: "Plain text body",
+ *   html?: "<p>HTML body</p>",
+ *   cc?: string|string[],
+ *   bcc?: string|string[],
+ *   replyTo?: string,
+ *   attachments?: [{ filename, content|path|href, contentType }]
+ * }
+ */
+app.post('/send-email', async (req, res) => {
+  try {
+    const {
+      to, subject, text, html,
+      cc, bcc, replyTo, attachments
+    } = req.body || {};
+
+    if (!to || !subject || (!text && !html)) {
+      return res.status(400).json({
+        ok: false,
+        error: 'Required: to, subject, and (text or html).',
+      });
+    }
+
+    console.log(process.env.FROM_NAME);
+    
+    const mail = {
+      from: {
+        name: process.env.FROM_NAME || 'Mailer',
+        address: process.env.FROM_EMAIL || process.env.SMTP_USER,
+      },
+      to,
+      subject,
+      text,
+      html,
+      cc,
+      bcc,
+      replyTo,
+      attachments, // pass-through if provided
+    };
+
+    const info = await transporter.sendMail(mail);
+
+    console.log('Email sent:', info);
+
+    res.json({
+      ok: true,
+      messageId: info.messageId,
+      accepted: info.accepted,
+      rejected: info.rejected,
+      response: info.response,
+    });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: e.message });
   }
 });
