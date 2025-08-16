@@ -21,6 +21,7 @@ const AiutRecord = require("./models/aiut_record.model");
 const AmbtRecord = require("./models/ambt_record.model");
 const StsmfRecord = require("./models/stsmf_record.model");
 const Guardian = require("./models/guardian.model");
+const OwsReqFormAssignmentHistory = require('./models/assignedHistory.model.js');
 const User = require("./models/user.model");
 const StudentApplicationDraft = require('./models/student_application_draft.model');
 const transferDraftToApplication = require("./controllers/transferDraftToApplication");
@@ -3533,33 +3534,87 @@ app.post('/users-by-role-company', async (req, res) => {
   }
 });
 
-app.post('/update-assigned', async (req, res) => {
-  const { reqId, assignedTo, assignedBy } = req.body;
+// DELETE assignment
+app.post('/delete-assigned', async (req, res) => {
+  const { reqId } = req.body;
 
-  if (!reqId || !assignedTo) {
-    return res.status(400).json({ message: 'Missing required fields' });
+  if (!reqId) {
+    return res.status(400).json({ message: 'Missing reqId' });
   }
 
   try {
-    // Step 1: Update main request
+    // Step 1: Clear assignment in main request
     await OwsReqForm.update(
-      { assignedTo },
+      { assignedTo: null },         // set to NULL in DB
       { where: { reqId } }
     );
 
-//    Step 2: Insert into history
+    // Step 2: (optional) insert into history
     // await owsReqAssignHistory.create({
     //   reqId,
-    //   assignedTo,
-    //   assignedBy,
+    //   assignedTo: null,
+    //   assignedBy: req.user?.id,   // or whoever triggered the delete
     //   assignedOn: new Date(),
     // });
 
-    console.log('Assignment updated:', { reqId, assignedTo, assignedBy });
+    console.log('Assignment deleted:', { reqId });
 
-    res.status(200).json({ message: 'Assignment updated and logged.' });
+    res.status(200).json({ message: 'Assignment cleared.' });
   } catch (error) {
-    console.error('Error updating assignment:', error);
+    console.error('Error deleting assignment:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+// Assign to a user (sets assignedTo and logs history)
+router.post('/update-assigned', async (req, res) => {
+  const { reqId, assignedTo, assignedBy, notes } = req.body;
+  if (!reqId || !assignedTo || !assignedBy) {
+    return res.status(400).json({ message: 'Missing required fields (reqId, assignedTo, assignedBy)' });
+  }
+
+  try {
+    await sequelize.transaction(async (t) => {
+      await OwsReqForm.update({ assignedTo }, { where: { reqId }, transaction: t });
+      await OwsReqFormAssignmentHistory.create({
+        reqId,
+        assignedTo,
+        assignedBy,
+        notes: notes ?? 'ASSIGNED'
+      }, { transaction: t });
+    });
+    res.status(200).json({ message: 'Assignment updated and logged.' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+// Unassign (clears main table, logs previous assignee in history)
+router.post('/delete-assigned', async (req, res) => {
+  const { reqId, assignedBy, notes } = req.body;
+  if (!reqId || !assignedBy) {
+    return res.status(400).json({ message: 'Missing required fields (reqId, assignedBy)' });
+  }
+
+  try {
+    await sequelize.transaction(async (t) => {
+      const row = await OwsReqForm.findOne({ where: { reqId }, transaction: t, lock: t.LOCK.UPDATE });
+      const previous = row?.assignedTo;
+      if (!previous) return; // nothing to clear
+
+      await OwsReqForm.update({ assignedTo: null }, { where: { reqId }, transaction: t });
+
+      await OwsReqFormAssignmentHistory.create({
+        reqId,
+        assignedTo: previous,        // NOT NULL in history; we log who was cleared
+        assignedBy,
+        notes: notes ?? 'UNASSIGNED'
+      }, { transaction: t });
+    });
+    res.status(200).json({ message: 'Assignment cleared and logged.' });
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ message: 'Internal server error' });
   }
 });
