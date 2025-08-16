@@ -4485,7 +4485,7 @@ app.post('/send-email', async (req, res) => {
     }
 
     console.log(process.env.FROM_NAME);
-    
+
     const mail = {
       from: {
         name: process.env.FROM_NAME || 'Mailer',
@@ -4501,7 +4501,7 @@ app.post('/send-email', async (req, res) => {
       attachments, // pass-through if provided
     };
 
-    const info = await transporter.sendMail(mail);
+    const info = transporter.sendMail(mail);
 
     console.log('Email sent:', info);
 
