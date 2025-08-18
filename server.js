@@ -4436,17 +4436,21 @@ app.post('/api/sync-aiut-students', async (req, res) => {
 
 // Create a single reusable transporter
 const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || "cloud313.corpservers.net",
-  port: 25,
-  //secure: false, // port 25 normally doesn't use TLS
-  debug: true, // enable debug output
+  host: "cloud313.corpservers.net",
+  port: 587, // use 587 since you're using STARTTLS
+  secure: false, // false for STARTTLS
   auth: {
-    user: process.env.SMTP_USER || "noreply@attalimiyah.com.pk",
-    pass: process.env.SMTP_PASS,
+    user: "noreply@attalimiyah.com.pk",
+    pass: process.env.SMTP_PASS, // make sure this is set in your env
   },
   tls: {
-    rejectUnauthorized: false, // helps if cert is self-signed
-  }
+    ciphers: "SSLv3",
+    rejectUnauthorized: false, // allows self-signed certs
+  },
+  connectionTimeout: 30_000, // 30 seconds
+  greetingTimeout: 30_000,
+  socketTimeout: 30_000,
+  debug: true, // enable debug logs
 });
 
 // Quick health check
