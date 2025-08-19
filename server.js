@@ -4293,6 +4293,8 @@ app.post('/api/send-otp', async (req, res) => {
     return res.status(400).json({ error: 'Missing "phone" in request body' });
   }
 
+  phone = phone.replace(/\D/g, ""); // keeps only digits
+
   // If there's an existing OTP for this phone, clear its removal timer
   const existing = OTP_STORE.get(phone);
   if (existing?.timeoutId) {
