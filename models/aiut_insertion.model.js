@@ -82,6 +82,7 @@ const FinancialSurveyFee = sequelize.define(
     sort_order: { type: DataTypes.INTEGER, defaultValue: 0 },
     fee_type_id: { type: DataTypes.INTEGER, allowNull: true },
     frequency: { type: DataTypes.INTEGER, allowNull: true },
+    ref_app: { type: DataTypes.STRING(32), allowNull: true },
     amount: { type: DataTypes.DECIMAL(17, 2), defaultValue: 0.0 },
     parents_share: { type: DataTypes.DECIMAL(17, 2), defaultValue: 0.0 },
     aiut_share: { type: DataTypes.DECIMAL(17, 2), defaultValue: 0.0 },

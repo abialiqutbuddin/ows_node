@@ -4042,6 +4042,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
           student_id: newId,
           student_no: newNo,
           its_no: aiutSurvey.its_no,
+          ref_app: "OWS",
           student_name: aiutSurvey.student_name,
           surname: aiutSurvey.surname,
           dob: aiutSurvey.dob,
@@ -4153,6 +4154,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
       employer_name: owsForm.employer_name || "",
       student_status: aiut_student_status,
       status: "Request",
+      ref_app: "OWS",
       created_by_id: 1,
       created_at: new Date()
     };
@@ -4163,6 +4165,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
       dependents: dependent_count,
       student_status: aiut_student_status,
       status: "Request",
+      ref_app: "OWS"
       //updated_at: new Date()
     };
 
@@ -4181,7 +4184,8 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
              earning_members  = ?,
              dependents       = ?,
              student_status   = ?,
-             status           = ?
+             status           = ?,
+              ref_app         = ?
        WHERE student_id = ?`,
         [
           updateData.monthly_income,
@@ -4189,6 +4193,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
           updateData.dependents,
           updateData.student_status,
           updateData.status,
+          updateData.ref_app,
           //updateData.updated_at,
           student.student_id
         ]
