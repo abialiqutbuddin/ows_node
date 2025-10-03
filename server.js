@@ -4033,7 +4033,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
 
         // 8) Lookup mohallah_id
         const [[{ mohallah_id }]] = await conn.query(
-          `SELECT mohallah_id FROM mohalla WHERE mohallah_name = ?`,
+          `SELECT mohallah_id FROM mohallah WHERE mohallah_name = ?`,
           [owsForm.mohalla]
         );
 
