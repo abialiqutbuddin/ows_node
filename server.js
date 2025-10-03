@@ -4097,17 +4097,17 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
     );
     if (!inst) {
       // get or create school
-      let schoolId;
+      let school_id;
       const [[school]] = await conn.query(
         `SELECT school_id FROM school WHERE school_name = ?`,
         [owsForm.institution]
       );
       if (school) {
-        schoolId = school.school_id;
+        school_id = school.school_id;
       } else {
-        schoolId = uuidv4();
+        school_id = uuidv4();
         await conn.query('INSERT INTO school SET ?', [{
-          schoolId,
+          school_id,
           institute_category_id: 0,
           school_category: "",
           school_name: owsForm.institution,
@@ -4121,7 +4121,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
         financial_year_id: financialYearId,
         student_id: student.student_id,
         institute_category_id: 0,
-        schoolId,
+        school_id,
         class_id: 0,
         section_id: 0,
         created_by_id: 1,
