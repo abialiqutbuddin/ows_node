@@ -4106,14 +4106,16 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
         school_id = school.school_id;
       } else {
         school_id = uuidv4();
-        await conn.query('INSERT INTO school SET ?', [{
-          school_id,
-          institute_category_id: 0,
-          school_category: "",
-          school_name: owsForm.institution,
-          created_at: new Date(),
-          created_by_id: 1
-        }]);
+const [result] = await conn.query('INSERT INTO school SET ?', [{
+  institute_category_id: 0,
+  school_category: "",
+  school_name: owsForm.institution,
+  created_at: new Date(),
+  created_by_id: 1
+}]);
+
+// assign the auto-incremented ID
+ school_id = result.insertId;
       }
       // insert institute
       await conn.query('INSERT INTO student_institute SET ?', [{
