@@ -4157,7 +4157,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
       flat_area: owsForm.flat_area || "",
       employer_name: owsForm.employer_name || "",
       student_status: aiut_student_status,
-      status: "Request",
+      status: "Pending",
       ref_app: "OWS",
       created_by_id: 1,
       created_at: new Date()
@@ -4170,7 +4170,6 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
       student_status: aiut_student_status,
       status: "Pending",
       ref_app: "OWS"
-      //updated_at: new Date()
     };
 
     // 2) Check if a survey already exists for this student
