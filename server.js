@@ -3907,7 +3907,7 @@ app.get('/api/mohallah-names', async (req, res) => {
 
 async function insertAiutSurvey(applicationId, aiutSurvey) {
   const conn = await aiutpool.getConnection();
-  console.log(`[insertAiutSurvey] Starting for applicationId=${applicationId}, AIUT MODEL=${aiutSurvey}`);
+  console.log(`[insertAiutSurvey] Starting for applicationId=${applicationId}, AIUT MODEL=${aiutSurvey.mother_name}`);
   try {
     await conn.beginTransaction();
     console.log(`[insertAiutSurvey] BEGIN TX for applicationId=${applicationId}`);
