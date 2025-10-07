@@ -2032,6 +2032,8 @@ app.post('/api/submit-application', async (req, res) => {
       id = await insertAiutSurvey(appId, aiut_survey);
     }
 
+    console.log('Aiut Survey Insert Result:', id);
+
     // Link to request if reqId provided
     if (reqId) {
       await conn.query(
@@ -4106,16 +4108,16 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
         school_id = school.school_id;
       } else {
         school_id = uuidv4();
-const [result] = await conn.query('INSERT INTO school SET ?', [{
-  institute_category_id: 0,
-  school_category: "",
-  school_name: owsForm.institution,
-  created_at: new Date(),
-  created_by_id: 1
-}]);
+        const [result] = await conn.query('INSERT INTO school SET ?', [{
+          institute_category_id: 0,
+          school_category: "",
+          school_name: owsForm.institution,
+          created_at: new Date(),
+          created_by_id: 1
+        }]);
 
-// assign the auto-incremented ID
- school_id = result.insertId;
+        // assign the auto-incremented ID
+        school_id = result.insertId;
       }
       // insert institute
       await conn.query('INSERT INTO student_institute SET ?', [{
@@ -4166,7 +4168,7 @@ const [result] = await conn.query('INSERT INTO school SET ?', [{
       earning_members: income_count,
       dependents: dependent_count,
       student_status: aiut_student_status,
-      status: "Request",
+      status: "Pending",
       ref_app: "OWS"
       //updated_at: new Date()
     };
@@ -4196,7 +4198,6 @@ const [result] = await conn.query('INSERT INTO school SET ?', [{
           updateData.student_status,
           updateData.status,
           updateData.ref_app,
-          //updateData.updated_at,
           student.student_id
         ]
       );
@@ -4213,37 +4214,114 @@ const [result] = await conn.query('INSERT INTO school SET ?', [{
 
     {
       console.log(applicationId);
+
       const [rows] = await pool.query(
         `SELECT assets FROM application_main WHERE id = ?`,
         [applicationId]
       );
 
       const assets = rows.length ? rows[0].assets : null;
-
-      // Optional: throw an error or handle missing record
       if (assets === null) {
         throw new Error(`No application_main record found for id ${applicationId}`);
       }
+
       const selected = (assets || "")
-        .split(',')
-        .map(s => s.trim().toLowerCase())
+        .split(",")
+        .map(s => norm(s))
         .filter(Boolean);
 
-      const [goods] = await conn.query(`SELECT goods_id, LOWER(description) AS name FROM goods`);
-      for (const g of goods) {
-        await conn.query('INSERT INTO financial_survey_goods SET ?', [{
-          //financial_survey_goods_id: uuidv4(),
-          financial_survey_id: finSurveyId,
-          //student_id: student.student_id,
-          goods_id: g.goods_id,
-          status: selected.includes(g.name) ? 'yes' : 'no',
-          comment: '',
-          created_at: new Date(),
-          created_by_id: 1
-        }]);
+      // 2) Map selected assets -> Set of goods_ids
+      const selectedGoodsIds = new Set();
+      const unknownAssets = [];
+
+      for (const a of selected) {
+        const gid = ASSET_TO_GOODS_ID_NORM[a]; // use normalized map
+        if (gid == null) {
+          // null or undefined => either intentionally unmapped or unknown
+          unknownAssets.push(a);
+          continue;
+        }
+        selectedGoodsIds.add(gid);
       }
-      console.log('[10] StudentGoods populated');
+
+      if (unknownAssets.length) {
+        console.warn("[populateFinancialSurveyGoods] Unknown/unmapped assets:", unknownAssets);
+      }
+
+      // 3) Fetch all master goods
+      const [goods] = await conn.query(
+        `SELECT goods_id FROM goods ORDER BY goods_id ASC`
+      );
+
+      if (!goods.length) {
+        console.warn("[populateFinancialSurveyGoods] No master goods found.");
+        return { inserted: 0, unknownAssets };
+      }
+
+      // 4) Build rows
+      const now = new Date();
+      const createdById = 1; // or pass it in
+      const rowsToInsert = goods.map(g => ([
+        finSurveyId,
+        g.goods_id,
+        selectedGoodsIds.has(g.goods_id) ? "yes" : "no",
+        "", // comment
+        now,
+        createdById
+      ]));
+
+      // 5) Insert (use UPSERT to avoid duplicates if rerun)
+      // Ensure you have a unique index on (financial_survey_id, goods_id)
+      const sql = `
+    INSERT INTO financial_survey_goods
+      (financial_survey_id, goods_id, status, comment, created_at, created_by_id)
+    VALUES ?
+    ON DUPLICATE KEY UPDATE
+      status = VALUES(status),
+      comment = VALUES(comment),
+      created_at = VALUES(created_at),
+      created_by_id = VALUES(created_by_id)
+  `;
+
+      await conn.query(sql, [rowsToInsert]);
+
+      console.log(`[populateFinancialSurveyGoods] Inserted/updated ${rowsToInsert.length} rows`);
+      return { inserted: rowsToInsert.length, unknownAssets };
     }
+
+    // {
+    //   console.log(applicationId);
+    //   const [rows] = await pool.query(
+    //     `SELECT assets FROM application_main WHERE id = ?`,
+    //     [applicationId]
+    //   );
+
+    //   const assets = rows.length ? rows[0].assets : null;
+
+    //   // Optional: throw an error or handle missing record
+    //   if (assets === null) {
+    //     throw new Error(`No application_main record found for id ${applicationId}`);
+    //   }
+    //   const selected = (assets || "")
+    //     .split(',')
+    //     .map(s => s.trim().toLowerCase())
+    //     .filter(Boolean);
+
+    //   const [goods] = await conn.query(`SELECT goods_id, LOWER(description) AS name FROM goods`);
+    //   for (const g of goods) {
+    //     await conn.query('INSERT INTO financial_survey_goods SET ?', [{
+    //       //financial_survey_goods_id: uuidv4(),
+    //       financial_survey_id: finSurveyId,
+    //       //student_id: student.student_id,
+    //       goods_id: g.goods_id,
+    //       status: selected.includes(g.name) ? 'yes' : 'no',
+    //       comment: '',
+    //       created_at: new Date(),
+    //       created_by_id: 1
+    //     }]);
+    //   }
+    //   console.log('[10] StudentGoods populated');
+    // }
 
     await conn.commit();
     console.log('[insertAiutSurvey] COMMIT TX');
@@ -4259,6 +4337,27 @@ const [result] = await conn.query('INSERT INTO school SET ?', [{
     conn.release();
   }
 }
+
+const ASSET_TO_GOODS_ID = {
+  "Gas Stove": null,
+  "TV": 1,
+  "Radio": null,
+  "Telephone/Mobile": 10,
+  "Animal Cart": null,
+  "Bicycle": 11,
+  "Computer/Laptop": 8,
+  "Motorbike": 12,
+  "Refrigerator": 2,
+  "Washing Machine": 4,
+  "Car": 13,
+  "Truck": 14
+};
+
+// Build a normalized lookup so " tv  " and "TV" both work.
+const norm = s => (s || "").trim().toLowerCase();
+const ASSET_TO_GOODS_ID_NORM = Object.fromEntries(
+  Object.entries(ASSET_TO_GOODS_ID).map(([k, v]) => [norm(k), v])
+);
 
 app.delete('/api/aiut/:tableName/:columnName/:value', async (req, res) => {
   const { tableName, columnName, value } = req.params;
