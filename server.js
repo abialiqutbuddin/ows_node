@@ -3907,7 +3907,6 @@ app.get('/api/mohallah-names', async (req, res) => {
 
 async function insertAiutSurvey(applicationId, aiutSurvey) {
   const conn = await aiutpool.getConnection();
-  console.log(`[insertAiutSurvey] Starting for applicationId=${applicationId}, AIUT MODEL=${aiutSurvey.mother_name}`);
   try {
     await conn.beginTransaction();
     console.log(`[insertAiutSurvey] BEGIN TX for applicationId=${applicationId}`);
@@ -3916,6 +3915,8 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
 
     // 1) Load the OWS request form
     const owsForm = await OwsReqForm.findOne({ where: { ITS: aiutSurvey.its_no } });
+    //const appForm = await .findOne({ where: { ITS: aiutSurvey.its_no } });
+
     if (!owsForm) throw new Error(`No OwsReqForm for ITS=${aiutSurvey.its_no}`);
     console.log('[1] owsForm loaded');
 
@@ -3956,6 +3957,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
     // `toMySQLDatetime`, and `uuidv4` are all in scope:
 
     let student;
+    let flatArea = 750;
     {
       // 1) Try to find an existing student by ITS
       const [[existing]] = await conn.query(
@@ -4002,7 +4004,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
           monthly_income: totalIncome,
           earning_members: income_count,
           dependents: dependent_count,
-          flat_area: 0,
+          flat_area: flatArea,
           modified_at: toMySQLDatetime(),
           modified_by_id: 1
           // (we leave student_id, student_no, its_no, created_at, created_by_id intact)
@@ -4073,7 +4075,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
           monthly_income: totalIncome,
           earning_members: income_count,
           dependents: dependent_count,
-          flat_area: 0,
+          flat_area: flatArea,
           created_at: toMySQLDatetime(),
           created_by_id: 1,
           modified_at: null,
@@ -4155,7 +4157,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
       monthly_income: totalIncome,
       earning_members: income_count,
       dependents: dependent_count,
-      flat_area: owsForm.flat_area || "",
+      flat_area: flatArea || "",
       employer_name: owsForm.employer_name || "",
       student_status: aiut_student_status,
       status: "Pending",
