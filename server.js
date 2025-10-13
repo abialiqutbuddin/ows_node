@@ -3960,26 +3960,19 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
     console.log(`[2] dependents=${dependent_count}, income=${income_count}`);
 
     // 3) Sum father’s income; fallback to mother’s
-    let totalIncome = 0;
-    const [[{ total_income: dadIncome }]] = await pool.query(
-      `SELECT SUM(amount) AS total_income
-         FROM income_types
-        WHERE application_id = ? AND member_its = ?`,
-      [applicationId, aiutSurvey.father_its_no]
-    );
-    if (dadIncome != null) {
-      totalIncome = dadIncome;
-      console.log('[3] father income:', totalIncome);
-    } else {
-      const [[{ total_income: momIncome }]] = await pool.query(
-        `SELECT SUM(amount) AS total_income
-           FROM income_types
-          WHERE application_id = ? AND member_its = ?`,
-        [applicationId, aiutSurvey.mother_its_no]
-      );
-      totalIncome = momIncome || 0;
-      console.log('[3] mother income:', totalIncome);
-    }
+let totalIncome = 0;
+
+const [[{ total_income }]] = await pool.query(
+  `
+  SELECT SUM(amount) AS total_income
+  FROM income_types
+  WHERE application_id = ?
+  `,
+  [applicationId]
+);
+
+totalIncome = total_income || 0;
+console.log('[3] total income:', totalIncome);
 
     // 4) Find or insert Student
     // Inside your async function where `conn`, `aiutSurvey`, `owsForm`, `totalIncome`, `income_count`, `dependent_count`,
