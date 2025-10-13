@@ -4312,7 +4312,7 @@ console.log('[3] total income:', totalIncome);
       await conn.query(sql, [rowsToInsert]);
 
       console.log(`[populateFinancialSurveyGoods] Inserted/updated ${rowsToInsert.length} rows`);
-      return { inserted: rowsToInsert.length, unknownAssets };
+      //return { inserted: rowsToInsert.length, unknownAssets };
     }
 
     // {
