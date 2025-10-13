@@ -3947,7 +3947,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
     const [areaRows] = await pool.query(
       `
   SELECT area
-  FROM area
+  FROM application_main
   WHERE application_id = ?
   LIMIT 1
   `,
