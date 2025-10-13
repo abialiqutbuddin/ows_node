@@ -3905,6 +3905,22 @@ app.get('/api/mohallah-names', async (req, res) => {
   }
 });
 
+const houseAreaMap = {
+  "Smaller than 200 sqft": 199,
+  "200-300 sqft": 250,
+  "300-400 sqft": 350,
+  "400-500 sqft": 450,
+  "500-600 sqft": 550,
+  "600 sqft & above": 600,
+  "Family up to 2 - Below Carpet 150 - 1RK": 150,
+  "Family up to 4 - Below Carpet 300": 300,
+  "Family up to 6 - Below Carpet 450": 450
+};
+
+function getHouseAreaValue(name) {
+  return houseAreaMap[name] ?? null; // returns null if not found
+}
+
 async function insertAiutSurvey(applicationId, aiutSurvey) {
   const conn = await aiutpool.getConnection();
   try {
@@ -3927,6 +3943,19 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
          (SELECT COUNT(*) FROM income_types WHERE application_id = ?) AS income_count`,
       [applicationId, applicationId]
     );
+
+    const [areaRows] = await pool.query(
+      `
+  SELECT area
+  FROM area
+  WHERE application_id = ?
+  LIMIT 1
+  `,
+      [applicationId]
+    );
+
+
+
     const { dependent_count, income_count } = countRows[0];
     console.log(`[2] dependents=${dependent_count}, income=${income_count}`);
 
@@ -3957,7 +3986,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
     // `toMySQLDatetime`, and `uuidv4` are all in scope:
 
     let student;
-    let flatArea = 750;
+    let flatArea = getHouseAreaValue(areaRows[0]?.area);
     {
       // 1) Try to find an existing student by ITS
       const [[existing]] = await conn.query(
@@ -4002,6 +4031,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
           fa_date: null,
           employer_name: "",
           monthly_income: totalIncome,
+          sf_no: aiutSurvey.sf_no,
           earning_members: income_count,
           dependents: dependent_count,
           flat_area: flatArea,
@@ -4047,6 +4077,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
           student_id: newId,
           student_no: newNo,
           its_no: aiutSurvey.its_no,
+          sf_no: aiutSurvey.sf_no,
           ref_app: "OWS",
           student_name: aiutSurvey.student_name,
           surname: aiutSurvey.surname,
