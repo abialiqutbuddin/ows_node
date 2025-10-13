@@ -3948,7 +3948,7 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
       `
   SELECT area
   FROM application_main
-  WHERE application_id = ?
+  WHERE id = ?
   LIMIT 1
   `,
       [applicationId]
