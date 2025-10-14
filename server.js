@@ -1995,29 +1995,19 @@ app.get('/api/application/:id', async (req, res) => {
   }
 });
 
-
 app.post('/api/submit-application', async (req, res) => {
-  const { application, repeatables, reqId, aiut_student, aiut_survey } = req.body;
+  const { application, repeatables = {}, reqId, aiut_student, aiut_survey } = req.body;
   const conn = await pool.getConnection();
 
   try {
-
-    let student_id = null;
-
     await conn.beginTransaction();
 
-    // Insert into main application table
-    const [result] = await conn.query(
-      `INSERT INTO application_main SET ?`,
-      application
-    );
-
-
+    // 1) Create application
+    const [result] = await conn.query(`INSERT INTO application_main SET ?`, application);
     const appId = result.insertId;
-    let id = { student_id: null, finSurveyId: null };
     console.log(`New application created with ID: ${appId}`);
 
-    // Insert repeatable entries into corresponding tables
+    // 2) Insert repeatables
     for (const [tableKey, entries] of Object.entries(repeatables)) {
       for (const entry of entries) {
         entry.application_id = appId;
@@ -2027,38 +2017,159 @@ app.post('/api/submit-application', async (req, res) => {
 
     await conn.commit();
 
+    // 3) Optional AIUT survey (outside the transaction on purpose)
+    let id = { student_id: null, finSurveyId: null };
     if (aiut_survey) {
       console.log('Inserting into Aiut Survey table');
       id = await insertAiutSurvey(appId, aiut_survey);
+      console.log('Aiut Survey Insert Result:', id);
     }
 
-    console.log('Aiut Survey Insert Result:', id);
-
-    // Link to request if reqId provided
+    // 4) Link to request if provided
     if (reqId) {
       await conn.query(
         `UPDATE owsReqForm
-     SET application_id = ?,
-         currentStatus  = ?,
-         aiut_student_id = ?,
-        aiut_financial_id = ?
-
-     WHERE reqId = ?`,
+           SET application_id    = ?,
+               currentStatus     = ?,
+               aiut_student_id   = ?,
+               aiut_financial_id = ?
+         WHERE reqId = ?`,
         [appId, 'Request Generated', id.student_id, id.finSurveyId, reqId]
       );
     }
 
+    // 5) Respond immediately
     res.json({ success: true, id: appId });
+
+    // 6) Fire-and-forget sync AFTER response and ONLY if aiut_survey was done
+    if (aiut_survey) {
+      setImmediate(() => {
+        syncAiutStudents()
+          .then((updated) => {
+            console.log(`[background-sync] Completed. updatedCount=${updated}`);
+          })
+          .catch((e) => {
+            console.error('[background-sync] Failed:', e);
+          });
+      });
+    }
 
   } catch (err) {
     console.error('Error submitting application:', err);
     await conn.rollback();
-    console.error(err);
     res.status(500).json({ success: false, error: 'Failed to submit application' });
   } finally {
-    conn.release(); // 🔁 Use release() not end() for pooled connection
+    conn.release();
   }
 });
+
+// app.post('/api/submit-application', async (req, res) => {
+//   const { application, repeatables, reqId, aiut_student, aiut_survey } = req.body;
+//   const conn = await pool.getConnection();
+
+//   try {
+
+//     let student_id = null;
+
+//     await conn.beginTransaction();
+
+//     // Insert into main application table
+//     const [result] = await conn.query(
+//       `INSERT INTO application_main SET ?`,
+//       application
+//     );
+
+
+//     const appId = result.insertId;
+//     let id = { student_id: null, finSurveyId: null };
+//     console.log(`New application created with ID: ${appId}`);
+
+//     // Insert repeatable entries into corresponding tables
+//     for (const [tableKey, entries] of Object.entries(repeatables)) {
+//       for (const entry of entries) {
+//         entry.application_id = appId;
+//         await conn.query(`INSERT INTO ${tableKey} SET ?`, entry);
+//       }
+//     }
+
+//     await conn.commit();
+
+//     if (aiut_survey) {
+//       console.log('Inserting into Aiut Survey table');
+//       id = await insertAiutSurvey(appId, aiut_survey);
+//       // Kick off background sync (no await)
+//       setImmediate(() => {
+//         syncAiutStudents()
+//           .then((updated) => {
+//             console.log(`[background-sync] Completed. updatedCount=${updated}`);
+//           })
+//           .catch((e) => {
+//             console.error('[background-sync] Failed:', e);
+//           });
+//       });
+//     }
+
+//     console.log('Aiut Survey Insert Result:', id);
+
+//     // Link to request if reqId provided
+//     if (reqId) {
+//       await conn.query(
+//         `UPDATE owsReqForm
+//      SET application_id = ?,
+//          currentStatus  = ?,
+//          aiut_student_id = ?,
+//         aiut_financial_id = ?
+
+//      WHERE reqId = ?`,
+//         [appId, 'Request Generated', id.student_id, id.finSurveyId, reqId]
+//       );
+//     }
+
+//     res.json({ success: true, id: appId });
+
+//   } catch (err) {
+//     console.error('Error submitting application:', err);
+//     await conn.rollback();
+//     console.error(err);
+//     res.status(500).json({ success: false, error: 'Failed to submit application' });
+//   } finally {
+//     conn.release(); // 🔁 Use release() not end() for pooled connection
+//   }
+// });
+
+// Reusable sync function (no HTTP needed)
+async function syncAiutStudents() {
+  let updatedCount = 0;
+  const conn = await aiutpool.getConnection();
+  try {
+    // Grab all AIUT forms (reqId + ITS only)
+    const forms = await OwsReqForm.findAll({
+      where: { organization: 'AIUT' },
+      attributes: ['reqId', 'ITS'],
+    });
+
+    for (const form of forms) {
+      const itsValue = form.get('ITS');
+
+      const [[student]] = await conn.query(
+        `SELECT student_id FROM student WHERE its_no = ?`,
+        [itsValue]
+      );
+
+      if (student && student.student_id) {
+        await OwsReqForm.update(
+          { aiut_student_id: student.student_id },
+          { where: { reqId: form.get('reqId') } }
+        );
+        updatedCount++;
+      }
+    }
+
+    return updatedCount;
+  } finally {
+    conn.release();
+  }
+}
 
 function toMySQLDatetime(date = new Date()) {
   return date.toISOString().slice(0, 19).replace('T', ' ');
@@ -3960,19 +4071,19 @@ async function insertAiutSurvey(applicationId, aiutSurvey) {
     console.log(`[2] dependents=${dependent_count}, income=${income_count}`);
 
     // 3) Sum father’s income; fallback to mother’s
-let totalIncome = 0;
+    let totalIncome = 0;
 
-const [[{ total_income }]] = await pool.query(
-  `
+    const [[{ total_income }]] = await pool.query(
+      `
   SELECT SUM(amount) AS total_income
   FROM income_types
   WHERE application_id = ?
   `,
-  [applicationId]
-);
+      [applicationId]
+    );
 
-totalIncome = total_income || 0;
-console.log('[3] total income:', totalIncome);
+    totalIncome = total_income || 0;
+    console.log('[3] total income:', totalIncome);
 
     // 4) Find or insert Student
     // Inside your async function where `conn`, `aiutSurvey`, `owsForm`, `totalIncome`, `income_count`, `dependent_count`,
