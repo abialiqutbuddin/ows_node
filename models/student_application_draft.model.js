@@ -32,7 +32,7 @@ const StudentApplicationDraft = sequelize.define('student_application_draft', {
   // Work Info (Repeatables)
   fatherOccupationInfo_base64: DataTypes.TEXT('long'),
   motherOccupationInfo_base64: DataTypes.TEXT('long'),
-  familyOccuaptionInfo_base64: DataTypes.TEXT('long'),
+  familyOccupationInfo_base64: DataTypes.TEXT('long'),
 
   // Health Info
   physically_mentally_challenged: DataTypes.ENUM('Yes', 'No'),
