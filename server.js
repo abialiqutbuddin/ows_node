@@ -2483,6 +2483,47 @@ app.get('/api/keys-applications/:id', async (req, res) => {
     response.sections.push(section);
   }
 
+    // Extra section: Family Occupation Info
+  let familyOccupationRows = [];
+  try {
+    const [rows] = await pool.execute(
+      'SELECT * FROM `application_family_occupations` WHERE `application_id` = ?',
+      [applicationId]
+    );
+    familyOccupationRows = rows;
+  } catch (err) {
+    console.error('DB error fetching family occupations:', err);
+    familyOccupationRows = [];
+  }
+
+  if (familyOccupationRows.length > 0) {
+    const familyOccupationSection = {
+      section: 'Family Occupation Info',
+      subsections: [
+        {
+          subsection: 'Family Occupation Info',
+          entries: familyOccupationRows.map(row => ({
+            fields: [
+              { question: 'Member Name', answer: row.member_name || '' },
+              { question: 'Member ITS', answer: row.member_its || '' },
+              { question: 'Relation', answer: row.relation || '' },
+              { question: 'Mode of Work', answer: row.mode_work || '' },
+              { question: 'Name of Organization', answer: row.name_org || '' },
+              { question: 'Work Phone', answer: row.work_phone || '' },
+              { question: 'Website Address', answer: row.work_web || '' },
+              { question: 'Current Form of Business', answer: row.work_form || '' },
+              { question: 'Address of Organization', answer: row.work_address || '' },
+              { question: 'Work Email', answer: row.work_email || '' },
+              { question: 'Business Description', answer: row.work_desc || '' }
+            ]
+          }))
+        }
+      ]
+    };
+
+    response.sections.push(familyOccupationSection);
+  }
+
   res.json(response);
 });
 
