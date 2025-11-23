@@ -179,7 +179,35 @@ const OwsReqForm = sequelize.define("owsReqForm", {
     allowNull: true
   },
   aiut_student_id: { type: DataTypes.CHAR(38), allowNull: true },
-    aiut_financial_id: { type: DataTypes.CHAR(38), allowNull: true },
+  aiut_financial_id: { type: DataTypes.CHAR(38), allowNull: true },
+  monthly_tuition_fee: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: true
+  },
+  books_charges: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: true
+  },
+  class_months: {
+    type: DataTypes.INTEGER,
+    allowNull: true
+  },
+  annual_fee: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: true
+  },
+  degree_years: {
+    type: DataTypes.INTEGER,
+    allowNull: true
+  },
+  semester_code_json: {
+    type: DataTypes.JSON,
+    allowNull: true
+  },
+  total_cost: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: true
+  },
 
 }, {
   tableName: "owsReqForm",
