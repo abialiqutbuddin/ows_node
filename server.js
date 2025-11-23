@@ -480,7 +480,8 @@ app.post(
       const {
         ITS, studentFirstName, studentFullName, reqByITS, reqByName, city, institution, class_degree, fieldOfStudy, subject_course,
         yearOfStart, grade, email, contactNo, whatsappNo, purpose, fundAsking, classification, cnic,
-        organization, description, currentStatus, created_by, updated_by, mohalla, address, dob, gender, hasGuardian, fatherCnic, motherCnic
+        organization, description, currentStatus, created_by, updated_by, mohalla, address, dob, gender, hasGuardian, fatherCnic, motherCnic,
+        monthly_tuition_fee, books_charges, class_months, annual_fee, degree_years, semester_code_json, total_cost
       } = req.body;
 
       console.log(`🔎 Checking if ITS (${ITS}) exists in owsReqMas...`);
@@ -555,6 +556,13 @@ app.post(
             fatherCnic,
             motherCnic,
             cnic,
+            monthly_tuition_fee,
+            books_charges,
+            class_months,
+            annual_fee,
+            degree_years,
+            semester_code_json,
+            total_cost,
           },
           { transaction }
         );
@@ -607,6 +615,14 @@ app.post(
           fatherCnic: fatherCnic,
           motherCnic: motherCnic,
           cnic: cnic,
+          monthly_tuition_fee,
+          books_charges,
+          class_months,
+          annual_fee,
+          degree_years,
+          semester_code_json,
+          total_cost,
+
         },
         { transaction }
       );
@@ -2483,7 +2499,7 @@ app.get('/api/keys-applications/:id', async (req, res) => {
     response.sections.push(section);
   }
 
-    // Extra section: Family Occupation Info
+  // Extra section: Family Occupation Info
   let familyOccupationRows = [];
   try {
     const [rows] = await pool.execute(
