@@ -1600,6 +1600,43 @@ app.get('/load-draft/:application_id', async (req, res) => {
   }
 });
 
+app.post('/load-latest-draft-by-its', async (req, res) => {
+  const { its_numbers } = req.body;
+
+  if (!its_numbers || !Array.isArray(its_numbers) || its_numbers.length === 0) {
+    return res.status(400).json({ error: 'its_numbers array is required' });
+  }
+
+  try {
+    // Find the most recent application with status 'Request Generated' for the given ITS numbers
+    const latestApp = await OwsReqForm.findOne({
+      where: {
+        ITS: {
+          [Op.in]: its_numbers
+        },
+        currentStatus: 'Request Generated'
+      },
+      order: [['updated_at', 'DESC']],
+      attributes: ['draft_id']
+    });
+
+    if (!latestApp || !latestApp.draft_id) {
+      return res.status(404).json({ error: 'No suitable draft found' });
+    }
+
+    // Load the draft
+    const draft = await StudentApplicationDraft.findByPk(latestApp.draft_id);
+    if (!draft) {
+      return res.status(404).json({ error: 'Draft not found' });
+    }
+
+    res.status(200).json(draft);
+  } catch (error) {
+    console.error('❌ Error loading latest draft:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 app.post("/submit-draft/:id", async (req, res) => {
   const draftId = req.params.id;
 
@@ -2175,11 +2212,45 @@ app.post('/api/submit-application', async (req, res) => {
 // });
 
 // Reusable sync function (no HTTP needed)
+// async function syncAiutStudents() {
+//   let updatedCount = 0;
+//   const conn = await aiutpool.getConnection();
+//   try {
+//     // Grab all AIUT forms (reqId + ITS only)
+//     const forms = await OwsReqForm.findAll({
+//       where: { organization: 'AIUT' },
+//       attributes: ['reqId', 'ITS'],
+//     });
+
+//     for (const form of forms) {
+//       const itsValue = form.get('ITS');
+
+//       const [[student]] = await conn.query(
+//         `SELECT student_id FROM student WHERE its_no = ?`,
+//         [itsValue]
+//       );
+
+//       if (student && student.student_id) {
+//         await OwsReqForm.update(
+//           { aiut_student_id: student.student_id },
+//           { where: { reqId: form.get('reqId') } }
+//         );
+//         updatedCount++;
+//       }
+//     }
+
+//     return updatedCount;
+//   } finally {
+//     conn.release();
+//   }
+// }
+
 async function syncAiutStudents() {
   let updatedCount = 0;
   const conn = await aiutpool.getConnection();
+
   try {
-    // Grab all AIUT forms (reqId + ITS only)
+    // Grab all AIUT forms
     const forms = await OwsReqForm.findAll({
       where: { organization: 'AIUT' },
       attributes: ['reqId', 'ITS'],
@@ -2188,16 +2259,42 @@ async function syncAiutStudents() {
     for (const form of forms) {
       const itsValue = form.get('ITS');
 
-      const [[student]] = await conn.query(
-        `SELECT student_id FROM student WHERE its_no = ?`,
+      // 1) Find student
+      const [studentRows] = await conn.query(
+        'SELECT student_id FROM student WHERE its_no = ?',
         [itsValue]
       );
+      const student = studentRows && studentRows[0];
 
       if (student && student.student_id) {
-        await OwsReqForm.update(
-          { aiut_student_id: student.student_id },
-          { where: { reqId: form.get('reqId') } }
+        // 2) Get latest financial survey
+        const [finRows] = await conn.query(
+          `
+          SELECT id
+          FROM financial_survey
+          WHERE student_id = ?
+          ORDER BY id DESC
+          LIMIT 1
+        `,
+          [student.student_id]
         );
+
+        const financial = finRows && finRows[0];
+
+        // 3) Build the update object
+        const updateData = {
+          aiut_student_id: student.student_id,
+        };
+
+        if (financial && financial.id) {
+          updateData.aiut_financial_id = financial.id;
+        }
+
+        // 4) Update the form
+        await OwsReqForm.update(updateData, {
+          where: { reqId: form.get('reqId') },
+        });
+
         updatedCount++;
       }
     }
