@@ -67,6 +67,33 @@ app.use(
   express.static(path.join(__dirname, 'uploads', 'application_pdf'))
 );
 
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
+
+const assetsStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const dir = path.join(__dirname, 'assets');
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    cb(null, dir);
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  }
+});
+
+const uploadAsset = multer({ storage: assetsStorage });
+
+app.post('/upload-asset', uploadAsset.single('file'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'No file uploaded' });
+  }
+  res.status(200).json({
+    message: 'File uploaded successfully',
+    url: `/assets/${req.file.filename}`
+  });
+});
+
 //Load SSL Certificates
 // const options = {
 //     key: fs.readFileSync("/etc/letsencrypt/live/dev.imadiinnovations.com/privkey.pem"),
@@ -2324,6 +2351,8 @@ app.get('/api/aiut_surveys', async (req, res) => {
 });
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 app.get('/api/form-config', async (req, res) => {
   try {
