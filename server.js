@@ -1047,9 +1047,35 @@ app.get("/api/completed-requests", async (req, res) => {
       });
     }
 
+    const enrichedRequests = await Promise.all(requests.map(async (request) => {
+      const reqJson = request.toJSON();
+
+      if (reqJson.organization === 'STSMF' && reqJson.application_id) {
+        const appId = reqJson.application_id;
+        try {
+          // Fetch required amounts (Raw SQL)
+          const [amounts] = await sequelize.query(`SELECT qarzan_required, enayat_required FROM application_main WHERE id = ${appId} LIMIT 1`);
+          if (amounts && amounts.length > 0) {
+            reqJson.qarzan_required = amounts[0].qarzan_required;
+            reqJson.enayat_required = amounts[0].enayat_required;
+          }
+
+          // Fetch schedules (Sequelize Models)
+          reqJson.qarzan_schedule = await QarzanSchedule.findAll({ where: { application_id: appId } });
+          reqJson.enayat_schedule = await EnayatSchedule.findAll({ where: { application_id: appId } });
+          reqJson.qarzan_repayment_schedule = await QarzanRepaymentSchedule.findAll({ where: { application_id: appId } });
+
+        } catch (err) {
+          console.error(`Error fetching STSMF details for app ${appId}:`, err);
+          // Return basic info even if enrich fails
+        }
+      }
+      return reqJson;
+    }));
+
     return res.status(200).json({
       success: true,
-      data: requests,
+      data: enrichedRequests,
     });
 
   } catch (error) {
